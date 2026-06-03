@@ -3,6 +3,17 @@
 A running record of what's been built, in order. Newest at the top.
 (Live site: https://kanoonzaza.github.io/korean-app/)
 
+## 2026-06-04 — Cloud sync (Firebase) — client built, awaiting project config
+- Added optional **cloud auto-sync** of progress via Firebase Firestore (`js/sync.js`,
+  `content/firebase-config.js`). One Firestore doc per private "sync code".
+- Behaviour: on load pull + MERGE (no progress lost), debounced push after changes,
+  re-sync when back online. Firebase SDK is lazy-loaded only when configured.
+- `Storage.mergeData` added: per-lesson keep best furthestStep/score, union weak items.
+- Sync UI in Progress tab (paste config → set sync code → on/off → sync now).
+- Stays dormant until a Firebase config + sync code are provided. Verified: UI state
+  machine works, app error-free, Firebase not loaded until configured.
+- TODO: user creates Firebase project + Firestore rule, then we flip it on and test.
+
 ## 2026-06-04 — Auto-update banner
 - Added a "🔄 New version available — Update" banner that appears automatically when a
   new version is published; tapping it activates the new service worker and reloads.

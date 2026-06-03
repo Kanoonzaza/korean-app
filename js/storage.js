@@ -6,6 +6,8 @@ window.Storage = (function () {
   var KEY = "koreanApp.v1";
   var memory = {};        // fallback store
   var usable = true;
+  var subs = [];          // change listeners (used by cloud sync)
+  var muted = false;      // suppress notifications during a remote merge
 
   function load() {
     if (!usable) return memory;
@@ -21,13 +23,15 @@ window.Storage = (function () {
 
   function save(data) {
     memory = data;
-    if (!usable) return;
-    try {
-      localStorage.setItem(KEY, JSON.stringify(data));
-    } catch (e) {
-      usable = false;
-      console.warn("Could not save progress (storage full or blocked).");
+    if (usable) {
+      try {
+        localStorage.setItem(KEY, JSON.stringify(data));
+      } catch (e) {
+        usable = false;
+        console.warn("Could not save progress (storage full or blocked).");
+      }
     }
+    if (!muted) subs.forEach(function (fn) { try { fn(data); } catch (e) {} });
   }
 
   function entry(data, id) {
@@ -104,6 +108,40 @@ window.Storage = (function () {
         if (d && typeof d === "object") { save(d); return true; }
       } catch (e) {}
       return false;
+    },
+
+    /* ----- cloud sync support ----- */
+    // Subscribe to be notified after any progress change (used to push to the cloud).
+    subscribe: function (fn) { if (typeof fn === "function") subs.push(fn); },
+
+    // Merge a remote progress object INTO local without losing anything:
+    // per lesson keep the better value; union the weak-item pile. Does not re-notify.
+    mergeData: function (remote) {
+      var out = JSON.parse(JSON.stringify(load()));
+      if (!remote || typeof remote !== "object") return out;
+      Object.keys(remote).forEach(function (k) {
+        if (k === "__misses") {
+          out.__misses = out.__misses || {};
+          var rm = remote.__misses || {};
+          Object.keys(rm).forEach(function (ko) { if (!out.__misses[ko]) out.__misses[ko] = rm[ko]; });
+          return;
+        }
+        if (k.charAt(0) === "_") return;           // skip meta fields
+        var r = remote[k];
+        if (!r || typeof r !== "object") return;
+        var l = out[k];
+        if (!l) { out[k] = r; return; }
+        var lb = (l.bestScore == null ? -1 : l.bestScore);
+        var rb = (r.bestScore == null ? -1 : r.bestScore);
+        var best = Math.max(lb, rb);
+        out[k] = {
+          furthestStep: Math.max(l.furthestStep || 0, r.furthestStep || 0),
+          done: !!(l.done || r.done),
+          bestScore: best < 0 ? null : best
+        };
+      });
+      muted = true; save(out); muted = false;     // apply without triggering a push loop
+      return out;
     }
   };
 })();

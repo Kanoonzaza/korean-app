@@ -114,6 +114,7 @@ window.App = (function () {
           '<input type="file" id="importFile" accept="application/json,.json" style="display:none" />' +
           '<div id="syncMsg" class="muted small"></div>' +
         "</div>" +
+        syncPanel() +
       "</section>"
     );
   }
@@ -125,6 +126,50 @@ window.App = (function () {
     document.body.appendChild(a);
     a.click();
     a.remove();
+  }
+
+  function syncPanel() {
+    if (!window.Sync) return "";
+    var configured = Sync.isConfigured();
+    var on = Sync.isOn();
+    var code = Sync.getCode();
+    var last = Sync.lastSynced();
+
+    if (!configured) {
+      return (
+        '<div class="card sync">' +
+          "<h4>Cloud sync (optional)</h4>" +
+          '<p class="muted small">Sync progress across devices automatically. One-time: create a free ' +
+            "Firebase project, then paste its config below (or ask Claude to bake it in).</p>" +
+          '<textarea id="fbConfig" class="cfg-area" placeholder=\'{ "apiKey": "...", "projectId": "...", ... }\'></textarea>' +
+          '<div class="nav-row"><span></span><button class="btn" data-action="sync-save-config">Save config</button></div>' +
+          '<div id="syncMsg2" class="muted small"></div>' +
+        "</div>"
+      );
+    }
+    if (!on) {
+      return (
+        '<div class="card sync">' +
+          "<h4>Cloud sync</h4>" +
+          '<p class="muted small">Enter the SAME sync code on each device to link them. ' +
+            "Keep this code private.</p>" +
+          '<div class="answer-row"><input id="syncCode" class="ko-input" value="' + esc(code) + '" placeholder="sync code (16+ chars)" />' +
+            '<button class="btn ghost" data-action="sync-gencode">Generate</button></div>' +
+          '<div class="nav-row"><span></span><button class="btn" data-action="sync-enable">Turn on sync</button></div>' +
+          '<div id="syncMsg2" class="muted small"></div>' +
+        "</div>"
+      );
+    }
+    return (
+      '<div class="card sync">' +
+        '<h4>Cloud sync · <span class="on-dot">ON</span></h4>' +
+        '<p class="muted small">Code: <code>' + esc(code) + "</code><br>Last synced: " +
+          (last ? esc(new Date(last).toLocaleString()) : "—") + "</p>" +
+        '<div class="nav-row"><button class="btn ghost" data-action="sync-disable">Turn off</button>' +
+          '<button class="btn" data-action="sync-now">Sync now</button></div>' +
+        '<div id="syncMsg2" class="muted small"></div>' +
+      "</div>"
+    );
   }
 
   /* ---------- lesson stepper ---------- */
@@ -557,6 +602,43 @@ window.App = (function () {
     } else if (action === "import-progress") {
       var f = document.getElementById("importFile");
       if (f) f.click();
+    } else if (action === "sync-save-config") {
+      var ta = document.getElementById("fbConfig");
+      var sm = document.getElementById("syncMsg2");
+      try {
+        var cfg = JSON.parse(ta.value);
+        if (!cfg.apiKey || !cfg.projectId) throw new Error("missing fields");
+        Sync.setConfig(cfg);
+        render();
+      } catch (err2) {
+        if (sm) sm.textContent = "That doesn't look like a valid Firebase config (need at least apiKey and projectId).";
+      }
+    } else if (action === "sync-gencode") {
+      var ci = document.getElementById("syncCode");
+      if (ci) ci.value = Sync.genCode();
+    } else if (action === "sync-enable") {
+      var ci2 = document.getElementById("syncCode");
+      var code = ci2 ? ci2.value.trim() : "";
+      if (code.length < 16) {
+        var sm2 = document.getElementById("syncMsg2");
+        if (sm2) sm2.textContent = "Use a sync code of at least 16 characters (tap Generate).";
+        return;
+      }
+      Sync.enable(code);
+      render();
+      var sm3 = document.getElementById("syncMsg2");
+      if (sm3) sm3.textContent = "Sync turned on — syncing…";
+    } else if (action === "sync-disable") {
+      Sync.disable();
+      render();
+    } else if (action === "sync-now") {
+      var sm4 = document.getElementById("syncMsg2");
+      if (sm4) sm4.textContent = "Syncing…";
+      Sync.syncNow(function (err3) {
+        render();
+        var mm = document.getElementById("syncMsg2");
+        if (mm) mm.textContent = err3 ? ("Sync failed: " + (err3.message || err3)) : "Synced ✓";
+      });
     }
   }
 
@@ -607,9 +689,10 @@ window.App = (function () {
     root.addEventListener("keydown", handleKey);
     root.addEventListener("change", handleChange);
     render();
+    if (window.Sync) window.Sync.init();
   }
 
-  return { init: init };
+  return { init: init, refresh: render };
 })();
 
 document.addEventListener("DOMContentLoaded", window.App.init);
