@@ -158,5 +158,99 @@ window.LESSONS = [
       { ko: "오늘은 운전할 수 없어요.", en: "I can't drive today.", romaji: "o-neu-reun un-jeon-hal su eop-seo-yo", blankWord: "운전할 수" },
       { ko: "지금은 갈 수 없어요.", en: "I can't go now.", romaji: "ji-geu-meun gal su eop-seo-yo", blankWord: "갈 수" }
     ]
+  },
+
+  {
+    id: "4.4",
+    level: 4,
+    title: "Because / So",
+    point: "V-(으)니까",
+    grammar: {
+      summary: "How to give a reason — especially when telling or suggesting what to do.",
+      formation:
+        "Stem + (으)니까:\n" +
+        "• vowel / ㄹ stem → 니까   (가다 → 가니까,  비싸다 → 비싸니까)\n" +
+        "• consonant stem  → 으니까 (먹다 → 먹으니까,  좋다 → 좋으니까)",
+      explanation:
+        "(으)니까 marks the reason clause: \"because X, (so) Y\". Its special strength is that " +
+        "— unlike 아/어서, the other 'because' you met earlier — it CAN be followed by a command " +
+        "or a suggestion. So when the second half is 'let's…', 'please…', or 'don't…', use 니까: " +
+        "비싸니까 사지 마세요 = 'It's expensive, so don't buy it.'",
+      notes: [
+        "Order is reason first: [reason]-(으)니까 [result].",
+        "으 appears only after a consonant: 가다 → 가니까 (not 가으니까).",
+        "Great with 갈까요? / ~(으)세요 / ~지 마세요 in the second clause."
+      ]
+    },
+    pitfalls: [
+      "Use 으 only after a consonant stem: 오다 → 오니까, 먹다 → 먹으니까.",
+      "When the result is a command or suggestion, use 니까 — NOT 아/어서 (사서 사지 마세요 is wrong).",
+      "Put the reason BEFORE 니까; the result comes after."
+    ],
+    vocab: [
+      { ko: "피곤하다", en: "to be tired", romaji: "pi-gon-ha-da", pos: "adjective", note: "" },
+      { ko: "비가 오다", en: "to rain", romaji: "bi-ga o-da", pos: "phrase", note: "lit. 'rain comes'" },
+      { ko: "배고프다", en: "to be hungry", romaji: "bae-go-peu-da", pos: "adjective", note: "" },
+      { ko: "타다", en: "to ride / take", romaji: "ta-da", pos: "verb", note: "택시를 타다" },
+      { ko: "택시", en: "taxi", romaji: "taek-si", pos: "noun", note: "" },
+      { ko: "날씨", en: "weather", romaji: "nal-ssi", pos: "noun", note: "" },
+      { ko: "산책하다", en: "to take a walk", romaji: "san-chaek-ha-da", pos: "verb", note: "" },
+      { ko: "시간", en: "time", romaji: "si-gan", pos: "noun", note: "" }
+    ],
+    sentences: [
+      { ko: "피곤하니까 일찍 잘 거예요.", en: "Since I'm tired, I'll sleep early.", romaji: "pi-gon-ha-ni-kka il-jjik jal geo-ye-yo", blankWord: "피곤하니까" },
+      { ko: "비가 오니까 집에 있어요.", en: "Because it's raining, let's stay home.", romaji: "bi-ga o-ni-kka ji-be i-sseo-yo", blankWord: "오니까" },
+      { ko: "시간이 없으니까 택시를 타요.", en: "Since there's no time, let's take a taxi.", romaji: "si-ga-ni eop-seu-ni-kka taek-si-reul ta-yo", blankWord: "없으니까" },
+      { ko: "이거 비싸니까 사지 마세요.", en: "This is expensive, so don't buy it.", romaji: "i-geo bi-ssa-ni-kka sa-ji ma-se-yo", blankWord: "비싸니까" },
+      { ko: "날씨가 좋으니까 산책할까요?", en: "The weather's nice, so shall we take a walk?", romaji: "nal-ssi-ga jo-eu-ni-kka san-chaek-hal-kka-yo", blankWord: "좋으니까" },
+      { ko: "배고프니까 밥 먹어요.", en: "I'm hungry, so let's eat.", romaji: "bae-go-peu-ni-kka bap meo-geo-yo", blankWord: "배고프니까" }
+    ]
+  },
+
+  {
+    id: "4.5",
+    level: 4,
+    title: "If / When",
+    point: "V-(으)면",
+    grammar: {
+      summary: "How to set up a condition: 'if…' or 'when(ever)…'.",
+      formation:
+        "Stem + (으)면:\n" +
+        "• vowel / ㄹ stem → 면   (가다 → 가면,  누르다 → 누르면)\n" +
+        "• consonant stem  → 으면 (먹다 → 먹으면,  있다 → 있으면)",
+      explanation:
+        "(으)면 attaches to the condition clause: \"if/when X, then Y\". One form covers both " +
+        "'if' (한국에 가면 = if you go to Korea) and general 'whenever' (비가 오면 = whenever it " +
+        "rains). The result clause that follows can be a fact, a plan (-ㄹ 거예요), a question, or " +
+        "a request.",
+      notes: [
+        "Condition first: [condition]-(으)면 [result].",
+        "으 appears only after a consonant: 가다 → 가면, 먹다 → 먹으면.",
+        "For a specific past 'when', Korean usually uses 때 instead of (으)면."
+      ]
+    },
+    pitfalls: [
+      "Use 으 only after a consonant stem: 오다 → 오면, 먹다 → 먹으면.",
+      "(으)면 = 'if' OR general 'whenever' — context tells which; it's not for a one-time past 'when'.",
+      "Don't confuse 면 (if) with 면 안 되다 (must not) from Lesson 4.2 — different patterns."
+    ],
+    vocab: [
+      { ko: "영화", en: "movie", romaji: "yeong-hwa", pos: "noun", note: "영화를 보다" },
+      { ko: "도착하다", en: "to arrive", romaji: "do-chak-ha-da", pos: "verb", note: "" },
+      { ko: "누르다", en: "to press", romaji: "nu-reu-da", pos: "verb", note: "" },
+      { ko: "버튼", en: "button", romaji: "beo-teun", pos: "noun", note: "" },
+      { ko: "열리다", en: "to open (by itself)", romaji: "yeol-li-da", pos: "verb", note: "문이 열리다" },
+      { ko: "아프다", en: "to hurt / be sick", romaji: "a-peu-da", pos: "adjective", note: "" },
+      { ko: "끝나다", en: "to end / finish", romaji: "kkeun-na-da", pos: "verb", note: "" },
+      { ko: "전화하다", en: "to call (phone)", romaji: "jeon-hwa-ha-da", pos: "verb", note: "" }
+    ],
+    sentences: [
+      { ko: "시간이 있으면 영화를 봐요.", en: "If I have time, I watch a movie.", romaji: "si-ga-ni i-sseu-myeon yeong-hwa-reul bwa-yo", blankWord: "있으면" },
+      { ko: "비가 오면 집에 있을 거예요.", en: "If it rains, I'll stay home.", romaji: "bi-ga o-myeon ji-be i-sseul geo-ye-yo", blankWord: "오면" },
+      { ko: "한국에 가면 뭐 하고 싶어요?", en: "When you go to Korea, what do you want to do?", romaji: "han-gu-ge ga-myeon mwo ha-go si-peo-yo", blankWord: "가면" },
+      { ko: "이 버튼을 누르면 문이 열려요.", en: "If you press this button, the door opens.", romaji: "i beo-teu-neul nu-reu-myeon mu-ni yeol-lyeo-yo", blankWord: "누르면" },
+      { ko: "배가 아프면 약을 드세요.", en: "If your stomach hurts, take some medicine.", romaji: "bae-ga a-peu-myeon ya-geul deu-se-yo", blankWord: "아프면" },
+      { ko: "끝나면 전화해 주세요.", en: "When it's finished, please call me.", romaji: "kkeun-na-myeon jeon-hwa-hae ju-se-yo", blankWord: "끝나면" }
+    ]
   }
 ];

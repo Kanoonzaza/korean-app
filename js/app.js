@@ -75,7 +75,7 @@ window.App = (function () {
     return (
       '<section class="view">' +
         "<h2>Level 4 · Lessons</h2>" +
-        '<p class="muted">Continuing past your TTMIK deck — the modal patterns (must, may, can).</p>' +
+        '<p class="muted">Continuing past your TTMIK deck — Level 4 grammar, one step at a time.</p>' +
         '<div class="lesson-list">' + cards + "</div>" +
       "</section>"
     );
