@@ -3,6 +3,14 @@
 A running record of what's been built, in order. Newest at the top.
 (Live site: https://kanoonzaza.github.io/korean-app/)
 
+## 2026-06-04 — Level 4 complete, batch 2 (4.12–4.20)
+- Added 9 lessons: 4.12 아/어 주다 (do for someone), 4.13 보다/제일 (comparison),
+  4.14 고 있다 (-ing), 4.15 게 되다 (end up), 4.16 (으)ㄹ 줄 알다 (know how to),
+  4.17 못 (cannot), 4.18 (으)면서 (while), 4.19 기로 하다 (decide to),
+  4.20 (으)ㄴ 적이 있다 (have done before).
+- **Level 4 now complete: 20 lessons (4.1–4.20).** Paused here before Level 5 (per request).
+- Verified: all 20 lessons parse, valid shape, blanks resolve, quizzes/practice build clean.
+
 ## 2026-06-04 — Level 4 expansion, batch 1 (4.6–4.11)
 - Added 6 lessons: 4.6 것 같다 (I think/it seems), 4.7 아/어지다 (become),
   4.8 (으)ㄹ 때 (when), 4.9 기 전에 (before), 4.10 (으)ㄴ 후에 (after),

@@ -536,5 +536,422 @@ window.LESSONS = [
       { ko: "김치를 만들어 봤어요.", en: "I tried making kimchi.", romaji: "gim-chi-reul man-deu-reo bwa-sseo-yo", blankWord: "만들어 봤어요" },
       { ko: "다시 한번 해 보세요.", en: "Try doing it once more.", romaji: "da-si han-beon hae bo-se-yo", blankWord: "해 보세요" }
     ]
+  },
+
+  {
+    id: "4.12",
+    level: 4,
+    title: "Do for someone",
+    point: "V-아/어 주다",
+    grammar: {
+      summary: "How to do something FOR someone, and how to politely ask someone to do something for you.",
+      formation:
+        "Verb stem + 아/어 주다 (same 아/어 rule):\n" +
+        "• ㅏ/ㅗ → 아 주다  (찾다 → 찾아 주다)\n" +
+        "• other → 어 주다  (열다 → 열어 주다)\n" +
+        "• 하다  → 해 주다  (말하다 → 말해 주다)\n" +
+        "Ask: ~아/어 주세요 (please…) · Offer: ~아/어 줄게요 (I'll… for you).",
+      explanation:
+        "주다 means 'give', but as a helper after 아/어 it means 'do (it) for someone'. " +
+        "열어 주세요 = 'please open it (for me)'; 만들어 줄게요 = 'I'll make it for you'. It's the " +
+        "normal polite way to make requests.",
+      notes: [
+        "~아/어 주세요 = the everyday 'please do … for me'.",
+        "돕다 is ㅂ-irregular: 도와 주다 (도와줘요 / 도와줬어요).",
+        "Here 주다 means 'do for', not literally 'give'."
+      ]
+    },
+    pitfalls: [
+      "Request = ~아/어 주세요; offer = ~아/어 줄게요 — don't mix them up.",
+      "돕다 → 도와 주다 (ㅂ-irregular), not 돕어 주다.",
+      "Follow the 아/어 rule: 찾아 주다, 열어 주다, 해 주다."
+    ],
+    vocab: [
+      { ko: "열다", en: "to open", romaji: "yeol-da", pos: "verb", note: "" },
+      { ko: "찍다", en: "to take (a photo)", romaji: "jjik-da", pos: "verb", note: "" },
+      { ko: "돕다", en: "to help", romaji: "dop-da", pos: "verb", note: "ㅂ-irregular: 도와요" },
+      { ko: "말하다", en: "to speak / tell", romaji: "mal-ha-da", pos: "verb", note: "" },
+      { ko: "들다", en: "to hold / lift", romaji: "deul-da", pos: "verb", note: "" },
+      { ko: "천천히", en: "slowly", romaji: "cheon-cheon-hi", pos: "adverb", note: "" },
+      { ko: "좀", en: "a little / please", romaji: "jom", pos: "adverb", note: "softens a request" },
+      { ko: "문", en: "door", romaji: "mun", pos: "noun", note: "" }
+    ],
+    sentences: [
+      { ko: "문 좀 열어 주세요.", en: "Please open the door.", romaji: "mun jom yeo-reo ju-se-yo", blankWord: "열어 주세요" },
+      { ko: "사진 좀 찍어 주세요.", en: "Please take a photo for me.", romaji: "sa-jin jom jji-geo ju-se-yo", blankWord: "찍어 주세요" },
+      { ko: "친구가 도와줬어요.", en: "My friend helped me.", romaji: "chin-gu-ga do-wa-jwo-sseo-yo", blankWord: "도와줬어요" },
+      { ko: "제가 만들어 줄게요.", en: "I'll make it for you.", romaji: "je-ga man-deu-reo jul-ge-yo", blankWord: "만들어 줄게요" },
+      { ko: "천천히 말해 주세요.", en: "Please speak slowly.", romaji: "cheon-cheon-hi mal-hae ju-se-yo", blankWord: "말해 주세요" },
+      { ko: "이거 좀 들어 주세요.", en: "Please hold this for me.", romaji: "i-geo jom deu-reo ju-se-yo", blankWord: "들어 주세요" }
+    ]
+  },
+
+  {
+    id: "4.13",
+    level: 4,
+    title: "Comparing (than / most)",
+    point: "N보다 (더) · 제일/가장",
+    grammar: {
+      summary: "How to say 'more than' and 'the most'.",
+      formation:
+        "Comparison: [thing]보다 (더) [adjective]\n" +
+        "• 보다 attaches to what you compare AGAINST = 'than that'\n" +
+        "• 더 = 'more' (optional but common)\n" +
+        "Superlative: 제일 or 가장 + [adjective] = 'the most'.",
+      explanation:
+        "커피보다 차가 더 좋아요 = 'tea is better than coffee' — 보다 marks 'than coffee'. For " +
+        "'the most', put 제일 (casual) or 가장 (slightly formal) before the adjective: 제일 비싸요 " +
+        "= 'the most expensive'.",
+      notes: [
+        "보다 attaches to the compared-against noun: 커피보다 = 'than coffee'.",
+        "더 (more) is usually added but optional.",
+        "제일 = 가장 = 'the most'."
+      ]
+    },
+    pitfalls: [
+      "Attach 보다 to the thing you measure against, not the subject.",
+      "Some comparisons use irregular adjectives: 춥다 → 추워요, 빠르다 → 빨라요.",
+      "제일/가장 go BEFORE the adjective: 제일 맛있어요."
+    ],
+    vocab: [
+      { ko: "보다", en: "than (comparison)", romaji: "bo-da", pos: "particle", note: "" },
+      { ko: "더", en: "more", romaji: "deo", pos: "adverb", note: "" },
+      { ko: "제일", en: "the most / best", romaji: "je-il", pos: "adverb", note: "= 가장" },
+      { ko: "차", en: "tea", romaji: "cha", pos: "noun", note: "" },
+      { ko: "춥다", en: "to be cold", romaji: "chup-da", pos: "adjective", note: "ㅂ-irregular: 추워요" },
+      { ko: "빠르다", en: "to be fast", romaji: "ppa-reu-da", pos: "adjective", note: "르-irregular: 빨라요" },
+      { ko: "기차", en: "train", romaji: "gi-cha", pos: "noun", note: "" },
+      { ko: "가을", en: "autumn", romaji: "ga-eul", pos: "noun", note: "" }
+    ],
+    sentences: [
+      { ko: "저는 커피보다 차를 더 좋아해요.", en: "I like tea more than coffee.", romaji: "jeo-neun keo-pi-bo-da cha-reul deo jo-a-hae-yo", blankWord: "커피보다" },
+      { ko: "오늘이 어제보다 더 추워요.", en: "Today is colder than yesterday.", romaji: "o-neu-ri eo-je-bo-da deo chu-wo-yo", blankWord: "어제보다" },
+      { ko: "비행기가 기차보다 더 빨라요.", en: "Planes are faster than trains.", romaji: "bi-haeng-gi-ga gi-cha-bo-da deo ppal-la-yo", blankWord: "기차보다" },
+      { ko: "이 음식이 제일 맛있어요.", en: "This food is the most delicious.", romaji: "i eum-si-gi je-il ma-si-sseo-yo", blankWord: "제일" },
+      { ko: "동생이 저보다 키가 더 커요.", en: "My sibling is taller than me.", romaji: "dong-saeng-i jeo-bo-da ki-ga deo keo-yo", blankWord: "저보다" },
+      { ko: "저는 가을을 제일 좋아해요.", en: "I like autumn the most.", romaji: "jeo-neun ga-eu-reul je-il jo-a-hae-yo", blankWord: "제일" }
+    ]
+  },
+
+  {
+    id: "4.14",
+    level: 4,
+    title: "Be doing (-ing)",
+    point: "V-고 있다",
+    grammar: {
+      summary: "How to say an action is in progress right now ('be V-ing').",
+      formation:
+        "Verb stem + 고 있다 (no vowel change):\n" +
+        "• 가다 → 가고 있다,  먹다 → 먹고 있다,  하다 → 하고 있다\n" +
+        "Now: 가고 있어요 · Past (was V-ing): 가고 있었어요.",
+      explanation:
+        "고 있다 marks an action happening at the moment: 밥을 먹고 있어요 = 'I'm eating'. " +
+        "Add nothing to the stem except 고 있다, then conjugate 있다 for tense.",
+      notes: [
+        "Now = 고 있어요; was = 고 있었어요.",
+        "Honorific form is 고 계시다 (아버지가 주무시고 계세요).",
+        "Don't confuse 고 있다 (ongoing) with plain 고 (and)."
+      ]
+    },
+    pitfalls: [
+      "It's 고 있다, no 아/어 change: 먹고 있어요 (not 먹어 있어요).",
+      "Past progressive = 고 있었어요 ('was V-ing').",
+      "For polite speech about elders use 고 계시다."
+    ],
+    vocab: [
+      { ko: "기다리다", en: "to wait", romaji: "gi-da-ri-da", pos: "verb", note: "" },
+      { ko: "청소하다", en: "to clean", romaji: "cheong-so-ha-da", pos: "verb", note: "" },
+      { ko: "공부하다", en: "to study", romaji: "gong-bu-ha-da", pos: "verb", note: "" },
+      { ko: "자다", en: "to sleep", romaji: "ja-da", pos: "verb", note: "" },
+      { ko: "일하다", en: "to work", romaji: "il-ha-da", pos: "verb", note: "" },
+      { ko: "비가 오다", en: "to rain", romaji: "bi-ga o-da", pos: "phrase", note: "" },
+      { ko: "동생", en: "younger sibling", romaji: "dong-saeng", pos: "noun", note: "" },
+      { ko: "지금", en: "now", romaji: "ji-geum", pos: "adverb", note: "" }
+    ],
+    sentences: [
+      { ko: "지금 밥을 먹고 있어요.", en: "I'm eating now.", romaji: "ji-geum ba-beul meok-go i-sseo-yo", blankWord: "먹고 있어요" },
+      { ko: "동생이 자고 있어요.", en: "My sibling is sleeping.", romaji: "dong-saeng-i ja-go i-sseo-yo", blankWord: "자고 있어요" },
+      { ko: "뭐 하고 있어요?", en: "What are you doing?", romaji: "mwo ha-go i-sseo-yo", blankWord: "하고 있어요" },
+      { ko: "한국어를 공부하고 있어요.", en: "I'm studying Korean.", romaji: "han-gu-geo-reul gong-bu-ha-go i-sseo-yo", blankWord: "공부하고 있어요" },
+      { ko: "지금 비가 오고 있어요.", en: "It's raining now.", romaji: "ji-geum bi-ga o-go i-sseo-yo", blankWord: "오고 있어요" },
+      { ko: "친구를 기다리고 있어요.", en: "I'm waiting for a friend.", romaji: "chin-gu-reul gi-da-ri-go i-sseo-yo", blankWord: "기다리고 있어요" }
+    ]
+  },
+
+  {
+    id: "4.15",
+    level: 4,
+    title: "End up / come to",
+    point: "V-게 되다",
+    grammar: {
+      summary: "How to say you 'ended up' or 'came to' do something (by circumstance, not just your plan).",
+      formation:
+        "Verb stem + 게 되다  (no vowel change):\n" +
+        "• 가다 → 가게 되다,  알다 → 알게 되다,  하다 → 하게 되다\n" +
+        "Most common in the past: 게 됐어요 ('it turned out / I ended up').",
+      explanation:
+        "게 되다 shows a change of situation that came about — often from circumstances or other " +
+        "people rather than purely your own choice: 한국에서 일하게 됐어요 = 'I (ended up) working " +
+        "in Korea'. 알게 됐어요 = 'I came to know'.",
+      notes: [
+        "Past 게 됐어요 = 'ended up / it turned out' (very common).",
+        "Suggests the result happened to you / by circumstance.",
+        "알다 → 알게 되다 = 'come to know' (vs 알다 = already know)."
+      ]
+    },
+    pitfalls: [
+      "It's 게 되다, no 아/어 change: 가게 됐어요.",
+      "Implies circumstance/result, not a pure decision (that's 기로 하다).",
+      "Very often used in the past tense: 됐어요, not 돼요."
+    ],
+    vocab: [
+      { ko: "사실", en: "fact / truth", romaji: "sa-sil", pos: "noun", note: "" },
+      { ko: "알다", en: "to know", romaji: "al-da", pos: "verb", note: "" },
+      { ko: "우연히", en: "by chance", romaji: "u-yeon-hi", pos: "adverb", note: "" },
+      { ko: "배우다", en: "to learn", romaji: "bae-u-da", pos: "verb", note: "" },
+      { ko: "일하다", en: "to work", romaji: "il-ha-da", pos: "verb", note: "" },
+      { ko: "만나다", en: "to meet", romaji: "man-na-da", pos: "verb", note: "" },
+      { ko: "좋아하다", en: "to like", romaji: "jo-a-ha-da", pos: "verb", note: "" },
+      { ko: "일찍", en: "early", romaji: "il-jjik", pos: "adverb", note: "" }
+    ],
+    sentences: [
+      { ko: "한국에서 일하게 됐어요.", en: "I ended up working in Korea.", romaji: "han-gu-ge-seo il-ha-ge dwae-sseo-yo", blankWord: "일하게 됐어요" },
+      { ko: "그 사실을 알게 됐어요.", en: "I came to know that fact.", romaji: "geu sa-si-reul al-ge dwae-sseo-yo", blankWord: "알게 됐어요" },
+      { ko: "김치를 좋아하게 됐어요.", en: "I've come to like kimchi.", romaji: "gim-chi-reul jo-a-ha-ge dwae-sseo-yo", blankWord: "좋아하게 됐어요" },
+      { ko: "내일 일찍 가게 됐어요.", en: "It turned out I have to go early tomorrow.", romaji: "nae-il il-jjik ga-ge dwae-sseo-yo", blankWord: "가게 됐어요" },
+      { ko: "우연히 만나게 됐어요.", en: "We happened to meet.", romaji: "u-yeon-hi man-na-ge dwae-sseo-yo", blankWord: "만나게 됐어요" },
+      { ko: "한국어를 배우게 됐어요.", en: "I ended up learning Korean.", romaji: "han-gu-geo-reul bae-u-ge dwae-sseo-yo", blankWord: "배우게 됐어요" }
+    ]
+  },
+
+  {
+    id: "4.16",
+    level: 4,
+    title: "Know how to",
+    point: "V-(으)ㄹ 줄 알다/모르다",
+    grammar: {
+      summary: "How to say you know (or don't know) HOW to do something — a skill.",
+      formation:
+        "Stem + (으)ㄹ 줄 알다 (know how) / 모르다 (don't know how):\n" +
+        "• vowel/ㄹ stem → ㄹ 줄   (하다 → 할 줄)\n" +
+        "• consonant stem → 을 줄  (먹다 → 먹을 줄)\n" +
+        "e.g. 수영할 줄 알아요 (I can swim) · 운전할 줄 몰라요 (I can't drive).",
+      explanation:
+        "This is specifically about knowing a method or skill: 김치를 만들 줄 알아요 = 'I know how " +
+        "to make kimchi'. Keep 줄 as a separate word. 알다 = know how, 모르다 = don't know how.",
+      notes: [
+        "줄 is spaced: 할 줄 알아요.",
+        "알다 → 알아요 (know how) · 모르다 → 몰라요 (don't know how).",
+        "Subtly different from -(으)ㄹ 수 있다 (general ability): 줄 알다 = 'know the skill'."
+      ]
+    },
+    pitfalls: [
+      "Keep the space: 할 줄 알아요 (not 할줄알아요).",
+      "Consonant stems take 을 줄: 먹을 줄, 읽을 줄.",
+      "모르다 is 르-irregular: 몰라요 (don't know how)."
+    ],
+    vocab: [
+      { ko: "줄", en: "way / method (bound noun)", romaji: "jul", pos: "noun", note: "used in 줄 알다/모르다" },
+      { ko: "수영하다", en: "to swim", romaji: "su-yeong-ha-da", pos: "verb", note: "" },
+      { ko: "운전하다", en: "to drive", romaji: "un-jeon-ha-da", pos: "verb", note: "" },
+      { ko: "피아노", en: "piano", romaji: "pi-a-no", pos: "noun", note: "" },
+      { ko: "치다", en: "to play (instrument) / hit", romaji: "chi-da", pos: "verb", note: "피아노를 치다" },
+      { ko: "젓가락", en: "chopsticks", romaji: "jeot-ga-rak", pos: "noun", note: "" },
+      { ko: "쓰다", en: "to use / write", romaji: "sseu-da", pos: "verb", note: "" },
+      { ko: "만들다", en: "to make", romaji: "man-deul-da", pos: "verb", note: "" }
+    ],
+    sentences: [
+      { ko: "저는 수영할 줄 알아요.", en: "I know how to swim.", romaji: "jeo-neun su-yeong-hal jul a-ra-yo", blankWord: "수영할 줄" },
+      { ko: "운전할 줄 몰라요.", en: "I don't know how to drive.", romaji: "un-jeon-hal jul mol-la-yo", blankWord: "운전할 줄" },
+      { ko: "김치를 만들 줄 알아요?", en: "Do you know how to make kimchi?", romaji: "gim-chi-reul man-deul jul a-ra-yo", blankWord: "만들 줄" },
+      { ko: "한국어로 말할 줄 알아요.", en: "I know how to speak in Korean.", romaji: "han-gu-geo-ro mal-hal jul a-ra-yo", blankWord: "말할 줄" },
+      { ko: "피아노를 칠 줄 몰라요.", en: "I don't know how to play the piano.", romaji: "pi-a-no-reul chil jul mol-la-yo", blankWord: "칠 줄" },
+      { ko: "젓가락을 쓸 줄 알아요.", en: "I know how to use chopsticks.", romaji: "jeot-ga-ra-geul sseul jul a-ra-yo", blankWord: "쓸 줄" }
+    ]
+  },
+
+  {
+    id: "4.17",
+    level: 4,
+    title: "Cannot (못)",
+    point: "못 V · V-지 못하다",
+    grammar: {
+      summary: "How to say you 'can't' do something (inability or external blocking).",
+      formation:
+        "Two ways, same meaning:\n" +
+        "• 못 + verb (right before it):  못 가요,  못 먹어요\n" +
+        "• verb stem + 지 못하다:  가지 못해요,  먹지 못해요 (a bit more formal)\n" +
+        "하다-verbs split: 수영(을) 못 해요.",
+      explanation:
+        "못 says you can't — because of inability or something stopping you: 매운 음식을 못 먹어요 " +
+        "= 'I can't eat spicy food'. It sits directly before the verb. The longer 지 못하다 form " +
+        "means the same thing.",
+      notes: [
+        "못 goes immediately before the verb: 못 가요.",
+        "하다-verbs split the 못: 운동 못 해요 / 운동을 못 해요.",
+        "지 못하다 is the longer equivalent: 가지 못해요 = 못 가요."
+      ]
+    },
+    pitfalls: [
+      "Place 못 right before the verb, not at the end.",
+      "With 하다-verbs say 못 해요 (split), e.g. 수영 못 해요.",
+      "못 (can't) is different from 안 (don't/won't): 안 먹어요 = 'I don't eat'."
+    ],
+    vocab: [
+      { ko: "못", en: "cannot", romaji: "mot", pos: "adverb", note: "goes before the verb" },
+      { ko: "맵다", en: "to be spicy", romaji: "maep-da", pos: "adjective", note: "매운 음식" },
+      { ko: "잠", en: "sleep (noun)", romaji: "jam", pos: "noun", note: "잠을 자다" },
+      { ko: "수영", en: "swimming", romaji: "su-yeong", pos: "noun", note: "" },
+      { ko: "만나다", en: "to meet", romaji: "man-na-da", pos: "verb", note: "" },
+      { ko: "바쁘다", en: "to be busy", romaji: "ba-ppeu-da", pos: "adjective", note: "바빠서 = because busy" },
+      { ko: "다", en: "all / everything", romaji: "da", pos: "adverb", note: "" },
+      { ko: "어제", en: "yesterday", romaji: "eo-je", pos: "noun", note: "" }
+    ],
+    sentences: [
+      { ko: "오늘 못 가요.", en: "I can't go today.", romaji: "o-neul mot ga-yo", blankWord: "못 가요" },
+      { ko: "매운 음식을 못 먹어요.", en: "I can't eat spicy food.", romaji: "mae-un eum-si-geul mot meo-geo-yo", blankWord: "못 먹어요" },
+      { ko: "어제 잠을 못 잤어요.", en: "I couldn't sleep last night.", romaji: "eo-je ja-meul mot ja-sseo-yo", blankWord: "못 잤어요" },
+      { ko: "저는 수영을 못 해요.", en: "I can't swim.", romaji: "jeo-neun su-yeong-eul mot hae-yo", blankWord: "못 해요" },
+      { ko: "바빠서 친구를 만나지 못했어요.", en: "I couldn't meet my friend because I was busy.", romaji: "ba-ppa-seo chin-gu-reul man-na-ji mot-hae-sseo-yo", blankWord: "만나지 못했어요" },
+      { ko: "시간이 없어서 다 못 했어요.", en: "I couldn't finish it all because there was no time.", romaji: "si-ga-ni eop-seo-seo da mot hae-sseo-yo", blankWord: "못 했어요" }
+    ]
+  },
+
+  {
+    id: "4.18",
+    level: 4,
+    title: "While doing",
+    point: "V-(으)면서",
+    grammar: {
+      summary: "How to say you do two things at the same time ('while doing X').",
+      formation:
+        "Stem + (으)면서:\n" +
+        "• vowel/ㄹ stem → 면서   (가다 → 가면서)\n" +
+        "• consonant stem → 으면서 (먹다 → 먹으면서)\n" +
+        "Same subject does both actions together.",
+      explanation:
+        "(으)면서 links two simultaneous actions by the SAME person: 음악을 들으면서 공부해요 = " +
+        "'I study while listening to music'. The main action goes at the end.",
+      notes: [
+        "Same subject for both actions.",
+        "ㄷ-irregular: 듣다 → 들으면서, 걷다 → 걸으면서.",
+        "Don't confuse with 면 안 되다 (must not) from Lesson 4.2."
+      ]
+    },
+    pitfalls: [
+      "Use 으 only after a consonant: 가면서, 먹으면서.",
+      "Both actions must share the same subject.",
+      "ㄷ-irregular verbs change: 듣다 → 들으면서."
+    ],
+    vocab: [
+      { ko: "텔레비전", en: "television", romaji: "tel-le-bi-jeon", pos: "noun", note: "" },
+      { ko: "걷다", en: "to walk", romaji: "geot-da", pos: "verb", note: "ㄷ-irregular: 걸어요" },
+      { ko: "노래하다", en: "to sing", romaji: "no-rae-ha-da", pos: "verb", note: "" },
+      { ko: "춤을 추다", en: "to dance", romaji: "chu-meul chu-da", pos: "phrase", note: "" },
+      { ko: "웃다", en: "to smile / laugh", romaji: "ut-da", pos: "verb", note: "" },
+      { ko: "인사하다", en: "to greet", romaji: "in-sa-ha-da", pos: "verb", note: "" },
+      { ko: "듣다", en: "to listen", romaji: "deut-da", pos: "verb", note: "ㄷ-irregular: 들어요" },
+      { ko: "마시다", en: "to drink", romaji: "ma-si-da", pos: "verb", note: "" }
+    ],
+    sentences: [
+      { ko: "음악을 들으면서 공부해요.", en: "I study while listening to music.", romaji: "eu-ma-geul deu-reu-myeon-seo gong-bu-hae-yo", blankWord: "들으면서" },
+      { ko: "밥을 먹으면서 텔레비전을 봐요.", en: "I watch TV while eating.", romaji: "ba-beul meo-geu-myeon-seo tel-le-bi-jeo-neul bwa-yo", blankWord: "먹으면서" },
+      { ko: "걸으면서 전화해요.", en: "I talk on the phone while walking.", romaji: "geo-reu-myeon-seo jeon-hwa-hae-yo", blankWord: "걸으면서" },
+      { ko: "노래하면서 춤을 춰요.", en: "I dance while singing.", romaji: "no-rae-ha-myeon-seo chu-meul chwo-yo", blankWord: "노래하면서" },
+      { ko: "웃으면서 인사했어요.", en: "She greeted me with a smile.", romaji: "u-seu-myeon-seo in-sa-hae-sseo-yo", blankWord: "웃으면서" },
+      { ko: "커피를 마시면서 책을 읽어요.", en: "I read a book while drinking coffee.", romaji: "keo-pi-reul ma-si-myeon-seo chae-geul il-geo-yo", blankWord: "마시면서" }
+    ]
+  },
+
+  {
+    id: "4.19",
+    level: 4,
+    title: "Decide to",
+    point: "V-기로 하다",
+    grammar: {
+      summary: "How to say you've decided (or agreed) to do something.",
+      formation:
+        "Verb stem + 기로 하다  (no vowel change):\n" +
+        "• 가다 → 가기로 하다,  끊다 → 끊기로 하다,  하다 → 하기로 하다\n" +
+        "Usually past: 기로 했어요 ('(I've) decided to').",
+      explanation:
+        "기로 하다 expresses a decision or resolution: 운동하기로 했어요 = 'I decided to exercise'. " +
+        "It's almost always used in the past tense to report the decision you made. It can also " +
+        "mean a mutual agreement ('we decided/agreed to').",
+      notes: [
+        "Most natural in the past: 기로 했어요.",
+        "Built from the 기 nominaliser + 로.",
+        "Works for resolutions and for mutual agreements."
+      ]
+    },
+    pitfalls: [
+      "It's 기로 하다 — no tense on the first verb (운동하기로, not 운동했기로).",
+      "Normally reported in the past: 했어요.",
+      "Different from 게 되다 (ended up): 기로 하다 is YOUR decision."
+    ],
+    vocab: [
+      { ko: "끊다", en: "to quit / cut off", romaji: "kkeun-ta", pos: "verb", note: "담배를 끊다" },
+      { ko: "매일", en: "every day", romaji: "mae-il", pos: "adverb", note: "" },
+      { ko: "일기", en: "diary", romaji: "il-gi", pos: "noun", note: "일기를 쓰다" },
+      { ko: "쓰다", en: "to write", romaji: "sseu-da", pos: "verb", note: "" },
+      { ko: "다이어트", en: "diet", romaji: "da-i-eo-teu", pos: "noun", note: "" },
+      { ko: "운동하다", en: "to exercise", romaji: "un-dong-ha-da", pos: "verb", note: "" },
+      { ko: "만나다", en: "to meet", romaji: "man-na-da", pos: "verb", note: "" },
+      { ko: "담배", en: "cigarette", romaji: "dam-bae", pos: "noun", note: "" }
+    ],
+    sentences: [
+      { ko: "내일부터 운동하기로 했어요.", en: "I decided to exercise starting tomorrow.", romaji: "nae-il-bu-teo un-dong-ha-gi-ro hae-sseo-yo", blankWord: "운동하기로" },
+      { ko: "담배를 끊기로 했어요.", en: "I decided to quit smoking.", romaji: "dam-bae-reul kkeun-ki-ro hae-sseo-yo", blankWord: "끊기로" },
+      { ko: "한국에서 공부하기로 했어요.", en: "I decided to study in Korea.", romaji: "han-gu-ge-seo gong-bu-ha-gi-ro hae-sseo-yo", blankWord: "공부하기로" },
+      { ko: "우리 7시에 만나기로 했어요.", en: "We decided to meet at 7.", romaji: "u-ri il-gop-si-e man-na-gi-ro hae-sseo-yo", blankWord: "만나기로" },
+      { ko: "매일 일기를 쓰기로 했어요.", en: "I decided to write a diary every day.", romaji: "mae-il il-gi-reul sseu-gi-ro hae-sseo-yo", blankWord: "쓰기로" },
+      { ko: "다이어트를 하기로 했어요.", en: "I decided to go on a diet.", romaji: "da-i-eo-teu-reul ha-gi-ro hae-sseo-yo", blankWord: "하기로" }
+    ]
+  },
+
+  {
+    id: "4.20",
+    level: 4,
+    title: "Have done before",
+    point: "V-(으)ㄴ 적이 있다/없다",
+    grammar: {
+      summary: "How to talk about experience: 'have done / have never done' something.",
+      formation:
+        "Stem + (으)ㄴ 적이 있다 (have done) / 없다 (have never):\n" +
+        "• vowel/ㄹ stem → ㄴ 적이   (가다 → 간 적이)\n" +
+        "• consonant stem → 은 적이  (먹다 → 먹은 적이)\n" +
+        "e.g. 한국에 간 적이 있어요 (I've been to Korea).",
+      explanation:
+        "적 means an instance/occasion, so 간 적이 있어요 = 'there's a time I went' = 'I've been'. " +
+        "Use the past-style (으)ㄴ modifier on the verb. 있다 = have done, 없다 = have never.",
+      notes: [
+        "Use the (으)ㄴ form: 간 적이, 먹은 적이.",
+        "적 is spaced: 본 적이 있어요.",
+        "있다 = have the experience · 없다 = never."
+      ]
+    },
+    pitfalls: [
+      "Use the past modifier (으)ㄴ: 먹은 적이 (not 먹는 적이).",
+      "Keep the space: 간 적이 있어요.",
+      "있다/없다 flips the meaning: have done vs never done."
+    ],
+    vocab: [
+      { ko: "적", en: "time / occasion (experience)", romaji: "jeok", pos: "noun", note: "used in 적이 있다/없다" },
+      { ko: "한복", en: "hanbok (Korean dress)", romaji: "han-bok", pos: "noun", note: "" },
+      { ko: "입다", en: "to wear", romaji: "ip-da", pos: "verb", note: "" },
+      { ko: "타다", en: "to ride / take", romaji: "ta-da", pos: "verb", note: "" },
+      { ko: "늦다", en: "to be late", romaji: "neut-da", pos: "verb", note: "" },
+      { ko: "비행기", en: "airplane", romaji: "bi-haeng-gi", pos: "noun", note: "" },
+      { ko: "영화", en: "movie", romaji: "yeong-hwa", pos: "noun", note: "" },
+      { ko: "김치", en: "kimchi", romaji: "gim-chi", pos: "noun", note: "" }
+    ],
+    sentences: [
+      { ko: "한국에 간 적이 있어요.", en: "I've been to Korea before.", romaji: "han-gu-ge gan jeo-gi i-sseo-yo", blankWord: "간 적이" },
+      { ko: "김치를 먹은 적이 있어요?", en: "Have you ever eaten kimchi?", romaji: "gim-chi-reul meo-geun jeo-gi i-sseo-yo", blankWord: "먹은 적이" },
+      { ko: "그 영화를 본 적이 있어요.", en: "I've seen that movie before.", romaji: "geu yeong-hwa-reul bon jeo-gi i-sseo-yo", blankWord: "본 적이" },
+      { ko: "비행기를 탄 적이 없어요.", en: "I've never taken an airplane.", romaji: "bi-haeng-gi-reul tan jeo-gi eop-seo-yo", blankWord: "탄 적이" },
+      { ko: "한복을 입은 적이 있어요.", en: "I've worn hanbok before.", romaji: "han-bo-geul i-beun jeo-gi i-sseo-yo", blankWord: "입은 적이" },
+      { ko: "늦은 적이 없어요.", en: "I've never been late.", romaji: "neu-jeun jeo-gi eop-seo-yo", blankWord: "늦은 적이" }
+    ]
   }
 ];
