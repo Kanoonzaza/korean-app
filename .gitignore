@@ -1,0 +1,10 @@
+# OS / editor cruft
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*.swp
+.vscode/
+
+# Local progress backups you might export here
+korean-app-progress*.json

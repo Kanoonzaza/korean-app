@@ -1,0 +1,215 @@
+/* Korean Learning App — clean, minimal, dark theme. */
+:root {
+  --bg: #0F1115;
+  --surface: #1A1D24;
+  --surface-2: #20242D;
+  --text: #ECEDEE;
+  --muted: #9AA0A6;
+  --border: #2A2E37;
+  --accent: #7AA2E3;
+  --accent-ink: #0F1115;
+  --ok: #5BBF8A;
+  --bad: #E08A8A;
+  --radius: 14px;
+  --maxw: 720px;
+  --kfont: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.muted { color: var(--muted); }
+.small { font-size: 0.85rem; }
+.center { text-align: center; }
+
+/* ---------- top bar ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px;
+  background: rgba(15,17,21,0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.brand { flex-shrink: 0; margin-right: 10px; }
+.brand a { color: var(--text); font-weight: 700; font-size: 1.1rem; white-space: nowrap; font-family: var(--kfont); }
+.brand span { color: var(--muted); font-weight: 500; }
+.topbar nav { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.topbar nav a {
+  color: var(--muted); padding: 6px 12px; border-radius: 999px;
+  font-size: 0.95rem; font-weight: 500;
+}
+.topbar nav a:hover { color: var(--text); text-decoration: none; background: var(--surface); }
+.topbar nav a.active { color: var(--text); background: var(--surface); }
+
+/* ---------- layout ---------- */
+.container { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 80px; }
+.view h2 { margin: 0 0 4px; font-size: 1.5rem; }
+.view > .muted { margin-top: 0; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin: 14px 0;
+}
+.card h4 { margin: 0 0 8px; color: var(--muted); font-weight: 600; font-size: 0.8rem;
+  letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* ---------- Korean text ---------- */
+.ko {
+  font-family: var(--kfont);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text);
+}
+.romaji { color: var(--muted); font-size: 0.85rem; }
+.en { font-size: 1rem; }
+
+/* speak button */
+.spk {
+  background: transparent; border: none; cursor: pointer;
+  font-size: 1rem; padding: 2px 6px; border-radius: 8px; color: var(--muted);
+}
+.spk:hover { background: var(--surface-2); color: var(--text); }
+
+/* ---------- home: lesson cards ---------- */
+.lesson-list { display: grid; gap: 14px; margin-top: 18px; }
+.lesson-card { display: block; color: var(--text); transition: border-color .15s, transform .05s; }
+.lesson-card:hover { text-decoration: none; border-color: var(--accent); }
+.lesson-card:active { transform: translateY(1px); }
+.lc-top { display: flex; justify-content: space-between; color: var(--muted); font-size: 0.85rem; }
+.lc-id .check { color: var(--ok); }
+.lc-pct { font-variant-numeric: tabular-nums; }
+.lesson-card h3 { margin: 6px 0 2px; font-size: 1.2rem; }
+.lc-point { font-family: var(--kfont); color: var(--accent); font-size: 1.05rem; margin-bottom: 12px; }
+.bar { height: 6px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width .3s; }
+
+/* ---------- review ---------- */
+.review-opt { display: block; color: var(--text); transition: border-color .15s; }
+.review-opt:hover { text-decoration: none; border-color: var(--accent); }
+.review-opt h3 { margin: 0 0 6px; font-size: 1.15rem; }
+.review-opt h3 .tag { background: var(--accent); color: var(--accent-ink); margin-left: 6px; }
+.review-opt.disabled { opacity: 0.55; }
+.review-opt.disabled:hover { border-color: var(--border); }
+
+/* ---------- progress table ---------- */
+table.progress { width: 100%; border-collapse: collapse; margin-top: 16px; }
+table.progress th, table.progress td { padding: 10px 8px; border-bottom: 1px solid var(--border); text-align: left; }
+table.progress th { color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: .05em; }
+table.progress .check { color: var(--ok); }
+
+/* ---------- lesson stepper ---------- */
+.stepper { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+.step { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 999px;
+  color: var(--muted); font-size: 0.85rem; }
+.step:hover { text-decoration: none; background: var(--surface); }
+.step .dot { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--surface-2); color: var(--muted); font-size: 0.8rem; font-weight: 600; }
+.step.on { color: var(--text); background: var(--surface); }
+.step.on .dot { background: var(--accent); color: var(--accent-ink); }
+.step.done .dot { background: var(--ok); color: var(--accent-ink); }
+.step-label { white-space: nowrap; }
+
+.step-body h2 { font-size: 1.4rem; }
+.point { font-family: var(--kfont); color: var(--accent); font-size: 1rem; font-weight: 500; margin-left: 6px; }
+.lead { font-size: 1.05rem; color: var(--text); }
+pre.formation {
+  font-family: var(--kfont); white-space: pre-wrap; margin: 0;
+  background: var(--surface-2); border-radius: 10px; padding: 14px 16px; line-height: 1.7;
+}
+ul.notes { margin: 12px 0 0; padding-left: 20px; }
+ul.notes li { margin: 6px 0; }
+
+/* common-mistakes callout */
+.callout { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--bad);
+  border-radius: 10px; padding: 4px 16px; margin: 14px 0; }
+.callout summary { cursor: pointer; padding: 10px 0; font-weight: 600; color: var(--text); }
+.callout ul { margin: 0 0 12px; padding-left: 20px; }
+.callout li { margin: 6px 0; }
+
+/* ---------- vocab ---------- */
+.vocab-list { display: grid; gap: 8px; margin-top: 14px; }
+.vocab-row { display: flex; gap: 16px; align-items: center; justify-content: space-between;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; }
+.ko-cell { display: flex; align-items: center; gap: 8px; }
+.meaning { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
+.meaning .vnote { color: var(--muted); font-size: 0.78rem; font-style: italic; }
+
+/* ---------- examples ---------- */
+.example .ko-cell { margin-bottom: 4px; }
+.example .en { margin: 2px 0; }
+
+/* ---------- quiz / practice ---------- */
+.q-count { color: var(--muted); font-size: 0.85rem; margin-bottom: 6px; }
+.quiz-card { display: flex; flex-direction: column; gap: 14px; }
+.q-prompt { text-align: center; padding: 8px 0; }
+.q-label { color: var(--muted); font-size: 0.85rem; }
+.q-en { font-size: 1.25rem; font-weight: 500; margin-top: 4px; }
+.q-ko { font-family: var(--kfont); font-size: 1.5rem; margin-top: 6px; }
+.q-prompt.listen { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+
+.answer-row { display: flex; gap: 10px; }
+.ko-input {
+  flex: 1; font-family: var(--kfont); font-size: 1.2rem;
+  background: var(--bg); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px;
+}
+.ko-input:focus { outline: none; border-color: var(--accent); }
+
+.feedback { border-radius: 10px; padding: 14px 16px; font-weight: 600; }
+.feedback.ok { background: rgba(91,191,138,0.12); color: var(--ok); border: 1px solid rgba(91,191,138,0.4); }
+.feedback.bad { background: rgba(224,138,138,0.10); color: var(--bad); border: 1px solid rgba(224,138,138,0.4); }
+.feedback .ans, .feedback .yours, .feedback .full { font-weight: 400; color: var(--text); margin-top: 8px; }
+.feedback .yours { color: var(--muted); }
+.feedback .ans .ko { font-size: 1.25rem; }
+
+.score-card { text-align: center; }
+.big-score { font-size: 3rem; font-weight: 700; color: var(--accent); }
+
+/* ---------- buttons / nav ---------- */
+.btn {
+  display: inline-block; background: var(--accent); color: var(--accent-ink);
+  border: none; border-radius: 10px; padding: 11px 18px; font-size: 1rem; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+}
+.btn:hover { text-decoration: none; filter: brightness(1.06); }
+.btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+.btn.ghost:hover { background: var(--surface); }
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 22px; gap: 12px; }
+
+/* ---------- listening ---------- */
+.podcast-list { display: grid; gap: 16px; margin-top: 18px; }
+.podcast-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.podcast-head h3 { margin: 0; font-family: var(--kfont); font-size: 1.15rem; }
+.tag { background: var(--surface-2); color: var(--muted); font-size: 0.72rem; padding: 3px 10px;
+  border-radius: 999px; white-space: nowrap; }
+.embed-wrap { margin: 12px 0; border-radius: 12px; overflow: hidden; }
+.embed-wrap iframe { display: block; border-radius: 12px; }
+.podcast .links { color: var(--muted); font-size: 0.9rem; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 560px) {
+  .topbar { padding: 12px 14px; }
+  .topbar nav { gap: 4px; }
+  .topbar nav a { padding: 5px 9px; font-size: 0.85rem; }
+  .brand a { font-size: 1rem; }
+  .container { padding: 20px 14px 70px; }
+  .ko { font-size: 1.35rem; }
+  .step-label { display: none; }          /* stepper shrinks to dots on phone */
+  .step { padding: 6px; }
+  .vocab-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .meaning { align-items: flex-start; text-align: left; }
+  .answer-row { flex-direction: column; }
+}
