@@ -3,6 +3,14 @@
 A running record of what's been built, in order. Newest at the top.
 (Live site: https://kanoonzaza.github.io/korean-app/)
 
+## 2026-06-04 — TOPIK level gauge (learner level estimate)
+- Added an **estimated TOPIK level** shown as a semicircular **gauge** at the top of the
+  Progress tab (`js/level.js`).
+- Estimate = completed lessons × quiz scores, minus a small penalty for weak items;
+  mapped into the early-intermediate band (~TOPIK 2.0 → 3.5) the content covers.
+- Clearly labelled as an indicative self-study estimate (not an official TOPIK result),
+  with an expandable "How is this estimated?" explainer.
+
 ## 2026-06-04 — Lessons 4.4 & 4.5 added
 - **Lesson 4.4 — Because / So (V-(으)니까)**: reason clause, incl. use before commands/suggestions.
 - **Lesson 4.5 — If / When (V-(으)면)**: conditional, with "if" vs general "whenever".

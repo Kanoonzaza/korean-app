@@ -4,7 +4,7 @@
  * when offline. Cross-origin requests (fonts, podcast embeds) are left to the
  * network and simply fail gracefully offline.
  */
-var CACHE = "korean-app-v2";
+var CACHE = "korean-app-v3";
 var ASSETS = [
   "./",
   "./index.html",
@@ -14,6 +14,7 @@ var ASSETS = [
   "./content/lessons.js",
   "./content/podcasts.js",
   "./js/storage.js",
+  "./js/level.js",
   "./js/tts.js",
   "./js/quiz.js",
   "./js/practice.js",

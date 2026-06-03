@@ -98,6 +98,7 @@ window.App = (function () {
     return (
       '<section class="view">' +
         "<h2>Progress</h2>" +
+        Level.gaugeHTML() +
         '<table class="progress">' +
           "<thead><tr><th>#</th><th>Lesson</th><th class='center'>Complete</th><th class='center'>Best quiz</th></tr></thead>" +
           "<tbody>" + rows + "</tbody>" +

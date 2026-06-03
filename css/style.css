@@ -96,6 +96,21 @@ a:hover { text-decoration: underline; }
 .bar { height: 6px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
 .bar-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width .3s; }
 
+/* ---------- level gauge ---------- */
+.gauge-card { text-align: center; }
+.gauge { width: 100%; max-width: 300px; height: auto; display: block; margin: 4px auto 0; }
+.g-track { stroke: var(--surface-2); stroke-width: 14; fill: none; stroke-linecap: round; }
+.g-val   { stroke: var(--accent); stroke-width: 14; fill: none; stroke-linecap: round; }
+.g-tick  { stroke: #3a3f4a; stroke-width: 2; }
+.g-tnum  { fill: var(--muted); font-size: 12px; text-anchor: middle; font-family: inherit; }
+.g-needle{ stroke: var(--text); stroke-width: 3; stroke-linecap: round; }
+.g-hub   { fill: var(--text); }
+.g-big   { fill: var(--text); font-size: 34px; font-weight: 700; text-anchor: middle; font-family: inherit; }
+.g-sub   { fill: var(--muted); font-size: 12px; text-anchor: middle; font-family: inherit; }
+.g-band  { font-weight: 600; color: var(--accent); margin-top: 2px; }
+.g-note  { margin-top: 2px; }
+.g-how   { text-align: left; margin-top: 12px; }
+
 /* ---------- review ---------- */
 .review-opt { display: block; color: var(--text); transition: border-color .15s; }
 .review-opt:hover { text-decoration: none; border-color: var(--accent); }
