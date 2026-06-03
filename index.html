@@ -22,6 +22,12 @@
 <body>
   <div id="app"><!-- rendered by app.js --></div>
 
+  <!-- Shown automatically when a new version has been published. -->
+  <div id="updateBar" role="status" aria-live="polite">
+    <span>🔄 New version available</span>
+    <button type="button">Update</button>
+  </div>
+
   <!-- Content (plain globals so the app opens from file:// with no server) -->
   <script src="content/lessons.js"></script>
   <script src="content/podcasts.js"></script>
@@ -36,13 +42,48 @@
   <script src="js/listening.js"></script>
   <script src="js/app.js"></script>
 
-  <!-- Offline support (only over http/https; no-op when opened as a file://). -->
+  <!-- Offline support + "new version available" banner.
+       (Only over http/https; a no-op when opened directly as a file://.) -->
   <script>
-    if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('sw.js').catch(function () {});
+    (function () {
+      if (!('serviceWorker' in navigator) || location.protocol.indexOf('http') !== 0) return;
+
+      function showUpdate(worker) {
+        var bar = document.getElementById('updateBar');
+        if (!bar) return;
+        bar.style.display = 'flex';
+        bar.querySelector('button').onclick = function () {
+          bar.style.display = 'none';
+          if (worker) worker.postMessage({ type: 'SKIP_WAITING' });
+        };
+      }
+
+      // When the new worker takes control, reload once to show the fresh version.
+      var refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
       });
-    }
+
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').then(function (reg) {
+          if (reg.waiting && navigator.serviceWorker.controller) showUpdate(reg.waiting);
+          reg.addEventListener('updatefound', function () {
+            var nw = reg.installing;
+            if (!nw) return;
+            nw.addEventListener('statechange', function () {
+              if (nw.state === 'installed' && navigator.serviceWorker.controller) showUpdate(nw);
+            });
+          });
+          // Re-check for a new version when the app regains focus, and hourly.
+          document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState === 'visible') reg.update().catch(function () {});
+          });
+          setInterval(function () { reg.update().catch(function () {}); }, 3600000);
+        }).catch(function () {});
+      });
+    })();
   </script>
 </body>
 </html>

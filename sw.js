@@ -4,7 +4,7 @@
  * when offline. Cross-origin requests (fonts, podcast embeds) are left to the
  * network and simply fail gracefully offline.
  */
-var CACHE = "korean-app-v3";
+var CACHE = "korean-app-v4";
 var ASSETS = [
   "./",
   "./index.html",
@@ -24,10 +24,13 @@ var ASSETS = [
 ];
 
 self.addEventListener("install", function (e) {
-  e.waitUntil(
-    caches.open(CACHE).then(function (c) { return c.addAll(ASSETS); })
-      .then(function () { return self.skipWaiting(); })
-  );
+  // Do NOT auto-skipWaiting: a new version waits until the user taps "Update".
+  e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(ASSETS); }));
+});
+
+// The page tells the waiting worker to take over when the user accepts the update.
+self.addEventListener("message", function (e) {
+  if (e.data && e.data.type === "SKIP_WAITING") self.skipWaiting();
 });
 
 self.addEventListener("activate", function (e) {

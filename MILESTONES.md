@@ -3,6 +3,14 @@
 A running record of what's been built, in order. Newest at the top.
 (Live site: https://kanoonzaza.github.io/korean-app/)
 
+## 2026-06-04 — Auto-update banner
+- Added a "🔄 New version available — Update" banner that appears automatically when a
+  new version is published; tapping it activates the new service worker and reloads.
+- Service worker no longer auto-skips waiting; it waits for the user's tap (message
+  `SKIP_WAITING`). Page re-checks for updates on focus + hourly.
+- Note: progress is still **per-device** (localStorage). No cross-device auto-sync —
+  use Progress → Export/Import to move data between phone and PC.
+
 ## 2026-06-04 — Level 4 complete, batch 2 (4.12–4.20)
 - Added 9 lessons: 4.12 아/어 주다 (do for someone), 4.13 보다/제일 (comparison),
   4.14 고 있다 (-ing), 4.15 게 되다 (end up), 4.16 (으)ㄹ 줄 알다 (know how to),
