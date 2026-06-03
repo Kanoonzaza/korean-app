@@ -3,6 +3,13 @@
 A running record of what's been built, in order. Newest at the top.
 (Live site: https://kanoonzaza.github.io/korean-app/)
 
+## 2026-06-04 — Level 4 expansion, batch 1 (4.6–4.11)
+- Added 6 lessons: 4.6 것 같다 (I think/it seems), 4.7 아/어지다 (become),
+  4.8 (으)ㄹ 때 (when), 4.9 기 전에 (before), 4.10 (으)ㄴ 후에 (after),
+  4.11 아/어 보다 (try doing). Lesson count: **11** (4.1–4.11).
+- Part of the ongoing "all of Level 4 & 5" build — done in accuracy-checked batches.
+- Verified: all 11 lessons valid + generate quizzes/practice with no errors.
+
 ## 2026-06-04 — TOPIK level gauge (learner level estimate)
 - Added an **estimated TOPIK level** shown as a semicircular **gauge** at the top of the
   Progress tab (`js/level.js`).

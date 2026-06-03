@@ -252,5 +252,289 @@ window.LESSONS = [
       { ko: "배가 아프면 약을 드세요.", en: "If your stomach hurts, take some medicine.", romaji: "bae-ga a-peu-myeon ya-geul deu-se-yo", blankWord: "아프면" },
       { ko: "끝나면 전화해 주세요.", en: "When it's finished, please call me.", romaji: "kkeun-na-myeon jeon-hwa-hae ju-se-yo", blankWord: "끝나면" }
     ]
+  },
+
+  {
+    id: "4.6",
+    level: 4,
+    title: "I think / It seems",
+    point: "(으)ㄴ/는/(으)ㄹ 것 같다",
+    grammar: {
+      summary: "How to give an opinion or guess: 'I think…', 'it seems…', 'probably…'.",
+      formation:
+        "Pick the form by tense + word type, then add 것 같다:\n" +
+        "• Verb, now    → V-는 것 같다     (자다 → 자는 것 같다)\n" +
+        "• Verb, past   → V-(으)ㄴ 것 같다  (가다 → 간 것 같다)\n" +
+        "• Guess/future → V-(으)ㄹ 것 같다  (오다 → 올 것 같다)\n" +
+        "• Adjective    → A-(으)ㄴ 것 같다  (비싸다 → 비싼 것 같다)\n" +
+        "• Noun         → N + 인 것 같다     (학생 → 학생인 것 같다)",
+      explanation:
+        "것 같다 softens a statement into an opinion or guess. The (으)ㄹ form is the most " +
+        "common — use it for predictions ('it'll probably…'). Choose 는/(으)ㄴ/(으)ㄹ by when " +
+        "the action happens and whether the word is a verb or adjective.",
+      notes: [
+        "Future/guess form is the everyday default: 비가 올 것 같아요 = 'I think it'll rain.'",
+        "Adjectives take -(으)ㄴ: 비싼 것 같아요, 작은 것 같아요.",
+        "Nouns take 인 것 같다: 학생인 것 같아요."
+      ]
+    },
+    pitfalls: [
+      "Match the form to tense AND type: verb-now 는 / verb-past (으)ㄴ / guess (으)ㄹ / adjective (으)ㄴ.",
+      "Don't confuse with plain future -(으)ㄹ 거예요; 것 같다 adds 'I think / it seems'.",
+      "것 같다 is for YOUR guess/opinion, not stating a hard fact."
+    ],
+    vocab: [
+      { ko: "재미있다", en: "to be fun / interesting", romaji: "jae-mi-it-da", pos: "adjective", note: "" },
+      { ko: "벌써", en: "already", romaji: "beol-sseo", pos: "adverb", note: "" },
+      { ko: "옷", en: "clothes", romaji: "ot", pos: "noun", note: "" },
+      { ko: "학생", en: "student", romaji: "hak-saeng", pos: "noun", note: "" },
+      { ko: "사람", en: "person", romaji: "sa-ram", pos: "noun", note: "" },
+      { ko: "비싸다", en: "to be expensive", romaji: "bi-ssa-da", pos: "adjective", note: "" },
+      { ko: "영화", en: "movie", romaji: "yeong-hwa", pos: "noun", note: "" },
+      { ko: "비가 오다", en: "to rain", romaji: "bi-ga o-da", pos: "phrase", note: "" }
+    ],
+    sentences: [
+      { ko: "비가 올 것 같아요.", en: "I think it'll rain.", romaji: "bi-ga ol geot ga-ta-yo", blankWord: "올 것 같아요" },
+      { ko: "그 사람은 학생인 것 같아요.", en: "He seems to be a student.", romaji: "geu sa-ra-meun hak-saeng-in geot ga-ta-yo", blankWord: "학생인 것 같아요" },
+      { ko: "이 옷은 비싼 것 같아요.", en: "These clothes seem expensive.", romaji: "i o-seun bi-ssan geot ga-ta-yo", blankWord: "비싼 것 같아요" },
+      { ko: "친구가 벌써 간 것 같아요.", en: "It seems my friend already left.", romaji: "chin-gu-ga beol-sseo gan geot ga-ta-yo", blankWord: "간 것 같아요" },
+      { ko: "지금 자는 것 같아요.", en: "I think he's sleeping now.", romaji: "ji-geum ja-neun geot ga-ta-yo", blankWord: "자는 것 같아요" },
+      { ko: "이 영화는 재미있을 것 같아요.", en: "This movie looks like it'll be fun.", romaji: "i yeong-hwa-neun jae-mi-i-sseul geot ga-ta-yo", blankWord: "재미있을 것 같아요" }
+    ]
+  },
+
+  {
+    id: "4.7",
+    level: 4,
+    title: "To become",
+    point: "A-아/어지다",
+    grammar: {
+      summary: "How to say something 'becomes / gets' a certain way (change of state).",
+      formation:
+        "Adjective stem + 아/어지다 (same 아/어 rule as the present tense):\n" +
+        "• ㅏ/ㅗ → 아지다   (좋다 → 좋아지다)\n" +
+        "• other → 어지다   (재미있다 → 재미있어지다)\n" +
+        "• 하다  → 해지다   (건강하다 → 건강해지다)\n" +
+        "Then conjugate: 좋아져요 (becomes good), 좋아졌어요 (became good).",
+      explanation:
+        "Korean adjectives can't take past tense to mean 'became' on their own — you add 아/어지다 " +
+        "to express change over time: 날씨가 따뜻해졌어요 = 'the weather got warm.' Think of it as " +
+        "'-er / more …' happening: 바빠지다 = to get busier.",
+      notes: [
+        "Attaches to ADJECTIVES to show change of state.",
+        "으-stems contract: 크다 → 커지다, 예쁘다 → 예뻐지다, 바쁘다 → 바빠지다.",
+        "Past = 아/어졌어요 (좋아졌어요 = it got better)."
+      ]
+    },
+    pitfalls: [
+      "Follow the 아/어 vowel rule: 좋다 → 좋아지다, 재미있다 → 재미있어지다.",
+      "Use this for adjectives ('become …'); don't tack tense straight onto the bare adjective.",
+      "해지다 for 하다-adjectives: 건강하다 → 건강해지다 (not 건강하지다)."
+    ],
+    vocab: [
+      { ko: "따뜻하다", en: "to be warm", romaji: "tta-tteut-ha-da", pos: "adjective", note: "" },
+      { ko: "바쁘다", en: "to be busy", romaji: "ba-ppeu-da", pos: "adjective", note: "" },
+      { ko: "건강하다", en: "to be healthy", romaji: "geon-gang-ha-da", pos: "adjective", note: "" },
+      { ko: "깨끗하다", en: "to be clean", romaji: "kkae-kkeut-ha-da", pos: "adjective", note: "" },
+      { ko: "예쁘다", en: "to be pretty", romaji: "ye-ppeu-da", pos: "adjective", note: "" },
+      { ko: "점점", en: "gradually", romaji: "jeom-jeom", pos: "adverb", note: "" },
+      { ko: "요즘", en: "these days", romaji: "yo-jeum", pos: "noun", note: "" },
+      { ko: "운동하다", en: "to exercise", romaji: "un-dong-ha-da", pos: "verb", note: "" }
+    ],
+    sentences: [
+      { ko: "날씨가 따뜻해졌어요.", en: "The weather got warm.", romaji: "nal-ssi-ga tta-tteut-hae-jyeo-sseo-yo", blankWord: "따뜻해졌어요" },
+      { ko: "한국어가 점점 재미있어졌어요.", en: "Korean has gradually become fun.", romaji: "han-gu-geo-ga jeom-jeom jae-mi-i-sseo-jyeo-sseo-yo", blankWord: "재미있어졌어요" },
+      { ko: "요즘 더 바빠졌어요.", en: "I've gotten busier these days.", romaji: "yo-jeum deo ba-ppa-jyeo-sseo-yo", blankWord: "바빠졌어요" },
+      { ko: "운동하면 건강해져요.", en: "If you exercise, you become healthy.", romaji: "un-dong-ha-myeon geon-gang-hae-jyeo-yo", blankWord: "건강해져요" },
+      { ko: "방이 깨끗해졌어요.", en: "The room became clean.", romaji: "bang-i kkae-kkeut-hae-jyeo-sseo-yo", blankWord: "깨끗해졌어요" },
+      { ko: "사진이 더 예뻐졌어요.", en: "The photo turned out prettier.", romaji: "sa-ji-ni deo ye-ppeo-jyeo-sseo-yo", blankWord: "예뻐졌어요" }
+    ]
+  },
+
+  {
+    id: "4.8",
+    level: 4,
+    title: "When (doing)",
+    point: "V-(으)ㄹ 때",
+    grammar: {
+      summary: "How to say 'when / at the time of (doing) something'.",
+      formation:
+        "Stem + (으)ㄹ 때:\n" +
+        "• vowel/ㄹ stem → ㄹ 때   (가다 → 갈 때)\n" +
+        "• consonant stem → 을 때  (먹다 → 먹을 때)\n" +
+        "Completed past 'when' → V-았/었을 때 (가다 → 갔을 때 = when I went).",
+      explanation:
+        "때 means 'time', so 갈 때 = 'when (I) go'. Keep 때 as a separate word. For something " +
+        "that already happened use the past form: 어렸을 때 / 갔을 때.",
+      notes: [
+        "때 is written with a space: 먹을 때, 갈 때.",
+        "Past 'when' uses 았/었을 때: 밥을 먹었을 때.",
+        "Common: 어릴 때 (when young), 시간이 있을 때 (when I have time)."
+      ]
+    },
+    pitfalls: [
+      "Keep the space: 갈 때 (not 갈때).",
+      "Consonant stems take 을 때: 먹다 → 먹을 때.",
+      "듣다 is ㄷ-irregular: 들을 때 (when listening)."
+    ],
+    vocab: [
+      { ko: "때", en: "time / when", romaji: "ttae", pos: "noun", note: "" },
+      { ko: "어리다", en: "to be young", romaji: "eo-ri-da", pos: "adjective", note: "어릴 때 = when young" },
+      { ko: "우산", en: "umbrella", romaji: "u-san", pos: "noun", note: "" },
+      { ko: "심심하다", en: "to be bored", romaji: "sim-sim-ha-da", pos: "adjective", note: "" },
+      { ko: "음악", en: "music", romaji: "eu-mak", pos: "noun", note: "" },
+      { ko: "듣다", en: "to listen", romaji: "deut-da", pos: "verb", note: "ㄷ-irregular: 들어요" },
+      { ko: "가져가다", en: "to take (along)", romaji: "ga-jeo-ga-da", pos: "verb", note: "" },
+      { ko: "살다", en: "to live", romaji: "sal-da", pos: "verb", note: "" }
+    ],
+    sentences: [
+      { ko: "밥을 먹을 때 전화가 왔어요.", en: "When I was eating, the phone rang.", romaji: "ba-beul meo-geul ttae jeon-hwa-ga wa-sseo-yo", blankWord: "먹을 때" },
+      { ko: "시간이 있을 때 책을 읽어요.", en: "When I have time, I read books.", romaji: "si-ga-ni i-sseul ttae chae-geul il-geo-yo", blankWord: "있을 때" },
+      { ko: "어릴 때 한국에 살았어요.", en: "When I was young, I lived in Korea.", romaji: "eo-ril ttae han-gu-ge sa-ra-sseo-yo", blankWord: "어릴 때" },
+      { ko: "운전할 때 전화하지 마세요.", en: "Don't call when you're driving.", romaji: "un-jeon-hal ttae jeon-hwa-ha-ji ma-se-yo", blankWord: "운전할 때" },
+      { ko: "집에 갈 때 우산을 가져가세요.", en: "Take an umbrella when you go home.", romaji: "ji-be gal ttae u-sa-neul ga-jeo-ga-se-yo", blankWord: "갈 때" },
+      { ko: "심심할 때 음악을 들어요.", en: "When I'm bored, I listen to music.", romaji: "sim-sim-hal ttae eu-ma-geul deu-reo-yo", blankWord: "심심할 때" }
+    ]
+  },
+
+  {
+    id: "4.9",
+    level: 4,
+    title: "Before doing",
+    point: "V-기 전에",
+    grammar: {
+      summary: "How to say 'before (doing) something'.",
+      formation:
+        "Verb stem + 기 전에  (no tense change — always 기 전에):\n" +
+        "• 가다 → 가기 전에,  먹다 → 먹기 전에,  자다 → 자기 전에\n" +
+        "For a noun: N + 전에  (수업 전에 = before class).",
+      explanation:
+        "Just add 기 전에 to the dictionary stem — it never conjugates for tense, no matter when " +
+        "the sentence happens: 자기 전에 = 'before sleeping', past or future. The tense lives in " +
+        "the main verb at the end.",
+      notes: [
+        "Always 기 전에; the verb stays in dictionary form.",
+        "For nouns drop 기: 수업 전에, 식사 전에.",
+        "Its opposite is -(으)ㄴ 후에 (after) — next lesson."
+      ]
+    },
+    pitfalls: [
+      "Don't conjugate the verb: it's 먹기 전에, never 먹었기 전에.",
+      "Nouns take just 전에 (수업 전에), verbs take 기 전에.",
+      "Put the tense on the FINAL verb of the sentence."
+    ],
+    vocab: [
+      { ko: "이를 닦다", en: "to brush teeth", romaji: "i-reul dak-da", pos: "phrase", note: "" },
+      { ko: "손", en: "hand", romaji: "son", pos: "noun", note: "" },
+      { ko: "씻다", en: "to wash", romaji: "ssit-da", pos: "verb", note: "" },
+      { ko: "나가다", en: "to go out", romaji: "na-ga-da", pos: "verb", note: "" },
+      { ko: "창문", en: "window", romaji: "chang-mun", pos: "noun", note: "" },
+      { ko: "닫다", en: "to close", romaji: "dat-da", pos: "verb", note: "" },
+      { ko: "결정하다", en: "to decide", romaji: "gyeol-jeong-ha-da", pos: "verb", note: "" },
+      { ko: "수업", en: "class / lesson", romaji: "su-eop", pos: "noun", note: "" }
+    ],
+    sentences: [
+      { ko: "자기 전에 이를 닦아요.", en: "I brush my teeth before sleeping.", romaji: "ja-gi jeo-ne i-reul da-kka-yo", blankWord: "자기 전에" },
+      { ko: "밥을 먹기 전에 손을 씻으세요.", en: "Wash your hands before eating.", romaji: "ba-beul meok-gi jeo-ne so-neul ssi-seu-se-yo", blankWord: "먹기 전에" },
+      { ko: "나가기 전에 창문을 닫으세요.", en: "Close the window before going out.", romaji: "na-ga-gi jeo-ne chang-mu-neul da-deu-se-yo", blankWord: "나가기 전에" },
+      { ko: "한국에 가기 전에 한국어를 배웠어요.", en: "I learned Korean before going to Korea.", romaji: "han-gu-ge ga-gi jeo-ne han-gu-geo-reul bae-wo-sseo-yo", blankWord: "가기 전에" },
+      { ko: "수업 전에 커피를 마셨어요.", en: "I drank coffee before class.", romaji: "su-eop jeo-ne keo-pi-reul ma-syeo-sseo-yo", blankWord: "수업 전에" },
+      { ko: "결정하기 전에 잘 생각하세요.", en: "Think carefully before deciding.", romaji: "gyeol-jeong-ha-gi jeo-ne jal saeng-ga-ka-se-yo", blankWord: "결정하기 전에" }
+    ]
+  },
+
+  {
+    id: "4.10",
+    level: 4,
+    title: "After doing",
+    point: "V-(으)ㄴ 후에",
+    grammar: {
+      summary: "How to say 'after (doing) something'.",
+      formation:
+        "Verb stem + (으)ㄴ 후에:\n" +
+        "• vowel/ㄹ stem → ㄴ 후에   (가다 → 간 후에)\n" +
+        "• consonant stem → 은 후에  (먹다 → 먹은 후에)\n" +
+        "For a noun: N + 후에  (수업 후에 = after class).  Synonym: -고 나서.",
+      explanation:
+        "Use the past-style modifier (으)ㄴ before 후에: 먹은 후에 = 'after eating'. As with " +
+        "'before', the main sentence verb carries the real tense. -고 나서 (먹고 나서) means " +
+        "almost the same thing.",
+      notes: [
+        "Use -(으)ㄴ: 간 후에, 먹은 후에.",
+        "Nouns take just 후에: 수업 후에.",
+        "-고 나서 is a natural synonym: 밥을 먹고 나서 산책해요."
+      ]
+    },
+    pitfalls: [
+      "Use the (으)ㄴ form here, not 는: 먹은 후에 (not 먹는 후에).",
+      "Nouns take 후에 (식사 후에); verbs take (으)ㄴ 후에.",
+      "Tense goes on the final verb: 먹은 후에 산책했어요."
+    ],
+    vocab: [
+      { ko: "숙제", en: "homework", romaji: "suk-je", pos: "noun", note: "" },
+      { ko: "게임", en: "game", romaji: "ge-im", pos: "noun", note: "" },
+      { ko: "샤워하다", en: "to take a shower", romaji: "sya-wo-ha-da", pos: "verb", note: "" },
+      { ko: "저녁", en: "evening / dinner", romaji: "jeo-nyeok", pos: "noun", note: "" },
+      { ko: "만나다", en: "to meet", romaji: "man-na-da", pos: "verb", note: "" },
+      { ko: "산책하다", en: "to take a walk", romaji: "san-chaek-ha-da", pos: "verb", note: "" },
+      { ko: "씻다", en: "to wash", romaji: "ssit-da", pos: "verb", note: "" },
+      { ko: "후에", en: "after", romaji: "hu-e", pos: "noun", note: "" }
+    ],
+    sentences: [
+      { ko: "밥을 먹은 후에 산책해요.", en: "After eating, I take a walk.", romaji: "ba-beul meo-geun hu-e san-chae-kae-yo", blankWord: "먹은 후에" },
+      { ko: "숙제를 한 후에 게임을 했어요.", en: "After doing homework, I played games.", romaji: "suk-je-reul han hu-e ge-i-meul hae-sseo-yo", blankWord: "한 후에" },
+      { ko: "운동한 후에 샤워해요.", en: "After exercising, I shower.", romaji: "un-dong-han hu-e sya-wo-hae-yo", blankWord: "운동한 후에" },
+      { ko: "영화를 본 후에 저녁을 먹었어요.", en: "After watching the movie, we had dinner.", romaji: "yeong-hwa-reul bon hu-e jeo-nyeo-geul meo-geo-sseo-yo", blankWord: "본 후에" },
+      { ko: "수업 후에 만나요.", en: "Let's meet after class.", romaji: "su-eop hu-e man-na-yo", blankWord: "수업 후에" },
+      { ko: "손을 씻은 후에 밥을 먹어요.", en: "I eat after washing my hands.", romaji: "so-neul ssi-seun hu-e ba-beul meo-geo-yo", blankWord: "씻은 후에" }
+    ]
+  },
+
+  {
+    id: "4.11",
+    level: 4,
+    title: "Try doing",
+    point: "V-아/어 보다",
+    grammar: {
+      summary: "How to say 'try doing something / give it a go' (and 'have you ever…?').",
+      formation:
+        "Verb stem + 아/어 보다 (same 아/어 rule):\n" +
+        "• ㅏ/ㅗ → 아 보다  (가다 → 가 보다)\n" +
+        "• other → 어 보다  (먹다 → 먹어 보다)\n" +
+        "• 하다  → 해 보다  (하다 → 해 보다)\n" +
+        "Past 아/어 봤다 = 'have you ever / I once tried'.",
+      explanation:
+        "아/어 보다 literally adds 'and see', so 먹어 보세요 = 'try eating it (and see)'. The past " +
+        "form 아/어 봤어요 asks or tells about experience: 제주도에 가 봤어요? = 'Have you been to " +
+        "Jeju?'",
+      notes: [
+        "Very common as a gentle suggestion: ~아/어 보세요 ('give it a try').",
+        "Experience: 아/어 봤어요 = 'have (you) ever …'.",
+        "Built on 보다 'to see', but here it means 'try'."
+      ]
+    },
+    pitfalls: [
+      "Follow the 아/어 rule: 가 보다, 먹어 보다, 해 보다.",
+      "Past 봤어요 = 'have tried / have you ever'; present 보세요 = 'please try'.",
+      "Don't read it as literal 'see' — 먹어 보다 is 'try eating', not 'see and eat'."
+    ],
+    vocab: [
+      { ko: "입다", en: "to wear / try on", romaji: "ip-da", pos: "verb", note: "입어 보다 = try on" },
+      { ko: "제주도", en: "Jeju Island", romaji: "je-ju-do", pos: "noun", note: "" },
+      { ko: "한번", en: "once / give it a try", romaji: "han-beon", pos: "adverb", note: "" },
+      { ko: "다시", en: "again", romaji: "da-si", pos: "adverb", note: "" },
+      { ko: "김치", en: "kimchi", romaji: "gim-chi", pos: "noun", note: "" },
+      { ko: "만들다", en: "to make", romaji: "man-deul-da", pos: "verb", note: "ㄹ-stem" },
+      { ko: "음식", en: "food", romaji: "eum-sik", pos: "noun", note: "" },
+      { ko: "책", en: "book", romaji: "chaek", pos: "noun", note: "" }
+    ],
+    sentences: [
+      { ko: "이 음식을 먹어 보세요.", en: "Try eating this food.", romaji: "i eum-si-geul meo-geo bo-se-yo", blankWord: "먹어 보세요" },
+      { ko: "한번 입어 봐도 돼요?", en: "May I try it on once?", romaji: "han-beon i-beo bwa-do dwae-yo", blankWord: "입어 봐도" },
+      { ko: "제주도에 가 봤어요?", en: "Have you been to Jeju Island?", romaji: "je-ju-do-e ga bwa-sseo-yo", blankWord: "가 봤어요" },
+      { ko: "그 책을 읽어 보세요.", en: "Try reading that book.", romaji: "geu chae-geul il-geo bo-se-yo", blankWord: "읽어 보세요" },
+      { ko: "김치를 만들어 봤어요.", en: "I tried making kimchi.", romaji: "gim-chi-reul man-deu-reo bwa-sseo-yo", blankWord: "만들어 봤어요" },
+      { ko: "다시 한번 해 보세요.", en: "Try doing it once more.", romaji: "da-si han-beon hae bo-se-yo", blankWord: "해 보세요" }
+    ]
   }
 ];
