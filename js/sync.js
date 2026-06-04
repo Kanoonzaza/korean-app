@@ -100,16 +100,39 @@ window.Sync = (function () {
   }
   function syncNow(done) { pull(function () { push(done); }); }
 
+  function doPopup() {
+    var provider = new window.firebase.auth.GoogleAuthProvider();
+    window.firebase.auth().signInWithPopup(provider)
+      .then(function () { /* onAuthStateChanged updates the UI */ })
+      .catch(function (e) {
+        var code = e && e.code;
+        if (code === "auth/popup-blocked" || code === "auth/operation-not-supported-in-this-environment") {
+          // Popup unavailable (often mobile) -> fall back to redirect.
+          lsset(SIGNED, "1");
+          window.firebase.auth().signInWithRedirect(provider);
+        } else if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") {
+          notify("Sign-in window closed — tap Sign in to try again.");
+        } else {
+          notify("Sign-in failed: " + (code || e.message || e));
+        }
+      });
+  }
+
   function signIn() {
-    lsset(SIGNED, "1");   // so the post-redirect page load re-initializes Firebase
-    ensureStarted().then(function () {
-      var provider = new window.firebase.auth.GoogleAuthProvider();
-      // Redirect is the most reliable method across desktop and installed PWAs.
-      window.firebase.auth().signInWithRedirect(provider);
-    }).catch(function (e) {
-      lsset(SIGNED, "0");
-      notify("Couldn't start sign-in (are you online?): " + (e.message || e));
-    });
+    // Popup must run inside the click gesture, so use it when the SDK is already
+    // loaded (init() preloads it). Otherwise load, then fall back to redirect.
+    if (started && window.firebase && window.firebase.auth) {
+      doPopup();
+    } else {
+      lsset(SIGNED, "1");
+      ensureStarted().then(function () {
+        var provider = new window.firebase.auth.GoogleAuthProvider();
+        window.firebase.auth().signInWithRedirect(provider);
+      }).catch(function (e) {
+        lsset(SIGNED, "0");
+        notify("Couldn't start sign-in (are you online?): " + (e.message || e));
+      });
+    }
   }
   function signOut() {
     lsset(SIGNED, "0");
