@@ -111,6 +111,21 @@ window.Storage = (function () {
     isBookmarked: function (ko) { return !!(load().__bookmarks || {})[ko]; },
     bookmarkCount: function () { return Object.keys(load().__bookmarks || {}).length; },
 
+    /* ----- spaced repetition schedule (Leitner) ----- *
+     * __srs[ko] = { box: 1..6, due: <ms timestamp> }
+     */
+    getSrs: function () { return load().__srs || {}; },
+    srsGrade: function (ko, correct) {
+      var DAY = 86400000;
+      var DAYS = { 1: 1, 2: 3, 3: 7, 4: 16, 5: 35, 6: 90 };
+      var d = load();
+      if (!d.__srs) d.__srs = {};
+      var cur = d.__srs[ko] || { box: 0 };
+      var box = correct ? Math.min((cur.box || 0) + 1, 6) : 1;
+      d.__srs[ko] = { box: box, due: Date.now() + (DAYS[box] || 1) * DAY };
+      save(d);
+    },
+
     /* ----- move progress between devices ----- */
     exportData: function () { return JSON.stringify(load(), null, 2); },
     importData: function (jsonStr) {
@@ -141,6 +156,15 @@ window.Storage = (function () {
           out.__bookmarks = out.__bookmarks || {};
           var rb = remote.__bookmarks || {};
           Object.keys(rb).forEach(function (ko) { out.__bookmarks[ko] = true; });
+          return;
+        }
+        if (k === "__srs") {
+          out.__srs = out.__srs || {};
+          var rs = remote.__srs || {};
+          Object.keys(rs).forEach(function (ko) {
+            var l = out.__srs[ko], r = rs[ko];
+            if (!l || (r.due || 0) > (l.due || 0)) out.__srs[ko] = r; // keep most recent schedule
+          });
           return;
         }
         if (k.charAt(0) === "_") return;           // skip meta fields

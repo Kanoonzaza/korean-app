@@ -3,6 +3,14 @@
 A running record of what's been built, in order. Newest at the top.
 (Live site: https://kanoonzaza.github.io/korean-app/)
 
+## 2026-06-04 — Spaced-repetition review (SRS)
+- New `js/srs.js`: Leitner scheduling. Cards = vocab + sentences from completed lessons.
+  Boxes 1–6 with intervals 1/3/7/16/35/90 days; correct → next box, wrong → box 1.
+- "📅 Today's review" added atop the Review tab showing the due count; runs through the
+  existing quiz runner (type / listen). New cards capped at 15/session.
+- Schedule stored in Storage (__srs) and merged in cloud sync (keep most-recent due).
+- Verified: due-card selection, grading reschedules into the future, session builds.
+
 ## 2026-06-04 — Vocabulary glossary + search (Words tab)
 - New **Words** tab (`js/glossary.js`): a searchable list of every unique vocab word
   across all lessons (153 words), with 🔊 audio and a ⭐ bookmark per word.

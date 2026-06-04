@@ -371,6 +371,13 @@ window.App = (function () {
   function renderReviewHome() {
     var done = Review.completedCount();
     var weak = Storage.missCount();
+    var due = window.SRS ? SRS.count() : 0;
+
+    var srs = due > 0
+      ? '<a class="card review-opt" href="#/review/srs"><h3>📅 Today\'s review <span class="tag">' + due + '</span></h3>' +
+          '<p class="muted">Spaced repetition — the words & sentences due right now. Answer them to set the next review date.</p></a>'
+      : '<div class="card review-opt disabled"><h3>📅 Today\'s review</h3>' +
+          '<p class="muted">All caught up — nothing due right now. Finish more lessons to add cards, and come back tomorrow.</p></div>';
 
     var mixed = done > 0
       ? '<a class="card review-opt" href="#/review/mixed"><h3>🔁 Mixed review</h3>' +
@@ -389,30 +396,32 @@ window.App = (function () {
       '<section class="view">' +
         "<h2>Review</h2>" +
         '<p class="muted">Come back here any time to revisit earlier material so it sticks.</p>' +
-        '<div class="lesson-list">' + mixed + weakCard + "</div>" +
+        '<div class="lesson-list">' + srs + mixed + weakCard + "</div>" +
       "</section>"
     );
   }
 
   function startReview(mode) {
-    reviewState = {
-      mode: mode,
-      questions: mode === "weak" ? Review.buildWeak() : Review.buildMixed(),
-      i: 0, correct: 0, phase: "q", last: null
-    };
+    var qs;
+    if (mode === "weak") qs = Review.buildWeak();
+    else if (mode === "srs") qs = window.SRS ? SRS.buildQuestions() : [];
+    else qs = Review.buildMixed();
+    reviewState = { mode: mode, questions: qs, i: 0, correct: 0, phase: "q", last: null };
   }
 
   function renderReviewRun(mode) {
     if (!reviewState || reviewState.mode !== mode) startReview(mode);
     var s = reviewState;
     var total = s.questions.length;
-    var title = mode === "weak" ? "Weak-item review" : "Mixed review";
+    var title = mode === "weak" ? "Weak-item review" : (mode === "srs" ? "Today's review" : "Mixed review");
     var backMenu = '<div class="nav-row"><a class="btn ghost" href="#/review">← Review menu</a><span></span></div>';
 
     if (total === 0) {
       var msg = mode === "weak"
         ? "No weak items right now — nice. Miss something in a quiz and it shows up here."
-        : "Finish a lesson first, then its material appears here for mixed review.";
+        : (mode === "srs"
+            ? "Nothing due right now — you're caught up. New cards appear as you finish lessons, and reviewed cards come back on schedule."
+            : "Finish a lesson first, then its material appears here for mixed review.");
       return '<section class="view"><h2>' + title + '</h2><div class="card"><p class="muted">' + msg + "</p></div>" + backMenu + "</section>";
     }
 
@@ -482,7 +491,7 @@ window.App = (function () {
     } else if (page === "review") {
       active = "review";
       var mode = parts[1];
-      if (mode === "mixed" || mode === "weak") {
+      if (mode === "mixed" || mode === "weak" || mode === "srs") {
         html = renderReviewRun(mode);
       } else {
         reviewState = null;          // returning to the menu resets the runner
@@ -510,7 +519,7 @@ window.App = (function () {
     // If a Korean voice exists, auto-play listening prompts in the active runner.
     var runner = null;
     if (page === "lesson" && parts[2] === "4") runner = quizState;
-    else if (page === "review" && (parts[1] === "mixed" || parts[1] === "weak")) runner = reviewState;
+    else if (page === "review" && (parts[1] === "mixed" || parts[1] === "weak" || parts[1] === "srs")) runner = reviewState;
     if (runner && runner.phase === "q") {
       var q = runner.questions[runner.i];
       if (q && q.kind === "listen" && TTS.available()) TTS.speak(q.answer);
@@ -581,8 +590,14 @@ window.App = (function () {
       var rq = reviewState.questions[reviewState.i];
       var rv = currentInput();
       var rok = rq.check(rv);
-      if (rok) { reviewState.correct++; Storage.clearMiss(rq.answer); }
-      else { Storage.addMiss({ en: rq.en, ko: rq.answer, romaji: rq.romaji }); }
+      if (rok) reviewState.correct++;
+      if (reviewState.mode === "srs") {
+        Storage.srsGrade(rq.answer, rok);   // reschedule this card
+      } else if (rok) {
+        Storage.clearMiss(rq.answer);
+      } else {
+        Storage.addMiss({ en: rq.en, ko: rq.answer, romaji: rq.romaji });
+      }
       reviewState.last = { ok: rok, input: rv };
       reviewState.phase = "feedback";
       render();
