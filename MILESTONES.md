@@ -3,6 +3,13 @@
 A running record of what's been built, in order. Newest at the top.
 (Live site: https://kanoonzaza.github.io/korean-app/)
 
+## 2026-06-04 — Level 5 started, batch 1 (5.1–5.6)
+- Added 6 Level 5 lessons: 5.1 아/어도 (even if), 5.2 기 때문에 (because),
+  5.3 (으)려고 하다 (intend to), 5.4 자마자 (as soon as), 5.5 (으)러 가다 (go to do),
+  5.6 ~네요 (realizing/noticing). Lesson count: **26** (4.1–4.20, 5.1–5.6).
+- Widened the level gauge to the L4–L5 band (mastery now maps ~TOPIK 2.0 → 4.0).
+- Verified: all 26 lessons parse, valid, blanks resolve, quizzes/practice build clean.
+
 ## 2026-06-04 — Sync switched to Google sign-in (no codes)
 - Replaced the manual sync-code flow with **Firebase Auth (Google sign-in)**. Progress
   is keyed to the signed-in account at `progress/{uid}`; sign in once per device.

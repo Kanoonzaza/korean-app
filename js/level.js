@@ -7,7 +7,7 @@
  */
 window.Level = (function () {
   var MIN = 1, MAX = 6;     // TOPIK scale
-  var BASE = 2.0, SPAN = 1.5; // content band: mastery 0..1 -> level 2.0..3.5
+  var BASE = 2.0, SPAN = 2.0; // content band (L4+L5): mastery 0..1 -> level 2.0..4.0
 
   function estimate() {
     var lessons = window.LESSONS || [];
@@ -92,8 +92,8 @@ window.Level = (function () {
         '<details class="callout g-how"><summary>How is this estimated?</summary>' +
           '<p class="small">A rough self-study estimate from your completed lessons, quiz scores, ' +
           'and remaining weak items — <strong>not an official TOPIK result</strong>. It assumes the ' +
-          'beginner foundation (TTMIK 1–3) you already have. This app\'s lessons cover up to about ' +
-          'TOPIK level 3, so the gauge moves within the 2–3.5 range; going higher needs more advanced material.</p>' +
+          'beginner foundation (TTMIK 1–3) you already have. This app\'s lessons (Level 4–5) reach ' +
+          'about TOPIK level 4, so the gauge moves within the 2–4 range; going higher needs more advanced material.</p>' +
         "</details>" +
       "</div>"
     );

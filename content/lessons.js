@@ -953,5 +953,282 @@ window.LESSONS = [
       { ko: "한복을 입은 적이 있어요.", en: "I've worn hanbok before.", romaji: "han-bo-geul i-beun jeo-gi i-sseo-yo", blankWord: "입은 적이" },
       { ko: "늦은 적이 없어요.", en: "I've never been late.", romaji: "neu-jeun jeo-gi eop-seo-yo", blankWord: "늦은 적이" }
     ]
+  },
+
+  {
+    id: "5.1",
+    level: 5,
+    title: "Even if / Even though",
+    point: "V/A-아/어도",
+    grammar: {
+      summary: "How to say 'even if…' or 'even though…'.",
+      formation:
+        "Stem + 아/어도 (same 아/어 rule as the present tense):\n" +
+        "• ㅏ/ㅗ → 아도   (오다 → 와도)\n" +
+        "• other → 어도   (먹다 → 먹어도)\n" +
+        "• 하다  → 해도   (피곤하다 → 피곤해도)",
+      explanation:
+        "아/어도 concedes a point: 'even if X (is true), still Y'. It's the same form you met in " +
+        "아/어도 되다 (Lesson 4.2), but on its own it means 'even if/though'. It pairs nicely with " +
+        "아무리 (no matter how): 아무리 바빠도 = 'no matter how busy I am'.",
+      notes: [
+        "Follows the 아/어 vowel rule: 가도, 먹어도, 해도.",
+        "Often used with 아무리 …-아/어도 = 'no matter how …'.",
+        "Same shape as 아/어도 되다, but here it's 'even if', not permission."
+      ]
+    },
+    pitfalls: [
+      "Use the 아/어 rule: 오다 → 와도, 먹다 → 먹어도.",
+      "Don't read it as 'because' — it's the opposite, a concession ('even if').",
+      "배(가) 부르다 is 르-irregular: 안 불러요 ('not full')."
+    ],
+    vocab: [
+      { ko: "아무리", en: "no matter how", romaji: "a-mu-ri", pos: "adverb", note: "아무리 ~아/어도" },
+      { ko: "배부르다", en: "to be full (stomach)", romaji: "bae-bu-reu-da", pos: "adjective", note: "르-irregular: 불러요" },
+      { ko: "괜찮다", en: "to be okay / fine", romaji: "gwaen-chan-ta", pos: "adjective", note: "" },
+      { ko: "피곤하다", en: "to be tired", romaji: "pi-gon-ha-da", pos: "adjective", note: "" },
+      { ko: "숙제", en: "homework", romaji: "suk-je", pos: "noun", note: "" },
+      { ko: "비싸다", en: "to be expensive", romaji: "bi-ssa-da", pos: "adjective", note: "" },
+      { ko: "운동하다", en: "to exercise", romaji: "un-dong-ha-da", pos: "verb", note: "" },
+      { ko: "늦다", en: "to be late", romaji: "neut-da", pos: "verb", note: "" }
+    ],
+    sentences: [
+      { ko: "비가 와도 갈 거예요.", en: "Even if it rains, I'll go.", romaji: "bi-ga wa-do gal geo-ye-yo", blankWord: "와도" },
+      { ko: "아무리 바빠도 운동해요.", en: "No matter how busy I am, I exercise.", romaji: "a-mu-ri ba-ppa-do un-dong-hae-yo", blankWord: "바빠도" },
+      { ko: "비싸도 살 거예요.", en: "Even if it's expensive, I'll buy it.", romaji: "bi-ssa-do sal geo-ye-yo", blankWord: "비싸도" },
+      { ko: "많이 먹어도 배가 안 불러요.", en: "Even if I eat a lot, I don't feel full.", romaji: "ma-ni meo-geo-do bae-ga an bul-leo-yo", blankWord: "먹어도" },
+      { ko: "피곤해도 숙제를 해야 해요.", en: "Even if I'm tired, I have to do homework.", romaji: "pi-gon-hae-do suk-je-reul hae-ya hae-yo", blankWord: "피곤해도" },
+      { ko: "늦어도 괜찮아요.", en: "It's okay even if you're late.", romaji: "neu-jeo-do gwaen-cha-na-yo", blankWord: "늦어도" }
+    ]
+  },
+
+  {
+    id: "5.2",
+    level: 5,
+    title: "Because (reason)",
+    point: "V-기 때문에 · N(이)기 때문에",
+    grammar: {
+      summary: "A clear, slightly formal way to state a reason: 'because…'.",
+      formation:
+        "• Verb/Adjective stem + 기 때문에   (바쁘다 → 바쁘기 때문에)\n" +
+        "• Noun + (이)기 때문에            (학생 → 학생이기 때문에)\n" +
+        "• Past reason → 았/었기 때문에     (아프다 → 아팠기 때문에)",
+      explanation:
+        "기 때문에 marks the cause: '[reason]기 때문에 [result]'. It's a bit more formal/emphatic " +
+        "than 아/어서. Like 아/어서, it can't be followed by a command or suggestion — for those use " +
+        "(으)니까 (Lesson 4.4).",
+      notes: [
+        "Nouns take (이)기 때문에: 학생이기 때문에.",
+        "Put the reason first: [reason]기 때문에 [result].",
+        "Don't follow it with a command/suggestion (use 으니까 there)."
+      ]
+    },
+    pitfalls: [
+      "Nouns need (이)기: 친구이기 때문에 / 학생이기 때문에.",
+      "Past reason uses 았/었기 때문에: 갔기 때문에, 아팠기 때문에.",
+      "No command/suggestion after it — that needs 으니까."
+    ],
+    vocab: [
+      { ko: "때문", en: "reason / because of", romaji: "ttae-mun", pos: "noun", note: "~기 때문에" },
+      { ko: "돈", en: "money", romaji: "don", pos: "noun", note: "" },
+      { ko: "시험", en: "exam / test", romaji: "si-heom", pos: "noun", note: "" },
+      { ko: "아프다", en: "to be sick / hurt", romaji: "a-peu-da", pos: "adjective", note: "past: 아팠다" },
+      { ko: "학교", en: "school", romaji: "hak-gyo", pos: "noun", note: "" },
+      { ko: "일하다", en: "to work", romaji: "il-ha-da", pos: "verb", note: "" },
+      { ko: "바쁘다", en: "to be busy", romaji: "ba-ppeu-da", pos: "adjective", note: "" },
+      { ko: "학생", en: "student", romaji: "hak-saeng", pos: "noun", note: "" }
+    ],
+    sentences: [
+      { ko: "바쁘기 때문에 못 가요.", en: "Because I'm busy, I can't go.", romaji: "ba-ppeu-gi ttae-mu-ne mot ga-yo", blankWord: "바쁘기 때문에" },
+      { ko: "비가 오기 때문에 집에 있어요.", en: "Because it's raining, I'm staying home.", romaji: "bi-ga o-gi ttae-mu-ne ji-be i-sseo-yo", blankWord: "오기 때문에" },
+      { ko: "학생이기 때문에 돈이 없어요.", en: "Because I'm a student, I have no money.", romaji: "hak-saeng-i-gi ttae-mu-ne do-ni eop-seo-yo", blankWord: "학생이기 때문에" },
+      { ko: "시험이 있기 때문에 공부해요.", en: "Because there's an exam, I study.", romaji: "si-heo-mi it-gi ttae-mu-ne gong-bu-hae-yo", blankWord: "있기 때문에" },
+      { ko: "어제 아팠기 때문에 학교에 못 갔어요.", en: "Because I was sick yesterday, I couldn't go to school.", romaji: "eo-je a-pat-gi ttae-mu-ne hak-gyo-e mot ga-sseo-yo", blankWord: "아팠기 때문에" },
+      { ko: "한국에서 일하기 때문에 한국어를 배워요.", en: "Because I work in Korea, I learn Korean.", romaji: "han-gu-ge-seo il-ha-gi ttae-mu-ne han-gu-geo-reul bae-wo-yo", blankWord: "일하기 때문에" }
+    ]
+  },
+
+  {
+    id: "5.3",
+    level: 5,
+    title: "Intend to / Planning to",
+    point: "V-(으)려고 하다",
+    grammar: {
+      summary: "How to express an intention or plan ('I'm planning to / about to').",
+      formation:
+        "Stem + (으)려고 하다:\n" +
+        "• vowel/ㄹ stem → 려고   (보다 → 보려고)\n" +
+        "• consonant stem → 으려고 (먹다 → 먹으려고)\n" +
+        "Then 하다: 보려고 해요 (plan to watch), 보려고 했어요 (was going to watch).",
+      explanation:
+        "(으)려고 하다 states what you intend or are about to do: 일찍 자려고 해요 = 'I'm planning " +
+        "to sleep early'. The past 려고 했어요 often means 'I was going to…' (sometimes but didn't).",
+      notes: [
+        "으 only after a consonant: 가려고, 먹으려고.",
+        "Usually about the near future / your intention.",
+        "Different from -(으)러 가다 ('go in order to') — that needs a motion verb."
+      ]
+    },
+    pitfalls: [
+      "Use 으 only after a consonant stem: 보려고, 읽으려고.",
+      "려고 하다 is intention; -(으)러 가다 is going somewhere to do something.",
+      "Past 려고 했어요 can imply a plan that didn't happen."
+    ],
+    vocab: [
+      { ko: "시작하다", en: "to start", romaji: "si-ja-ka-da", pos: "verb", note: "" },
+      { ko: "영화", en: "movie", romaji: "yeong-hwa", pos: "noun", note: "" },
+      { ko: "배우다", en: "to learn", romaji: "bae-u-da", pos: "verb", note: "" },
+      { ko: "읽다", en: "to read", romaji: "ik-da", pos: "verb", note: "" },
+      { ko: "일찍", en: "early", romaji: "il-jjik", pos: "adverb", note: "" },
+      { ko: "책", en: "book", romaji: "chaek", pos: "noun", note: "" },
+      { ko: "운동", en: "exercise", romaji: "un-dong", pos: "noun", note: "" },
+      { ko: "자다", en: "to sleep", romaji: "ja-da", pos: "verb", note: "" }
+    ],
+    sentences: [
+      { ko: "내일 영화를 보려고 해요.", en: "I'm planning to watch a movie tomorrow.", romaji: "nae-il yeong-hwa-reul bo-ryeo-go hae-yo", blankWord: "보려고" },
+      { ko: "한국어를 배우려고 해요.", en: "I'm planning to learn Korean.", romaji: "han-gu-geo-reul bae-u-ryeo-go hae-yo", blankWord: "배우려고" },
+      { ko: "일찍 자려고 했어요.", en: "I was going to sleep early.", romaji: "il-jjik ja-ryeo-go hae-sseo-yo", blankWord: "자려고" },
+      { ko: "책을 읽으려고 해요.", en: "I'm planning to read a book.", romaji: "chae-geul il-geu-ryeo-go hae-yo", blankWord: "읽으려고" },
+      { ko: "운동을 시작하려고 해요.", en: "I'm about to start exercising.", romaji: "un-dong-eul si-ja-ka-ryeo-go hae-yo", blankWord: "시작하려고" },
+      { ko: "뭐 먹으려고 해요?", en: "What are you planning to eat?", romaji: "mwo meo-geu-ryeo-go hae-yo", blankWord: "먹으려고" }
+    ]
+  },
+
+  {
+    id: "5.4",
+    level: 5,
+    title: "As soon as",
+    point: "V-자마자",
+    grammar: {
+      summary: "How to say 'as soon as / right after' doing something.",
+      formation:
+        "Verb stem + 자마자  (attaches to the plain stem — no tense, no vowel change):\n" +
+        "• 가다 → 가자마자,  먹다 → 먹자마자,  도착하다 → 도착하자마자",
+      explanation:
+        "자마자 links two events with no gap: '집에 도착하자마자 잤어요' = 'as soon as I got home, " +
+        "I slept'. The tense lives in the final verb; 자마자 itself never conjugates.",
+      notes: [
+        "Always 자마자 on the bare stem: 가자마자, 먹자마자.",
+        "The second action follows immediately.",
+        "ㄷ-irregular verbs stay regular here (before 자): 듣다 → 듣자마자."
+      ]
+    },
+    pitfalls: [
+      "Don't conjugate before 자마자: it's 도착하자마자, not 도착했자마자.",
+      "Tense goes on the FINAL verb (잤어요, 갔어요…).",
+      "Means immediately after — not just 'when'."
+    ],
+    vocab: [
+      { ko: "도착하다", en: "to arrive", romaji: "do-chak-ha-da", pos: "verb", note: "" },
+      { ko: "소식", en: "news", romaji: "so-sik", pos: "noun", note: "" },
+      { ko: "울다", en: "to cry", romaji: "ul-da", pos: "verb", note: "" },
+      { ko: "물", en: "water", romaji: "mul", pos: "noun", note: "" },
+      { ko: "일어나다", en: "to get up / wake up", romaji: "i-reo-na-da", pos: "verb", note: "" },
+      { ko: "끝나다", en: "to end / finish", romaji: "kkeun-na-da", pos: "verb", note: "" },
+      { ko: "듣다", en: "to hear", romaji: "deut-da", pos: "verb", note: "" },
+      { ko: "수업", en: "class", romaji: "su-eop", pos: "noun", note: "" }
+    ],
+    sentences: [
+      { ko: "집에 도착하자마자 잤어요.", en: "As soon as I got home, I slept.", romaji: "ji-be do-cha-ka-ja-ma-ja ja-sseo-yo", blankWord: "도착하자마자" },
+      { ko: "일어나자마자 물을 마셔요.", en: "As soon as I wake up, I drink water.", romaji: "i-reo-na-ja-ma-ja mu-reul ma-syeo-yo", blankWord: "일어나자마자" },
+      { ko: "수업이 끝나자마자 집에 갔어요.", en: "As soon as class ended, I went home.", romaji: "su-eo-bi kkeun-na-ja-ma-ja ji-be ga-sseo-yo", blankWord: "끝나자마자" },
+      { ko: "그 소식을 듣자마자 울었어요.", en: "As soon as I heard the news, I cried.", romaji: "geu so-si-geul deut-ja-ma-ja u-reo-sseo-yo", blankWord: "듣자마자" },
+      { ko: "도착하자마자 전화해 주세요.", en: "Call me as soon as you arrive.", romaji: "do-cha-ka-ja-ma-ja jeon-hwa-hae ju-se-yo", blankWord: "도착하자마자" },
+      { ko: "밥을 먹자마자 운동하면 안 좋아요.", en: "It's not good to exercise right after eating.", romaji: "ba-beul meok-ja-ma-ja un-dong-ha-myeon an jo-a-yo", blankWord: "먹자마자" }
+    ]
+  },
+
+  {
+    id: "5.5",
+    level: 5,
+    title: "Go / Come in order to",
+    point: "V-(으)러 가다/오다",
+    grammar: {
+      summary: "How to say you go/come somewhere in order to do something.",
+      formation:
+        "Purpose verb + (으)러 + 가다 / 오다 / 다니다:\n" +
+        "• vowel/ㄹ stem → 러   (보다 → 보러 가다)\n" +
+        "• consonant stem → 으러 (먹다 → 먹으러 가다)\n" +
+        "e.g. 사러 가다 (go to buy), 만나러 오다 (come to meet).",
+      explanation:
+        "(으)러 attaches to the action you intend to do, and is followed by a MOTION verb (가다/" +
+        "오다/다니다): 밥을 먹으러 식당에 가요 = 'I go to a restaurant to eat'. The purpose comes " +
+        "first, the movement last.",
+      notes: [
+        "으 only after a consonant: 보러, 먹으러.",
+        "Must be followed by a motion verb (가다/오다/다니다).",
+        "다니다 = to go regularly / attend (학원에 다녀요)."
+      ]
+    },
+    pitfalls: [
+      "Only use with motion verbs — 먹으러 공부해요 is wrong.",
+      "으 only after a consonant: 사러, 먹으러.",
+      "For plain intention (no movement), use -(으)려고 하다 instead."
+    ],
+    vocab: [
+      { ko: "식당", en: "restaurant", romaji: "sik-dang", pos: "noun", note: "" },
+      { ko: "서점", en: "bookstore", romaji: "seo-jeom", pos: "noun", note: "" },
+      { ko: "학원", en: "academy / private school", romaji: "ha-gwon", pos: "noun", note: "" },
+      { ko: "다니다", en: "to attend / go regularly", romaji: "da-ni-da", pos: "verb", note: "" },
+      { ko: "공원", en: "park", romaji: "gong-won", pos: "noun", note: "" },
+      { ko: "만나다", en: "to meet", romaji: "man-na-da", pos: "verb", note: "" },
+      { ko: "사다", en: "to buy", romaji: "sa-da", pos: "verb", note: "" },
+      { ko: "보다", en: "to watch / see", romaji: "bo-da", pos: "verb", note: "" }
+    ],
+    sentences: [
+      { ko: "밥을 먹으러 식당에 가요.", en: "I go to a restaurant to eat.", romaji: "ba-beul meo-geu-reo sik-dang-e ga-yo", blankWord: "먹으러" },
+      { ko: "친구를 만나러 갔어요.", en: "I went to meet a friend.", romaji: "chin-gu-reul man-na-reo ga-sseo-yo", blankWord: "만나러" },
+      { ko: "책을 사러 서점에 가요.", en: "I go to a bookstore to buy a book.", romaji: "chae-geul sa-reo seo-jeo-me ga-yo", blankWord: "사러" },
+      { ko: "영화를 보러 올래요?", en: "Do you want to come watch a movie?", romaji: "yeong-hwa-reul bo-reo ol-lae-yo", blankWord: "보러" },
+      { ko: "한국어를 배우러 학원에 다녀요.", en: "I attend an academy to learn Korean.", romaji: "han-gu-geo-reul bae-u-reo ha-gwo-ne da-nyeo-yo", blankWord: "배우러" },
+      { ko: "운동하러 공원에 가요.", en: "I go to the park to exercise.", romaji: "un-dong-ha-reo gong-wo-ne ga-yo", blankWord: "운동하러" }
+    ]
+  },
+
+  {
+    id: "5.6",
+    level: 5,
+    title: "Noticing / Realizing",
+    point: "A/V-네요",
+    grammar: {
+      summary: "How to react to something you've just noticed or realized ('Oh, it's…!').",
+      formation:
+        "Stem + 네요  (attaches directly to the stem):\n" +
+        "• 좋다 → 좋네요,  맛있다 → 맛있네요,  가다 → 가네요\n" +
+        "• Noun + (이)네요   (학생이네요, 12시네요)\n" +
+        "• Past → 았/었네요  (갔네요)",
+      explanation:
+        "네요 adds a tone of fresh discovery or mild surprise — you're commenting on something you " +
+        "just noticed: 날씨가 좋네요 = 'Oh, the weather's nice!'. It's warmer and more reactive than " +
+        "a plain statement.",
+      notes: [
+        "Attaches straight to the stem: 좋네요, 가네요, 많네요.",
+        "Nouns take (이)네요: 학생이네요.",
+        "Conveys realization / mild surprise, not a neutral fact."
+      ]
+    },
+    pitfalls: [
+      "Just stem + 네요 — no 아/어: 좋네요 (not 좋아네요).",
+      "It signals you just noticed something; don't use it for old, known facts.",
+      "Pronunciation: 맛있네요 sounds like [마딘네요], 많네요 like [만네요]."
+    ],
+    vocab: [
+      { ko: "정말", en: "really", romaji: "jeong-mal", pos: "adverb", note: "" },
+      { ko: "잘하다", en: "to do well / be good at", romaji: "jal-ha-da", pos: "verb", note: "" },
+      { ko: "벌써", en: "already", romaji: "beol-sseo", pos: "adverb", note: "" },
+      { ko: "맛있다", en: "to be delicious", romaji: "ma-sit-da", pos: "adjective", note: "" },
+      { ko: "많다", en: "to be many / a lot", romaji: "man-ta", pos: "adjective", note: "" },
+      { ko: "날씨", en: "weather", romaji: "nal-ssi", pos: "noun", note: "" },
+      { ko: "사람", en: "person / people", romaji: "sa-ram", pos: "noun", note: "" },
+      { ko: "음식", en: "food", romaji: "eum-sik", pos: "noun", note: "" }
+    ],
+    sentences: [
+      { ko: "날씨가 정말 좋네요.", en: "The weather's really nice!", romaji: "nal-ssi-ga jeong-mal jon-ne-yo", blankWord: "좋네요" },
+      { ko: "한국어를 잘하네요.", en: "Oh, you speak Korean well!", romaji: "han-gu-geo-reul jal-ha-ne-yo", blankWord: "잘하네요" },
+      { ko: "이 음식 맛있네요.", en: "This food is delicious!", romaji: "i eum-sik ma-din-ne-yo", blankWord: "맛있네요" },
+      { ko: "벌써 12시네요.", en: "Oh, it's already 12 o'clock!", romaji: "beol-sseo yeol-du-si-ne-yo", blankWord: "12시네요" },
+      { ko: "비가 오네요.", en: "Oh, it's raining.", romaji: "bi-ga o-ne-yo", blankWord: "오네요" },
+      { ko: "사람이 많네요.", en: "There are a lot of people!", romaji: "sa-ra-mi man-ne-yo", blankWord: "많네요" }
+    ]
   }
 ];
