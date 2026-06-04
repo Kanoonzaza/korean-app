@@ -126,6 +126,20 @@ window.Storage = (function () {
       save(d);
     },
 
+    /* ----- exam / checkpoint results ----- *
+     * __exams[key] = { best: 0..100, passed: bool }   (key: "4", "5", "topik")
+     */
+    saveExam: function (key, pct) {
+      var d = load();
+      if (!d.__exams) d.__exams = {};
+      var cur = d.__exams[key] || { best: null };
+      if (cur.best == null || pct > cur.best) cur.best = pct;
+      cur.passed = cur.best >= 70;
+      d.__exams[key] = cur;
+      save(d);
+    },
+    getExam: function (key) { return (load().__exams || {})[key] || null; },
+
     /* ----- move progress between devices ----- */
     exportData: function () { return JSON.stringify(load(), null, 2); },
     importData: function (jsonStr) {
@@ -164,6 +178,15 @@ window.Storage = (function () {
           Object.keys(rs).forEach(function (ko) {
             var l = out.__srs[ko], r = rs[ko];
             if (!l || (r.due || 0) > (l.due || 0)) out.__srs[ko] = r; // keep most recent schedule
+          });
+          return;
+        }
+        if (k === "__exams") {
+          out.__exams = out.__exams || {};
+          var re = remote.__exams || {};
+          Object.keys(re).forEach(function (x) {
+            var l = out.__exams[x], r = re[x];
+            if (!l || (r.best || 0) > (l.best || 0)) out.__exams[x] = r; // keep best score
           });
           return;
         }

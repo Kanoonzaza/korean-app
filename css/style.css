@@ -96,6 +96,28 @@ a:hover { text-decoration: underline; }
 .bar { height: 6px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
 .bar-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width .3s; }
 
+/* ---------- exams / checkpoint tests ---------- */
+.exam-list { display: grid; gap: 8px; margin-top: 10px; }
+.exam-row { display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px 14px; color: var(--text); }
+.exam-row:hover { text-decoration: none; border-color: var(--accent); }
+.exam-stat { font-size: 0.85rem; white-space: nowrap; color: var(--muted); }
+.exam-stat.pass { color: var(--ok); font-weight: 600; }
+.opt-list { display: grid; gap: 8px; }
+.opt { text-align: left; background: var(--bg); color: var(--text); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 14px; font-size: 1rem; cursor: pointer; font-family: inherit; }
+.opt:hover:not(:disabled) { border-color: var(--accent); }
+.opt:disabled { cursor: default; }
+.opt.correct { border-color: var(--ok); background: rgba(91,191,138,0.14); color: var(--ok); font-weight: 600; }
+.opt.wrong { border-color: var(--bad); background: rgba(224,138,138,0.12); color: var(--bad); }
+.opt.dim { opacity: 0.55; }
+.fb-ok { color: var(--ok); font-weight: 600; }
+.fb-bad { color: var(--bad); font-weight: 600; }
+.exam-result .verdict { margin: 8px 0 14px; font-weight: 600; }
+.exam-result.pass .big-score { color: var(--ok); }
+.exam-result.fail .big-score { color: var(--bad); }
+
 /* ---------- framework tags / syllabus ---------- */
 .head-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .small-btn { padding: 6px 12px; font-size: 0.85rem; }

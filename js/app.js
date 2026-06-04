@@ -8,6 +8,7 @@ window.App = (function () {
   var practiceState = null; // { lessonId, items, i, correct, phase, last }
   var reviewState = null;   // { mode, questions, i, correct, phase, last }
   var glossBookmarked = false; // glossary: showing bookmarked-only?
+  var examState = null;     // { key, questions, i, correct, phase, last }
 
   /* ---------- helpers ---------- */
   function esc(s) {
@@ -144,6 +145,7 @@ window.App = (function () {
           "<thead><tr><th>#</th><th>Lesson</th><th class='center'>Complete</th><th class='center'>Best quiz</th></tr></thead>" +
           "<tbody>" + rows + "</tbody>" +
         "</table>" +
+        examsPanel() +
         '<div class="card sync">' +
           "<h4>Move progress to another device</h4>" +
           '<p class="muted small">Progress lives in this browser only. Export a file here, ' +
@@ -157,6 +159,33 @@ window.App = (function () {
         "</div>" +
         syncPanel() +
       "</section>"
+    );
+  }
+
+  function examsPanel() {
+    if (!window.Exam) return "";
+    // Which levels exist in the content?
+    var levels = {};
+    (window.LESSONS || []).forEach(function (l) { levels[l.level] = true; });
+    function row(key, label, desc) {
+      var e = Storage.getExam(key);
+      var status = e
+        ? '<span class="exam-stat ' + (e.passed ? "pass" : "") + '">' + (e.passed ? "✅ Passed" : "Best") + " " + e.best + "%</span>"
+        : '<span class="exam-stat muted">Not taken</span>';
+      return '<a class="exam-row" href="#/exam/' + key + '"><div><strong>' + esc(label) + "</strong>" +
+        '<div class="muted small">' + esc(desc) + "</div></div>" + status + "</a>";
+    }
+    var rows = "";
+    Object.keys(levels).sort().forEach(function (lv) {
+      rows += row(lv, "Level " + lv + " checkpoint", "Multiple-choice test across Level " + lv + " grammar. 70% to pass.");
+    });
+    rows += row("topik", "Mock TOPIK test", "Mixed reading + listening questions in exam style, drawn from all levels.");
+    return (
+      '<div class="card">' +
+        "<h4>Checkpoint & mock tests</h4>" +
+        '<p class="muted small">Earn your level with a graded, multiple-choice test (the real TOPIK format).</p>' +
+        '<div class="exam-list">' + rows + "</div>" +
+      "</div>"
     );
   }
 
@@ -488,6 +517,69 @@ window.App = (function () {
       questionInner(s.questions[s.i], s, "review") + backMenu + "</section>";
   }
 
+  /* ----- exam / checkpoint (multiple choice) ----- */
+  var EXAM_TITLES = { "4": "Level 4 checkpoint", "5": "Level 5 checkpoint", "topik": "Mock TOPIK test" };
+
+  function startExam(key) {
+    var levelKey = (key === "topik") ? "all" : parseInt(key, 10);
+    examState = { key: key, questions: Exam.build(levelKey, 10), i: 0, correct: 0, phase: "q", last: null };
+  }
+
+  function renderExam(key) {
+    if (!examState || examState.key !== key) startExam(key);
+    var s = examState, total = s.questions.length;
+    var title = EXAM_TITLES[key] || "Test";
+    var back = '<div class="nav-row"><a class="btn ghost" href="#/progress">← Back</a><span></span></div>';
+
+    if (total === 0) {
+      return '<section class="view"><h2>' + title + "</h2>" +
+        '<div class="card"><p class="muted">Finish the relevant lessons first, then come back to take this test.</p></div>' +
+        back + "</section>";
+    }
+
+    if (s.phase === "done") {
+      var pct = Math.round((s.correct / total) * 100);
+      Storage.saveExam(key, pct);
+      var passed = pct >= 70;
+      return '<section class="view"><h2>' + title + " — result</h2>" +
+        '<div class="card score-card exam-result ' + (passed ? "pass" : "fail") + '">' +
+          '<div class="big-score">' + pct + "%</div>" +
+          "<p>" + s.correct + " / " + total + " correct</p>" +
+          '<div class="verdict">' + (passed ? "✅ Passed" : "Keep practicing — 70% to pass") + "</div>" +
+          '<button class="btn ghost" data-action="exam-retry">Retake</button>' +
+        "</div>" + back + "</section>";
+    }
+
+    var q = s.questions[s.i];
+    var prompt = q.promptKind === "audio"
+      ? '<div class="q-prompt listen"><button class="btn" data-speak="' + esc(q.promptKo) +
+          '">🔊 Play audio</button><p class="muted small">' + esc(q.label) + "</p></div>"
+      : '<div class="q-prompt"><span class="q-label">' + esc(q.label) + "</span>" +
+          '<div class="q-ko">' + esc(q.promptText) + "</div></div>";
+
+    var opts = q.options.map(function (o, idx) {
+      var cls = "opt";
+      if (s.phase === "feedback") {
+        if (idx === q.answerIndex) cls += " correct";
+        else if (s.last && idx === s.last.chosen) cls += " wrong";
+        else cls += " dim";
+      }
+      return '<button class="' + cls + '" data-action="exam-opt" data-i="' + idx + '"' +
+        (s.phase === "feedback" ? " disabled" : "") + ">" + esc(o) + "</button>";
+    }).join("");
+
+    var foot = s.phase === "feedback"
+      ? '<div class="nav-row"><span class="' + (s.last.ok ? "fb-ok" : "fb-bad") + '">' +
+          (s.last.ok ? "✓ Correct" : "✗ Incorrect") + "</span>" +
+          '<button class="btn" data-action="exam-next">' + (s.i + 1 < total ? "Next →" : "See result →") + "</button></div>"
+      : "";
+
+    return '<section class="view"><h2>' + title + "</h2>" +
+      '<div class="q-count">Question ' + (s.i + 1) + " of " + total + "</div>" +
+      '<div class="card quiz-card">' + prompt + '<div class="opt-list">' + opts + "</div>" + foot + "</div>" +
+      back + "</section>";
+  }
+
   function renderLesson(id, step) {
     var lesson = lessonById(id);
     if (!lesson) return '<section class="view"><p class="muted">Lesson not found.</p></section>';
@@ -543,6 +635,9 @@ window.App = (function () {
     } else if (page === "syllabus") {
       active = "lessons";
       html = renderSyllabus();
+    } else if (page === "exam") {
+      active = "progress";
+      html = renderExam(parts[1]);
     } else if (page === "words") {
       active = "words";
       html = Glossary.render(glossBookmarked);
@@ -569,6 +664,11 @@ window.App = (function () {
     if (runner && runner.phase === "q") {
       var q = runner.questions[runner.i];
       if (q && q.kind === "listen" && TTS.available()) TTS.speak(q.answer);
+    }
+    // Exam: auto-play listening-type questions.
+    if (page === "exam" && examState && examState.phase === "q") {
+      var eq2 = examState.questions[examState.i];
+      if (eq2 && eq2.promptKind === "audio" && TTS.available()) TTS.speak(eq2.promptKo);
     }
   }
 
@@ -678,6 +778,24 @@ window.App = (function () {
         var mm = document.getElementById("syncMsg2");
         if (mm) mm.textContent = err3 ? ("Sync failed: " + (err3.message || err3)) : "Synced ✓";
       });
+    } else if (action === "exam-opt") {
+      if (examState.phase === "feedback") return;
+      var chosen = parseInt(t.getAttribute("data-i"), 10);
+      var eq = examState.questions[examState.i];
+      var eok = chosen === eq.answerIndex;
+      if (eok) examState.correct++;
+      examState.last = { ok: eok, chosen: chosen };
+      examState.phase = "feedback";
+      render();
+    } else if (action === "exam-next") {
+      if (examState.i + 1 < examState.questions.length) {
+        examState.i++; examState.phase = "q"; examState.last = null;
+      } else {
+        examState.phase = "done";
+      }
+      render();
+    } else if (action === "exam-retry") {
+      startExam(examState.key); render();
     } else if (action === "bm") {
       Storage.toggleBookmark(t.getAttribute("data-ko"));
       refreshGlossList();

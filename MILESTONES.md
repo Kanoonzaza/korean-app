@@ -3,6 +3,15 @@
 A running record of what's been built, in order. Newest at the top.
 (Live site: https://kanoonzaza.github.io/korean-app/)
 
+## 2026-06-04 — Checkpoint + mock-TOPIK tests
+- New `js/exam.js`: multiple-choice tests in real TOPIK formats — reading (meaning),
+  fill-the-blank, and listening (audio → meaning), with distractors from the content.
+- "Checkpoint & mock tests" section in the Progress tab: per-level checkpoints (Level 4,
+  Level 5) + a mixed Mock TOPIK test. 70% to pass; best score + pass status stored.
+- Multiple-choice exam runner (highlights correct/chosen), auto-plays listening items.
+- Results stored in __exams and merged in cloud sync (keep best). Verified: all tests
+  build 10 valid questions across formats; pass threshold works.
+
 ## 2026-06-04 — Academic framework: TOPIK/CEFR tags + objectives + Syllabus
 - Added `content/curriculum.js`: per-lesson TOPIK level, CEFR band, and a CEFR-style
   can-do objective (all 26 lessons).
