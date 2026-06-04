@@ -96,6 +96,26 @@ a:hover { text-decoration: underline; }
 .bar { height: 6px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
 .bar-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width .3s; }
 
+/* ---------- framework tags / syllabus ---------- */
+.head-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.small-btn { padding: 6px 12px; font-size: 0.85rem; }
+.fw-tag { display: inline-block; background: var(--surface-2); color: var(--muted);
+  font-size: 0.7rem; font-weight: 600; letter-spacing: .03em; padding: 2px 8px;
+  border-radius: 999px; white-space: nowrap; }
+.lc-tags { margin: 8px 0 10px; }
+.objective { display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent);
+  border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
+.objective .obj-text { color: var(--text); font-weight: 500; }
+.syl-h { margin: 22px 0 8px; color: var(--accent); }
+.syl-list { display: grid; gap: 8px; }
+.syl-row { display: block; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 16px; color: var(--text); }
+.syl-row:hover { text-decoration: none; border-color: var(--accent); }
+.syl-id { color: var(--muted); font-variant-numeric: tabular-nums; }
+.syl-obj { color: var(--muted); font-size: 0.85rem; margin-top: 6px; display: flex;
+  align-items: center; gap: 8px; flex-wrap: wrap; }
+
 /* ---------- glossary / words ---------- */
 .gloss-controls { display: flex; gap: 10px; margin: 14px 0; }
 .gloss-controls .ko-input { flex: 1; }

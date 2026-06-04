@@ -21,6 +21,13 @@ window.App = (function () {
     return (window.LESSONS || []).filter(function (l) { return l.id === id; })[0] || null;
   }
 
+  // Academic framework metadata for a lesson (TOPIK / CEFR / objective), if any.
+  function cur(id) { return (window.CURRICULUM || {})[id] || null; }
+  function frameworkTag(id) {
+    var c = cur(id);
+    return c ? '<span class="fw-tag">TOPIK ' + c.topik + " · " + esc(c.cefr) + "</span>" : "";
+  }
+
   // A small 🔊 button that speaks the given text.
   function speak(text) {
     return '<button class="spk" data-speak="' + esc(text) + '" title="Listen" aria-label="Listen">🔊</button>';
@@ -69,6 +76,7 @@ window.App = (function () {
           "</div>" +
           "<h3>" + esc(l.title) + "</h3>" +
           '<div class="lc-point">' + esc(l.point) + "</div>" +
+          (cur(l.id) ? '<div class="lc-tags">' + frameworkTag(l.id) + "</div>" : "") +
           '<div class="bar"><div class="bar-fill" style="width:' + pct + '%"></div></div>' +
         "</a>"
       );
@@ -76,9 +84,40 @@ window.App = (function () {
 
     return (
       '<section class="view">' +
-        "<h2>Level 4 & 5 · Lessons</h2>" +
+        '<div class="head-row"><h2>Level 4 & 5 · Lessons</h2>' +
+          '<a class="btn ghost small-btn" href="#/syllabus">📋 Syllabus</a></div>' +
         '<p class="muted">Continuing past your TTMIK deck — Level 4 & 5 grammar, one step at a time.</p>' +
         '<div class="lesson-list">' + cards + "</div>" +
+      "</section>"
+    );
+  }
+
+  function renderSyllabus() {
+    var byLevel = {};
+    (window.LESSONS || []).forEach(function (l) {
+      (byLevel[l.level] = byLevel[l.level] || []).push(l);
+    });
+    var sections = Object.keys(byLevel).sort().map(function (lv) {
+      var rows = byLevel[lv].map(function (l) {
+        var c = cur(l.id);
+        return (
+          '<a class="syl-row" href="#/lesson/' + l.id + '/1">' +
+            '<div class="syl-main"><span class="syl-id">' + esc(l.id) + "</span> " +
+              "<strong>" + esc(l.title) + '</strong> <span class="point">' + esc(l.point) + "</span></div>" +
+            (c ? '<div class="syl-obj">' + frameworkTag(l.id) + " " + esc(c.objective) + "</div>" : "") +
+          "</a>"
+        );
+      }).join("");
+      return '<h3 class="syl-h">Level ' + esc(lv) + "</h3>" + '<div class="syl-list">' + rows + "</div>";
+    }).join("");
+
+    return (
+      '<section class="view">' +
+        "<h2>Syllabus</h2>" +
+        '<p class="muted">The full course outline with each lesson\'s can-do goal and its ' +
+          "approximate TOPIK / CEFR level. <em>Alignments are a study aid, not an official placement.</em></p>" +
+        sections +
+        '<div class="nav-row"><a class="btn ghost" href="#/lessons">← Lessons</a><span></span></div>' +
       "</section>"
     );
   }
@@ -196,6 +235,10 @@ window.App = (function () {
     return (
       '<div class="step-body">' +
         "<h2>" + esc(lesson.title) + ' <span class="point">' + esc(lesson.point) + "</span></h2>" +
+        (cur(lesson.id)
+          ? '<div class="objective">' + frameworkTag(lesson.id) +
+              '<span class="obj-text">🎯 ' + esc(cur(lesson.id).objective) + "</span></div>"
+          : "") +
         '<p class="lead">' + esc(g.summary) + "</p>" +
         '<div class="card"><h4>How to form it</h4><pre class="formation">' + esc(g.formation) + "</pre></div>" +
         '<div class="card"><h4>Explanation</h4><p>' + nl2br(g.explanation) + "</p>" +
@@ -497,6 +540,9 @@ window.App = (function () {
         reviewState = null;          // returning to the menu resets the runner
         html = renderReviewHome();
       }
+    } else if (page === "syllabus") {
+      active = "lessons";
+      html = renderSyllabus();
     } else if (page === "words") {
       active = "words";
       html = Glossary.render(glossBookmarked);

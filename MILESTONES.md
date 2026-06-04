@@ -3,6 +3,15 @@
 A running record of what's been built, in order. Newest at the top.
 (Live site: https://kanoonzaza.github.io/korean-app/)
 
+## 2026-06-04 — Academic framework: TOPIK/CEFR tags + objectives + Syllabus
+- Added `content/curriculum.js`: per-lesson TOPIK level, CEFR band, and a CEFR-style
+  can-do objective (all 26 lessons).
+- Lesson cards show a "TOPIK n · CEFR" tag; the Grammar step shows the 🎯 objective.
+- New **Syllabus** page (course outline grouped by level, with goals + framework tags),
+  linked from the Lessons home. Labelled clearly as an approximate study aid.
+- Next academic item: end-of-level checkpoint + mock-TOPIK test. (Romanization→RR/IPA
+  considered, deferred as the highest-accuracy-risk item.)
+
 ## 2026-06-04 — Spaced-repetition review (SRS)
 - New `js/srs.js`: Leitner scheduling. Cards = vocab + sentences from completed lessons.
   Boxes 1–6 with intervals 1/3/7/16/35/90 days; correct → next box, wrong → box 1.
