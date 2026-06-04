@@ -3,6 +3,14 @@
 A running record of what's been built, in order. Newest at the top.
 (Live site: https://kanoonzaza.github.io/korean-app/)
 
+## 2026-06-04 — Vocabulary glossary + search (Words tab)
+- New **Words** tab (`js/glossary.js`): a searchable list of every unique vocab word
+  across all lessons (153 words), with 🔊 audio and a ⭐ bookmark per word.
+- Live search by 한글 / English / romaji; "⭐ bookmarked-only" filter.
+- Bookmarks stored in Storage and merged in cloud sync (union of __bookmarks).
+- Verified: source parses, search filters, bookmark toggle + filter work.
+- Next planned: spaced-repetition review (SRS), then more Level 5/6 content.
+
 ## 2026-06-04 — Level 5 started, batch 1 (5.1–5.6)
 - Added 6 Level 5 lessons: 5.1 아/어도 (even if), 5.2 기 때문에 (because),
   5.3 (으)려고 하다 (intend to), 5.4 자마자 (as soon as), 5.5 (으)러 가다 (go to do),

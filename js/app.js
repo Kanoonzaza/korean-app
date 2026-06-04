@@ -7,6 +7,7 @@ window.App = (function () {
   var quizState = null;     // { lessonId, questions, i, correct, phase, last }
   var practiceState = null; // { lessonId, items, i, correct, phase, last }
   var reviewState = null;   // { mode, questions, i, correct, phase, last }
+  var glossBookmarked = false; // glossary: showing bookmarked-only?
 
   /* ---------- helpers ---------- */
   function esc(s) {
@@ -47,6 +48,7 @@ window.App = (function () {
         '<nav>' +
           link("#/lessons", "Lessons", "lessons") +
           link("#/review", "Review", "review") +
+          link("#/words", "Words", "words") +
           link("#/listening", "Listening", "listening") +
           link("#/progress", "Progress", "progress") +
         "</nav>" +
@@ -486,6 +488,9 @@ window.App = (function () {
         reviewState = null;          // returning to the menu resets the runner
         html = renderReviewHome();
       }
+    } else if (page === "words") {
+      active = "words";
+      html = Glossary.render(glossBookmarked);
     } else if (page === "listening") {
       html = Listening.render();
     } else if (page === "progress") {
@@ -612,7 +617,24 @@ window.App = (function () {
         var mm = document.getElementById("syncMsg2");
         if (mm) mm.textContent = err3 ? ("Sync failed: " + (err3.message || err3)) : "Synced ✓";
       });
+    } else if (action === "bm") {
+      Storage.toggleBookmark(t.getAttribute("data-ko"));
+      refreshGlossList();
+    } else if (action === "bm-filter") {
+      glossBookmarked = !glossBookmarked;
+      render();
     }
+  }
+
+  // Update just the glossary results (keeps the search box + its focus).
+  function refreshGlossList() {
+    var listEl = document.getElementById("glossList");
+    var box = document.getElementById("glossSearch");
+    if (listEl) listEl.innerHTML = Glossary.listHTML(box ? box.value : "", glossBookmarked);
+  }
+
+  function handleInput(e) {
+    if (e.target && e.target.id === "glossSearch") refreshGlossList();
   }
 
   function handleChange(e) {
@@ -661,6 +683,7 @@ window.App = (function () {
     root.addEventListener("click", handleClick);
     root.addEventListener("keydown", handleKey);
     root.addEventListener("change", handleChange);
+    root.addEventListener("input", handleInput);
     render();
     if (window.Sync) {
       window.Sync.onMessage(function (m) {

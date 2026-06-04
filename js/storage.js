@@ -100,6 +100,17 @@ window.Storage = (function () {
     },
     missCount: function () { return this.getMisses().length; },
 
+    /* ----- vocabulary bookmarks (⭐) ----- */
+    toggleBookmark: function (ko) {
+      var d = load();
+      if (!d.__bookmarks) d.__bookmarks = {};
+      if (d.__bookmarks[ko]) delete d.__bookmarks[ko]; else d.__bookmarks[ko] = true;
+      save(d);
+      return !!(load().__bookmarks || {})[ko];
+    },
+    isBookmarked: function (ko) { return !!(load().__bookmarks || {})[ko]; },
+    bookmarkCount: function () { return Object.keys(load().__bookmarks || {}).length; },
+
     /* ----- move progress between devices ----- */
     exportData: function () { return JSON.stringify(load(), null, 2); },
     importData: function (jsonStr) {
@@ -124,6 +135,12 @@ window.Storage = (function () {
           out.__misses = out.__misses || {};
           var rm = remote.__misses || {};
           Object.keys(rm).forEach(function (ko) { if (!out.__misses[ko]) out.__misses[ko] = rm[ko]; });
+          return;
+        }
+        if (k === "__bookmarks") {
+          out.__bookmarks = out.__bookmarks || {};
+          var rb = remote.__bookmarks || {};
+          Object.keys(rb).forEach(function (ko) { out.__bookmarks[ko] = true; });
           return;
         }
         if (k.charAt(0) === "_") return;           // skip meta fields
