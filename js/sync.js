@@ -1,131 +1,133 @@
-/* sync.js — optional cloud sync of progress via Firebase Firestore.
+/* sync.js — cloud sync via Firebase Auth (Google sign-in) + Firestore.
  *
- * Model: one Firestore document per "sync code" in collection `progress`.
- * Enter the same code on each device and they share progress automatically:
- *   - on load: pull remote, MERGE into local (no progress lost), then push.
+ * Experience: tap "Sign in with Google" once per device → progress syncs
+ * automatically under your account (Firestore doc progress/{uid}). No codes.
+ *   - on sign-in / load: pull + MERGE (no progress lost), then push.
  *   - after any change: debounced push.
- *   - when back online: sync.
+ *   - back online: re-sync.
+ * Session persists, so a signed-in device auto-syncs on every open.
  *
- * Privacy: anyone who knows your sync code can read/overwrite that progress, so we
- * use a long random code. Config + code live in localStorage (per device).
- *
- * Stays completely dormant until a Firebase config is provided (window.FIREBASE_CONFIG
- * or pasted in-app) AND a sync code is set + sync turned on.
+ * The Firebase SDK is loaded only when needed (signed-in session on load, or when
+ * the user taps sign-in), so signed-out/offline use stays light.
  */
 window.Sync = (function () {
-  var LSK = {
-    config: "koreanApp.fbconfig",
-    code: "koreanApp.synccode",
-    on: "koreanApp.syncon",
-    last: "koreanApp.synclast"
-  };
   var SDK = "https://www.gstatic.com/firebasejs/10.12.2/";
-  var fbReady = false, db = null, pushTimer = null;
+  var SIGNED = "koreanApp.signedin";   // remembers to auto-restore the session
+  var LAST = "koreanApp.synclast";
+  var started = false, authResolved = false, authUser = null;
+  var db = null, pushTimer = null, subscribed = false, msgCb = null;
 
   function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function lsset(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 
-  function getConfig() {
-    if (window.FIREBASE_CONFIG) return window.FIREBASE_CONFIG;
-    var s = ls(LSK.config);
-    if (s) { try { return JSON.parse(s); } catch (e) {} }
-    return null;
-  }
+  function getConfig() { return window.FIREBASE_CONFIG || null; }
   function isConfigured() { return !!getConfig(); }
-  function getCode() { return ls(LSK.code) || ""; }
-  function isOn() { return ls(LSK.on) === "1" && isConfigured() && !!getCode(); }
-  function lastSynced() { return ls(LSK.last) || ""; }
+  function isSignedIn() { return !!authUser; }
+  function getUser() { return authUser; }
+  function lastSynced() { return ls(LAST) || ""; }
+  function connecting() { return ls(SIGNED) === "1" && !authResolved; }
+  function onMessage(cb) { msgCb = cb; }
+  function notify(m) { if (msgCb) msgCb(m); }
 
-  function setConfig(obj) { if (obj) lsset(LSK.config, JSON.stringify(obj)); }
-  function setCode(c) { lsset(LSK.code, (c || "").trim()); }
-  function genCode() {
-    var a = "abcdefghijklmnopqrstuvwxyz0123456789", s = "";
-    for (var i = 0; i < 20; i++) s += a[Math.floor(Math.random() * a.length)];
-    return s;
+  function loadScript(src) {
+    return new Promise(function (res, rej) {
+      var s = document.createElement("script");
+      s.src = src; s.onload = res;
+      s.onerror = function () { rej(new Error("load-failed")); };
+      document.head.appendChild(s);
+    });
   }
-  function markSynced() { lsset(LSK.last, new Date().toISOString()); }
-
-  function loadSDK(cb, err) {
-    if (fbReady || (window.firebase && window.firebase.firestore)) { fbReady = true; return cb(); }
-    var a = document.createElement("script"); a.src = SDK + "firebase-app-compat.js";
-    a.onload = function () {
-      var b = document.createElement("script"); b.src = SDK + "firebase-firestore-compat.js";
-      b.onload = function () { fbReady = true; cb(); };
-      b.onerror = function () { err && err("sdk-load-failed"); };
-      document.head.appendChild(b);
-    };
-    a.onerror = function () { err && err("sdk-load-failed"); };
-    document.head.appendChild(a);
+  function loadSDK() {
+    if (window.firebase && window.firebase.auth && window.firebase.firestore) return Promise.resolve();
+    return loadScript(SDK + "firebase-app-compat.js")
+      .then(function () { return loadScript(SDK + "firebase-auth-compat.js"); })
+      .then(function () { return loadScript(SDK + "firebase-firestore-compat.js"); });
   }
 
-  function ensureDb(cb, err) {
+  function ensureStarted() {
+    if (started) return Promise.resolve();
     var cfg = getConfig();
-    if (!cfg) return err && err("no-config");
-    loadSDK(function () {
-      try {
-        if (!window.firebase.apps.length) window.firebase.initializeApp(cfg);
-        db = window.firebase.firestore();
-        cb();
-      } catch (e) { err && err(e); }
-    }, err);
+    if (!cfg) return Promise.reject(new Error("no-config"));
+    return loadSDK().then(function () {
+      if (!window.firebase.apps.length) window.firebase.initializeApp(cfg);
+      db = window.firebase.firestore();
+      started = true;
+      window.firebase.auth().getRedirectResult().catch(function () {});
+      window.firebase.auth().onAuthStateChanged(function (user) {
+        authResolved = true;
+        authUser = user;
+        lsset(SIGNED, user ? "1" : "0");
+        if (user) beginSync();
+        if (window.App && window.App.refresh) window.App.refresh();
+      });
+    });
   }
 
-  function docRef() { return db.collection("progress").doc(getCode()); }
+  function docRef() { return db.collection("progress").doc(authUser.uid); }
+  function mark() { lsset(LAST, new Date().toISOString()); }
 
   function pull(done) {
-    if (!isOn()) return done && done("off");
-    ensureDb(function () {
-      docRef().get().then(function (snap) {
-        if (snap.exists) {
-          var d = snap.data();
-          if (d && d.data) {
-            window.Storage.mergeData(d.data);
-            if (window.App && window.App.refresh) window.App.refresh();
-          }
+    if (!authUser) return done && done("signed-out");
+    docRef().get().then(function (snap) {
+      if (snap.exists) {
+        var d = snap.data();
+        if (d && d.data) {
+          window.Storage.mergeData(d.data);
+          if (window.App && window.App.refresh) window.App.refresh();
         }
-        markSynced();
-        done && done(null);
-      }).catch(function (e) { done && done(e); });
-    }, function (e) { done && done(e); });
+      }
+      mark(); done && done(null);
+    }).catch(function (e) { done && done(e); });
   }
-
   function push(done) {
-    if (!isOn()) return done && done("off");
-    ensureDb(function () {
-      docRef().set({ data: window.Storage.getProgress(), updatedAt: Date.now() }).then(function () {
-        markSynced();
-        done && done(null);
-      }).catch(function (e) { done && done(e); });
-    }, function (e) { done && done(e); });
+    if (!authUser) return done && done("signed-out");
+    docRef().set({ data: window.Storage.getProgress(), updatedAt: Date.now() })
+      .then(function () { mark(); done && done(null); })
+      .catch(function (e) { done && done(e); });
   }
-
   function schedulePush() {
-    if (!isOn()) return;
+    if (!authUser) return;
     clearTimeout(pushTimer);
     pushTimer = setTimeout(function () { push(); }, 1500);
   }
-
+  function beginSync() {
+    if (!subscribed) {
+      window.Storage.subscribe(schedulePush);
+      window.addEventListener("online", function () { if (authUser) syncNow(); });
+      subscribed = true;
+    }
+    syncNow();
+  }
   function syncNow(done) { pull(function () { push(done); }); }
 
-  function enable(code) {
-    if (code) setCode(code);
-    if (!getCode()) setCode(genCode());
-    lsset(LSK.on, "1");
-    syncNow();           // merge both ways on first enable
+  function signIn() {
+    ensureStarted().then(function () {
+      var provider = new window.firebase.auth.GoogleAuthProvider();
+      // Redirect is the most reliable method across desktop and installed PWAs.
+      window.firebase.auth().signInWithRedirect(provider);
+    }).catch(function (e) {
+      notify("Couldn't start sign-in (are you online?): " + (e.message || e));
+    });
   }
-  function disable() { lsset(LSK.on, "0"); }
+  function signOut() {
+    lsset(SIGNED, "0");
+    if (window.firebase && window.firebase.auth) {
+      window.firebase.auth().signOut().then(function () {
+        authUser = null;
+        if (window.App && window.App.refresh) window.App.refresh();
+      });
+    }
+  }
 
   function init() {
-    // Always listen for changes; the push no-ops while sync is off.
-    window.Storage.subscribe(schedulePush);
-    window.addEventListener("online", function () { if (isOn()) syncNow(); });
-    if (isOn()) syncNow();
+    if (!isConfigured()) return;
+    if (ls(SIGNED) === "1") ensureStarted().catch(function () {});  // restore session + auto-sync
   }
 
   return {
-    isConfigured: isConfigured, getConfig: getConfig, setConfig: setConfig,
-    getCode: getCode, setCode: setCode, genCode: genCode,
-    isOn: isOn, lastSynced: lastSynced,
-    enable: enable, disable: disable, syncNow: syncNow, init: init
+    isConfigured: isConfigured, isSignedIn: isSignedIn, getUser: getUser,
+    lastSynced: lastSynced, connecting: connecting,
+    signIn: signIn, signOut: signOut, syncNow: syncNow,
+    onMessage: onMessage, init: init
   };
 })();

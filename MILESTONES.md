@@ -3,6 +3,16 @@
 A running record of what's been built, in order. Newest at the top.
 (Live site: https://kanoonzaza.github.io/korean-app/)
 
+## 2026-06-04 — Sync switched to Google sign-in (no codes)
+- Replaced the manual sync-code flow with **Firebase Auth (Google sign-in)**. Progress
+  is keyed to the signed-in account at `progress/{uid}`; sign in once per device.
+- Uses signInWithRedirect (reliable on desktop + installed PWAs); session persists so a
+  signed-in device auto-syncs on every open. Firebase SDK lazy-loads.
+- Requires (user, one-time in console): enable Google provider, add `kanoonzaza.github.io`
+  to Authorized domains, and update the Firestore rule to uid-based ownership.
+- Verified: new sync.js parses + exposes signIn/signOut/syncNow; panel shows
+  "Sign in with Google". Interactive login tested by the user on-device.
+
 ## 2026-06-04 — Cloud sync LIVE ✅ (Firebase project connected + tested)
 - Baked in the Firebase project config (project `korean-app-d08a8`); Firestore enabled
   with a security rule (read/write only under /progress, code length ≥ 16).
