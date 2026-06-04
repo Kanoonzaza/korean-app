@@ -3,6 +3,14 @@
 A running record of what's been built, in order. Newest at the top.
 (Live site: https://kanoonzaza.github.io/korean-app/)
 
+## 2026-06-04 — Cloud sync LIVE ✅ (Firebase project connected + tested)
+- Baked in the Firebase project config (project `korean-app-d08a8`); Firestore enabled
+  with a security rule (read/write only under /progress, code length ≥ 16).
+- Verified end-to-end: raw write/read round-trip works, short codes are blocked by the
+  rule, and the app's own Sync module push→pull restores lessons + weak items via merge.
+- Users turn it on per device: Progress → Cloud sync → Generate code → Turn on (same
+  code on both devices).
+
 ## 2026-06-04 — Cloud sync (Firebase) — client built, awaiting project config
 - Added optional **cloud auto-sync** of progress via Firebase Firestore (`js/sync.js`,
   `content/firebase-config.js`). One Firestore doc per private "sync code".
