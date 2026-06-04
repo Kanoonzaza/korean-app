@@ -101,11 +101,13 @@ window.Sync = (function () {
   function syncNow(done) { pull(function () { push(done); }); }
 
   function signIn() {
+    lsset(SIGNED, "1");   // so the post-redirect page load re-initializes Firebase
     ensureStarted().then(function () {
       var provider = new window.firebase.auth.GoogleAuthProvider();
       // Redirect is the most reliable method across desktop and installed PWAs.
       window.firebase.auth().signInWithRedirect(provider);
     }).catch(function (e) {
+      lsset(SIGNED, "0");
       notify("Couldn't start sign-in (are you online?): " + (e.message || e));
     });
   }
@@ -121,7 +123,9 @@ window.Sync = (function () {
 
   function init() {
     if (!isConfigured()) return;
-    if (ls(SIGNED) === "1") ensureStarted().catch(function () {});  // restore session + auto-sync
+    // Always initialize when configured: this completes a pending Google redirect
+    // sign-in AND restores a previously-signed-in session. Fails quietly if offline.
+    ensureStarted().catch(function () {});
   }
 
   return {
