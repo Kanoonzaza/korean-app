@@ -12,15 +12,11 @@
  * This config is SAFE to be public (it only identifies the project); access is
  * controlled by Firestore security rules, not by hiding these values.
  */
-window.FIREBASE_CONFIG = null;
-
-/* Example shape:
 window.FIREBASE_CONFIG = {
-  apiKey: "AIzaSy...",
-  authDomain: "your-project.firebaseapp.com",
-  projectId: "your-project",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "1234567890",
-  appId: "1:1234567890:web:abcdef123456"
+  apiKey: "AIzaSyBPK8i9_tatMpzqZKbnQwW8Tm2ZYzZzmY4",
+  authDomain: "korean-app-d08a8.firebaseapp.com",
+  projectId: "korean-app-d08a8",
+  storageBucket: "korean-app-d08a8.firebasestorage.app",
+  messagingSenderId: "525936316941",
+  appId: "1:525936316941:web:fcc3f4d13b9d29d6837b44"
 };
-*/
