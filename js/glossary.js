@@ -16,7 +16,7 @@ window.Glossary = (function () {
       (l.vocab || []).forEach(function (v) {
         if (seen[v.ko]) return;
         seen[v.ko] = 1;
-        out.push({ ko: v.ko, en: v.en, romaji: v.romaji, pos: v.pos || "", lesson: l.id, level: l.level });
+        out.push({ ko: v.ko, en: v.en, romaji: v.romaji, pos: v.pos || "", lesson: l.id, level: l.level, title: l.title });
       });
     });
     return out;
@@ -64,18 +64,34 @@ window.Glossary = (function () {
       return '<p class="muted">' +
         (bookmarkedOnly ? "No bookmarked words yet — tap ☆ on a word." : "No words match your search.") + "</p>";
     }
-    var groups = {};
-    items.forEach(function (it) { (groups[it.level] = groups[it.level] || []).push(it); });
-    var levels = Object.keys(groups).sort();
+    // Group by level, then by lesson — preserving curriculum order.
+    var levels = [], levelMap = {};
+    items.forEach(function (it) {
+      var lg = levelMap[it.level];
+      if (!lg) { lg = { level: it.level, lessons: [], lessonMap: {} }; levelMap[it.level] = lg; levels.push(lg); }
+      var ls = lg.lessonMap[it.lesson];
+      if (!ls) { ls = { lesson: it.lesson, title: it.title, words: [] }; lg.lessonMap[it.lesson] = ls; lg.lessons.push(ls); }
+      ls.words.push(it);
+    });
+
     var openAll = !!(term && term.trim()) || bookmarkedOnly;
-    return levels.map(function (lv, idx) {
-      var rows = groups[lv].map(rowHTML).join("");
-      var open = openAll || idx === 0;
-      var n = groups[lv].length;
+    return levels.map(function (lg, idx) {
+      var levelOpen = openAll || idx === 0;
+      var total = 0;
+      var lessonsHTML = lg.lessons.map(function (ls) {
+        total += ls.words.length;
+        return (
+          '<details class="lesson-group"' + (openAll ? " open" : "") + ">" +
+            "<summary>" + esc(ls.lesson) + " · " + esc(ls.title) +
+              ' <span class="muted">(' + ls.words.length + ")</span></summary>" +
+            '<div class="word-list">' + ls.words.map(rowHTML).join("") + "</div>" +
+          "</details>"
+        );
+      }).join("");
       return (
-        '<details class="lvl-group"' + (open ? " open" : "") + ">" +
-          "<summary>Level " + esc(lv) + ' <span class="muted">· ' + n + " word" + (n > 1 ? "s" : "") + "</span></summary>" +
-          '<div class="word-list">' + rows + "</div>" +
+        '<details class="lvl-group"' + (levelOpen ? " open" : "") + ">" +
+          "<summary>Level " + esc(lg.level) + ' <span class="muted">· ' + total + " words</span></summary>" +
+          '<div class="lvl-body">' + lessonsHTML + "</div>" +
         "</details>"
       );
     }).join("");
