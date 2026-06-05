@@ -146,6 +146,11 @@ window.App = (function () {
           "<tbody>" + rows + "</tbody>" +
         "</table>" +
         examsPanel() +
+        '<div class="card">' +
+          "<h4>Display</h4>" +
+          '<div class="nav-row"><span class="muted small">Romanization (Revised Romanization, reflects pronunciation)</span>' +
+            '<button class="btn ghost" data-action="toggle-romaji">' + (Storage.romajiEnabled() ? "On" : "Off") + "</button></div>" +
+        "</div>" +
         '<div class="card sync">' +
           "<h4>Move progress to another device</h4>" +
           '<p class="muted small">Progress lives in this browser only. Export a file here, ' +
@@ -284,7 +289,7 @@ window.App = (function () {
         '<div class="vocab-row">' +
           '<div class="ko-cell"><span class="ko">' + esc(v.ko) + "</span>" + speak(v.ko) + "</div>" +
           '<div class="meaning"><span class="en">' + esc(v.en) + "</span>" +
-            '<span class="romaji">' + esc(v.romaji) + "</span>" +
+            (window.RR(v.ko) ? '<span class="romaji">' + esc(window.RR(v.ko)) + "</span>" : "") +
             (v.note ? '<span class="vnote">' + esc(v.note) + "</span>" : "") +
           "</div>" +
         "</div>"
@@ -299,7 +304,7 @@ window.App = (function () {
         '<div class="card example">' +
           '<div class="ko-cell"><span class="ko">' + esc(s.ko) + "</span>" + speak(s.ko) + "</div>" +
           '<div class="en">' + esc(s.en) + "</div>" +
-          '<div class="romaji">' + esc(s.romaji) + "</div>" +
+          (window.RR(s.ko) ? '<div class="romaji">' + esc(window.RR(s.ko)) + "</div>" : "") +
         "</div>"
       );
     }).join("");
@@ -325,7 +330,7 @@ window.App = (function () {
         '<div class="feedback ' + (st.last.ok ? "ok" : "bad") + '">' +
           (st.last.ok ? "✓ Correct" : "✗ Not quite") +
           '<div class="ans">Answer: <span class="ko">' + esc(q.answer) + "</span> " + speak(q.answer) +
-            ' <span class="romaji">' + esc(q.romaji) + "</span></div>" +
+            (window.RR(q.answer) ? ' <span class="romaji">' + esc(window.RR(q.answer)) + "</span>" : "") + "</div>" +
           (st.last.ok ? "" : '<div class="yours">You wrote: ' + esc(st.last.input || "—") + "</div>") +
         "</div>" +
         '<div class="nav-row"><span></span><button class="btn" data-action="' + prefix + '-next">' +
@@ -417,7 +422,7 @@ window.App = (function () {
         '<div class="feedback ' + (s.last.ok ? "ok" : "bad") + '">' +
           (s.last.ok ? "✓ Correct" : "✗ Not quite") +
           '<div class="ans">Answer: <span class="ko">' + esc(it.answer) + "</span> " + speak(it.fullKo) +
-            ' <span class="romaji">' + esc(it.romaji) + "</span></div>" +
+            (window.RR(it.fullKo) ? ' <span class="romaji">' + esc(window.RR(it.fullKo)) + "</span>" : "") + "</div>" +
           '<div class="full muted">' + esc(it.fullKo) + "</div>" +
           (s.last.ok ? "" : '<div class="yours">You wrote: ' + esc(s.last.input || "—") + "</div>") +
         "</div>" +
@@ -796,6 +801,9 @@ window.App = (function () {
       render();
     } else if (action === "exam-retry") {
       startExam(examState.key); render();
+    } else if (action === "toggle-romaji") {
+      Storage.setRomajiEnabled(!Storage.romajiEnabled());
+      render();
     } else if (action === "bm") {
       Storage.toggleBookmark(t.getAttribute("data-ko"));
       refreshGlossList();

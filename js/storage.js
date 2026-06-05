@@ -140,6 +140,10 @@ window.Storage = (function () {
     },
     getExam: function (key) { return (load().__exams || {})[key] || null; },
 
+    /* ----- display preference (device-local) ----- */
+    romajiEnabled: function () { try { return localStorage.getItem("koreanApp.romaji") !== "0"; } catch (e) { return true; } },
+    setRomajiEnabled: function (on) { try { localStorage.setItem("koreanApp.romaji", on ? "1" : "0"); } catch (e) {} },
+
     /* ----- move progress between devices ----- */
     exportData: function () { return JSON.stringify(load(), null, 2); },
     importData: function (jsonStr) {

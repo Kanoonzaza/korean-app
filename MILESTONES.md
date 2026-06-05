@@ -3,6 +3,17 @@
 A running record of what's been built, in order. Newest at the top.
 (Live site: https://kanoonzaza.github.io/korean-app/)
 
+## 2026-06-04 — Academic romanization (Revised Romanization engine)
+- New `js/romanize.js`: decomposes Hangul + applies official RR transcription rules —
+  liaison, aspiration, nasalization, lateralization, palatalization, final neutralization.
+  Verified 17/17 against authoritative examples + correct on real lesson sentences
+  (좋네요→jonneyo, 맛있네요→masinneyo, 괜찮아요→gwaenchanayo).
+- Displayed romanization is now generated live from 한글 (accurate), replacing the old
+  approximate romaji everywhere (lessons, quiz, practice, glossary).
+- Progress → Display: a Romanization On/Off toggle (device-local).
+- Note: like official RR, automatic tensification isn't doubled; audio remains the
+  authoritative pronunciation.
+
 ## 2026-06-04 — Checkpoint + mock-TOPIK tests
 - New `js/exam.js`: multiple-choice tests in real TOPIK formats — reading (meaning),
   fill-the-blank, and listening (audio → meaning), with distractors from the content.

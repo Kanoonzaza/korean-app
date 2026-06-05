@@ -43,6 +43,7 @@ window.Glossary = (function () {
     }
     return items.map(function (it) {
       var bm = window.Storage.isBookmarked(it.ko);
+      var r = window.RR ? window.RR(it.ko) : it.romaji;
       return (
         '<div class="gloss-row">' +
           '<div class="ko-cell">' +
@@ -53,7 +54,7 @@ window.Glossary = (function () {
           "</div>" +
           '<div class="meaning">' +
             '<span class="en">' + esc(it.en) + "</span>" +
-            '<span class="romaji">' + esc(it.romaji) + " · L" + esc(it.lesson) + "</span>" +
+            '<span class="romaji">' + (r ? esc(r) + " · " : "") + "L" + esc(it.lesson) + "</span>" +
           "</div>" +
         "</div>"
       );
