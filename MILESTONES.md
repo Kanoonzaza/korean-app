@@ -3,6 +3,14 @@
 A running record of what's been built, in order. Newest at the top.
 (Live site: https://kanoonzaza.github.io/korean-app/)
 
+## 2026-06-04 — Words page → grouped flashcards + review counts
+- Reworked the Words tab into a flashcard study list: words grouped by **level** in
+  collapsible sections (fixes the long page; first level open, rest collapsed).
+- Each row shows only the 한글; tap 🔊 to hear it AND reveal the meaning (+romaji),
+  with a ↺ to hide and test again.
+- Per-word **review count** (×N) bumped on each reveal; stored in __wordviews and
+  merged in cloud sync (max). Search + ⭐ bookmark filter still work.
+
 ## 2026-06-04 — Academic romanization (Revised Romanization engine)
 - New `js/romanize.js`: decomposes Hangul + applies official RR transcription rules —
   liaison, aspiration, nasalization, lateralization, palatalization, final neutralization.

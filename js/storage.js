@@ -111,6 +111,16 @@ window.Storage = (function () {
     isBookmarked: function (ko) { return !!(load().__bookmarks || {})[ko]; },
     bookmarkCount: function () { return Object.keys(load().__bookmarks || {}).length; },
 
+    /* ----- per-word review counts (flashcard reveals) ----- */
+    incWordView: function (ko) {
+      var d = load();
+      if (!d.__wordviews) d.__wordviews = {};
+      d.__wordviews[ko] = (d.__wordviews[ko] || 0) + 1;
+      save(d);
+      return d.__wordviews[ko];
+    },
+    getWordView: function (ko) { return (load().__wordviews || {})[ko] || 0; },
+
     /* ----- spaced repetition schedule (Leitner) ----- *
      * __srs[ko] = { box: 1..6, due: <ms timestamp> }
      */
@@ -174,6 +184,14 @@ window.Storage = (function () {
           out.__bookmarks = out.__bookmarks || {};
           var rb = remote.__bookmarks || {};
           Object.keys(rb).forEach(function (ko) { out.__bookmarks[ko] = true; });
+          return;
+        }
+        if (k === "__wordviews") {
+          out.__wordviews = out.__wordviews || {};
+          var rw = remote.__wordviews || {};
+          Object.keys(rw).forEach(function (ko) {
+            out.__wordviews[ko] = Math.max(out.__wordviews[ko] || 0, rw[ko] || 0);
+          });
           return;
         }
         if (k === "__srs") {

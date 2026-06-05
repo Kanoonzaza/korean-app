@@ -804,6 +804,19 @@ window.App = (function () {
     } else if (action === "toggle-romaji") {
       Storage.setRomajiEnabled(!Storage.romajiEnabled());
       render();
+    } else if (action === "word-reveal") {
+      var wko = t.getAttribute("data-ko");
+      TTS.speak(wko);
+      var wrow = t.closest(".word-row");
+      if (wrow && !wrow.classList.contains("revealed")) {
+        wrow.classList.add("revealed");
+        var wn = Storage.incWordView(wko);
+        var wb = wrow.querySelector(".wcount");
+        if (wb) wb.textContent = "×" + wn;
+      }
+    } else if (action === "word-hide") {
+      var hrow = t.closest(".word-row");
+      if (hrow) hrow.classList.remove("revealed");
     } else if (action === "bm") {
       Storage.toggleBookmark(t.getAttribute("data-ko"));
       refreshGlossList();
