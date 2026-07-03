@@ -617,6 +617,8 @@ window.App = (function () {
     return parts;
   }
 
+  var lastHash = null;   // scroll to top only when the route actually changes
+
   function render() {
     var parts = parse();
     var page = parts[0] || "lessons";
@@ -655,6 +657,11 @@ window.App = (function () {
     }
 
     root.innerHTML = topbar(active) + '<main class="container">' + html + "</main>";
+
+    if (location.hash !== lastHash) {
+      lastHash = location.hash;
+      window.scrollTo(0, 0);
+    }
 
     // Autofocus the answer input when present.
     var input = document.getElementById("quizInput") ||
@@ -851,6 +858,16 @@ window.App = (function () {
     reader.readAsText(file);
   }
 
+  // During feedback the answer input is gone, so Enter lands on <body>:
+  // catch it at the document level and advance to the next question.
+  function handleGlobalKey(e) {
+    if (e.key !== "Enter") return;
+    var el = e.target;
+    if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "BUTTON" || el.tagName === "A")) return;
+    var next = document.querySelector('[data-action="quiz-next"],[data-action="practice-next"],[data-action="review-next"],[data-action="exam-next"]');
+    if (next) { e.preventDefault(); next.click(); }
+  }
+
   function handleKey(e) {
     if (e.key !== "Enter") return;
     var el = e.target;
@@ -882,6 +899,7 @@ window.App = (function () {
     });
     root.addEventListener("click", handleClick);
     root.addEventListener("keydown", handleKey);
+    document.addEventListener("keydown", handleGlobalKey);
     root.addEventListener("change", handleChange);
     root.addEventListener("input", handleInput);
     render();

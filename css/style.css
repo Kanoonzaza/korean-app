@@ -36,6 +36,10 @@ a:hover { text-decoration: underline; }
   position: sticky; top: 0; z-index: 10;
   display: flex; align-items: center; justify-content: space-between;
   padding: 14px 20px;
+  /* keep the bar clear of the iPhone/iPad notch when installed as a PWA */
+  padding-top: calc(14px + env(safe-area-inset-top, 0px));
+  padding-left: calc(20px + env(safe-area-inset-left, 0px));
+  padding-right: calc(20px + env(safe-area-inset-right, 0px));
   background: rgba(15,17,21,0.85);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
@@ -52,7 +56,11 @@ a:hover { text-decoration: underline; }
 .topbar nav a.active { color: var(--text); background: var(--surface); }
 
 /* ---------- layout ---------- */
-.container { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 80px; }
+.container {
+  max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 80px;
+  /* keep content clear of the iOS home-indicator bar */
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+}
 .view h2 { margin: 0 0 4px; font-size: 1.5rem; }
 .view > .muted { margin-top: 0; }
 
@@ -188,7 +196,7 @@ a:hover { text-decoration: underline; }
 
 /* ---------- update banner ---------- */
 #updateBar {
-  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+  position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
   display: none; align-items: center; gap: 14px;
   background: var(--accent); color: var(--accent-ink);
   padding: 10px 14px 10px 18px; border-radius: 999px;
@@ -322,15 +330,42 @@ ul.notes li { margin: 6px 0; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 560px) {
-  .topbar { padding: 12px 14px; }
-  .topbar nav { gap: 4px; }
-  .topbar nav a { padding: 5px 9px; font-size: 0.85rem; }
+  .topbar {
+    padding: 12px 14px;
+    padding-top: calc(12px + env(safe-area-inset-top, 0px));
+    padding-left: calc(14px + env(safe-area-inset-left, 0px));
+    padding-right: calc(14px + env(safe-area-inset-right, 0px));
+  }
+  /* one scrollable row instead of a ragged two-line wrap.
+     justify-content must be flex-start: with flex-end the overflow spills past
+     the start edge, where it can't be scrolled to. */
+  .topbar nav {
+    gap: 4px; flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    mask-image: linear-gradient(to right, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, #000 92%, transparent);
+  }
+  .topbar nav::-webkit-scrollbar { display: none; }
+  .topbar nav a { padding: 8px 10px; font-size: 0.9rem; flex-shrink: 0; }
   .brand a { font-size: 1rem; }
-  .container { padding: 20px 14px 70px; }
+  .container {
+    padding: 20px 14px 70px;
+    padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+  }
   .ko { font-size: 1.35rem; }
   .step-label { display: none; }          /* stepper shrinks to dots on phone */
   .step { padding: 6px; }
   .vocab-row { flex-direction: column; align-items: flex-start; gap: 6px; }
   .meaning { align-items: flex-start; text-align: left; }
   .answer-row { flex-direction: column; }
+}
+
+/* comfortable ~44px touch targets on touch devices */
+@media (pointer: coarse) {
+  .spk { font-size: 1.15rem; padding: 8px 10px; }
+  .word-actions .bm { font-size: 1.2rem; padding: 8px 10px; }
+  .hide-btn { padding: 7px 12px; }
+  .step .dot { width: 26px; height: 26px; }
+  .btn { padding: 13px 20px; }
+  .lvl-group > summary, .lesson-group > summary { padding-top: 13px; padding-bottom: 13px; }
 }
