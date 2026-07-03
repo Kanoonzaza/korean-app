@@ -328,6 +328,35 @@ ul.notes li { margin: 6px 0; }
 .embed-wrap iframe { display: block; border-radius: 12px; }
 .podcast .links { color: var(--muted); font-size: 0.9rem; }
 
+/* ---------- review-due badge / streak ---------- */
+.nav-badge {
+  display: inline-block; background: var(--accent); color: var(--accent-ink);
+  font-size: 0.7rem; font-weight: 700; border-radius: 999px;
+  padding: 1px 6px; margin-left: 2px; vertical-align: 1px;
+}
+.streak-chip {
+  display: inline-block; background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); font-size: 0.8rem; font-weight: 600;
+  border-radius: 999px; padding: 2px 10px; white-space: nowrap;
+}
+
+/* ---------- answer diff (wrong-answer feedback) ---------- */
+.d-bad { color: var(--bad); text-decoration: line-through; }
+.d-miss { color: var(--ok); text-decoration: underline; text-underline-offset: 3px; }
+
+/* example sentence in feedback */
+.ex-sent { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); font-weight: 400; }
+.ex-sent .ko { font-size: 1.1rem; }
+
+/* listen prompt: play + speed side by side */
+.listen-row { display: flex; align-items: center; gap: 8px; }
+
+/* ---------- Core 5k word rows ---------- */
+.wrank { font-variant-numeric: tabular-nums; }
+.word-meaning.w5k { align-items: flex-start; }
+.w5k-sent { margin-top: 6px; }
+.w5k-sent .ko-s { font-family: var(--kfont); font-size: 1.05rem; }
+
 /* ---------- responsive ---------- */
 @media (max-width: 560px) {
   .topbar {

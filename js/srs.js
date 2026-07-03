@@ -9,16 +9,20 @@ window.SRS = (function () {
   var NEW_CAP = 15;       // new cards introduced per session
   var SESSION_CAP = 25;   // max questions per review session
 
-  // ko -> {en, ko, romaji} for every item in the curriculum
+  // ko -> {en, ko, romaji} for every item in the curriculum + the Core 5k list
   function index() {
     var m = {};
     (window.LESSONS || []).forEach(function (l) {
       (l.vocab || []).forEach(function (v) { if (!m[v.ko]) m[v.ko] = { en: v.en, ko: v.ko, romaji: v.romaji }; });
       (l.sentences || []).forEach(function (s) { if (!m[s.ko]) m[s.ko] = { en: s.en, ko: s.ko, romaji: s.romaji }; });
     });
+    (window.WORDS5K || []).forEach(function (w) {
+      if (!m[w.ko]) m[w.ko] = { en: w.en, ko: w.ko, sko: w.sko, sen: w.sen };
+    });
     return m;
   }
 
+  // New-card candidates: everything from completed lessons + bookmarked 5k words.
   function completedKeys() {
     var keys = [];
     (window.LESSONS || []).forEach(function (l) {
@@ -26,6 +30,10 @@ window.SRS = (function () {
         (l.vocab || []).forEach(function (v) { keys.push(v.ko); });
         (l.sentences || []).forEach(function (s) { keys.push(s.ko); });
       }
+    });
+    var bm = window.Storage.getBookmarks();   // snapshot once — checking 3k words individually re-parses storage
+    (window.WORDS5K || []).forEach(function (w) {
+      if (bm[w.ko]) keys.push(w.ko);
     });
     return keys;
   }

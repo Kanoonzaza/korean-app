@@ -36,7 +36,7 @@ window.TTS = (function () {
         if (!koVoice) pickVoice();
         if (koVoice) u.voice = koVoice;
         u.lang = "ko-KR";
-        u.rate = 0.92;
+        u.rate = (window.Storage && window.Storage.ttsRate) ? window.Storage.ttsRate() : 0.92;
         window.speechSynthesis.speak(u);
       } catch (e) {
         console.warn("TTS failed:", e);

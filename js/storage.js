@@ -39,6 +39,11 @@ window.Storage = (function () {
     return data[id];
   }
 
+  function dayKey(t) {
+    function p(x) { return (x < 10 ? "0" : "") + x; }
+    return t.getFullYear() + "-" + p(t.getMonth() + 1) + "-" + p(t.getDate());
+  }
+
   return {
     getProgress: function () { return load(); },
 
@@ -125,6 +130,14 @@ window.Storage = (function () {
      * __srs[ko] = { box: 1..6, due: <ms timestamp> }
      */
     getSrs: function () { return load().__srs || {}; },
+    getBookmarks: function () { return load().__bookmarks || {}; },
+    // A miss anywhere sends the card back to box 1, due immediately.
+    srsMiss: function (ko) {
+      var d = load();
+      if (!d.__srs) d.__srs = {};
+      d.__srs[ko] = { box: 1, due: Date.now() };
+      save(d);
+    },
     srsGrade: function (ko, correct) {
       var DAY = 86400000;
       var DAYS = { 1: 1, 2: 3, 3: 7, 4: 16, 5: 35, 6: 90 };
@@ -150,9 +163,34 @@ window.Storage = (function () {
     },
     getExam: function (key) { return (load().__exams || {})[key] || null; },
 
+    /* ----- daily streak ----- *
+     * __days["2026-07-03"] = 1 for every day with at least one answered question.
+     */
+    markActivity: function () {
+      var d = load();
+      if (!d.__days) d.__days = {};
+      var k = dayKey(new Date());
+      if (!d.__days[k]) { d.__days[k] = 1; save(d); }
+    },
+    streak: function () {
+      var days = load().__days || {};
+      var t = new Date();
+      if (!days[dayKey(t)]) t.setDate(t.getDate() - 1);  // today not studied yet? count from yesterday
+      var n = 0;
+      while (days[dayKey(t)]) { n++; t.setDate(t.getDate() - 1); }
+      return n;
+    },
+
     /* ----- display preference (device-local) ----- */
     romajiEnabled: function () { try { return localStorage.getItem("koreanApp.romaji") !== "0"; } catch (e) { return true; } },
     setRomajiEnabled: function (on) { try { localStorage.setItem("koreanApp.romaji", on ? "1" : "0"); } catch (e) {} },
+
+    /* ----- TTS speed preference (device-local) ----- */
+    ttsRate: function () {
+      try { var r = parseFloat(localStorage.getItem("koreanApp.ttsrate")); return (r >= 0.5 && r <= 1.5) ? r : 0.92; }
+      catch (e) { return 0.92; }
+    },
+    setTtsRate: function (r) { try { localStorage.setItem("koreanApp.ttsrate", String(r)); } catch (e) {} },
 
     /* ----- move progress between devices ----- */
     exportData: function () { return JSON.stringify(load(), null, 2); },
@@ -184,6 +222,12 @@ window.Storage = (function () {
           out.__bookmarks = out.__bookmarks || {};
           var rb = remote.__bookmarks || {};
           Object.keys(rb).forEach(function (ko) { out.__bookmarks[ko] = true; });
+          return;
+        }
+        if (k === "__days") {
+          out.__days = out.__days || {};
+          var rd = remote.__days || {};
+          Object.keys(rd).forEach(function (day) { out.__days[day] = 1; });
           return;
         }
         if (k === "__wordviews") {

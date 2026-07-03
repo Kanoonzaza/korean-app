@@ -34,6 +34,49 @@ window.App = (function () {
     return '<button class="spk" data-speak="' + esc(text) + '" title="Listen" aria-label="Listen">🔊</button>';
   }
 
+  /* ----- TTS speed (cycles slow → normal → fast) ----- */
+  var TTS_RATES = [0.7, 0.92, 1.1];
+  function rateLabel(r) { return r === 0.7 ? "0.7×" : (r === 1.1 ? "1.1×" : "0.9×"); }
+  function speedButton() {
+    return '<button class="btn ghost small-btn" data-action="tts-rate" title="Audio speed">' +
+      rateLabel(Storage.ttsRate()) + "</button>";
+  }
+
+  // Character-level diff (LCS) so wrong answers show exactly which syllables differ:
+  // in your answer, characters that don't belong are struck red; in the key,
+  // characters you missed are highlighted green.
+  function diffParts(input, answer) {
+    var a = (input || "").split(""), b = (answer || "").split("");
+    var m = a.length, n = b.length, i, j;
+    var L = [];
+    for (i = 0; i <= m; i++) { L[i] = []; for (j = 0; j <= n; j++) L[i][j] = 0; }
+    for (i = 1; i <= m; i++) {
+      for (j = 1; j <= n; j++) {
+        L[i][j] = a[i - 1] === b[j - 1] ? L[i - 1][j - 1] + 1 : Math.max(L[i - 1][j], L[i][j - 1]);
+      }
+    }
+    var inA = {}, inB = {};
+    i = m; j = n;
+    while (i > 0 && j > 0) {
+      if (a[i - 1] === b[j - 1]) { inA[i - 1] = 1; inB[j - 1] = 1; i--; j--; }
+      else if (L[i - 1][j] >= L[i][j - 1]) i--;
+      else j--;
+    }
+    function markup(chars, matched, cls) {
+      return chars.map(function (c, k) {
+        return matched[k] ? esc(c) : '<span class="' + cls + '">' + esc(c) + "</span>";
+      }).join("");
+    }
+    return { yours: markup(a, inA, "d-bad"), key: markup(b, inB, "d-miss") };
+  }
+
+  // Example-sentence block appended to feedback when the question carries one.
+  function sentenceBox(q) {
+    if (!q || !q.sko) return "";
+    return '<div class="ex-sent"><span class="ko">' + esc(q.sko) + "</span> " + speak(q.sko) +
+      '<div class="muted small">' + esc(q.sen) + "</div></div>";
+  }
+
   function pitfallsBox(lesson) {
     if (!lesson.pitfalls || !lesson.pitfalls.length) return "";
     var items = lesson.pitfalls.map(function (p) { return "<li>" + esc(p) + "</li>"; }).join("");
@@ -50,18 +93,27 @@ window.App = (function () {
     function link(href, label, key) {
       return '<a href="' + href + '" class="' + (active === key ? "active" : "") + '">' + label + "</a>";
     }
+    var due = window.SRS ? SRS.count() : 0;
+    var reviewLabel = "Review" + (due > 0 ? ' <span class="nav-badge">' + due + "</span>" : "");
     return (
       '<header class="topbar">' +
         '<div class="brand"><a href="#/lessons">한국어 <span>Study</span></a></div>' +
         '<nav>' +
           link("#/lessons", "Lessons", "lessons") +
-          link("#/review", "Review", "review") +
+          link("#/review", reviewLabel, "review") +
           link("#/words", "Words", "words") +
           link("#/listening", "Listening", "listening") +
           link("#/progress", "Progress", "progress") +
         "</nav>" +
       "</header>"
     );
+  }
+
+  function streakChip() {
+    var s = Storage.streak();
+    if (s < 1) return "";
+    return '<span class="streak-chip" title="days in a row with study activity">🔥 ' +
+      s + "-day streak</span>";
   }
 
   /* ---------- home ---------- */
@@ -87,7 +139,8 @@ window.App = (function () {
       '<section class="view">' +
         '<div class="head-row"><h2>Level 4 & 5 · Lessons</h2>' +
           '<a class="btn ghost small-btn" href="#/syllabus">📋 Syllabus</a></div>' +
-        '<p class="muted">Continuing past your TTMIK deck — Level 4 & 5 grammar, one step at a time.</p>' +
+        '<p class="muted">Continuing past your TTMIK deck — Level 4 & 5 grammar, one step at a time. ' +
+          streakChip() + "</p>" +
         '<div class="lesson-list">' + cards + "</div>" +
       "</section>"
     );
@@ -150,6 +203,7 @@ window.App = (function () {
           "<h4>Display</h4>" +
           '<div class="nav-row"><span class="muted small">Romanization (Revised Romanization, reflects pronunciation)</span>' +
             '<button class="btn ghost" data-action="toggle-romaji">' + (Storage.romajiEnabled() ? "On" : "Off") + "</button></div>" +
+          '<div class="nav-row"><span class="muted small">Audio speed (all 🔊 buttons)</span>' + speedButton() + "</div>" +
         "</div>" +
         '<div class="card sync">' +
           "<h4>Move progress to another device</h4>" +
@@ -317,8 +371,10 @@ window.App = (function () {
     var total = st.questions.length;
     var prompt;
     if (q.kind === "listen") {
-      prompt = '<div class="q-prompt listen"><button class="btn" data-speak="' + esc(q.answer) +
-        '">🔊 Play audio</button><p class="muted small">Type the Korean you hear.</p></div>';
+      prompt = '<div class="q-prompt listen"><div class="listen-row">' +
+        '<button class="btn" data-speak="' + esc(q.answer) + '">🔊 Play audio</button>' +
+        speedButton() + "</div>" +
+        '<p class="muted small">Type the Korean you hear.</p></div>';
     } else {
       prompt = '<div class="q-prompt"><span class="q-label">Type in Korean:</span>' +
         '<div class="q-en">' + esc(q.promptText) + "</div></div>";
@@ -326,12 +382,15 @@ window.App = (function () {
 
     var body;
     if (st.phase === "feedback") {
+      var d = st.last.ok ? null : diffParts(st.last.input || "", q.answer);
       body =
         '<div class="feedback ' + (st.last.ok ? "ok" : "bad") + '">' +
           (st.last.ok ? "✓ Correct" : "✗ Not quite") +
-          '<div class="ans">Answer: <span class="ko">' + esc(q.answer) + "</span> " + speak(q.answer) +
+          '<div class="ans">Answer: <span class="ko">' + (d ? d.key : esc(q.answer)) + "</span> " + speak(q.answer) +
             (window.RR(q.answer) ? ' <span class="romaji">' + esc(window.RR(q.answer)) + "</span>" : "") + "</div>" +
-          (st.last.ok ? "" : '<div class="yours">You wrote: ' + esc(st.last.input || "—") + "</div>") +
+          (st.last.ok || !st.last.input ? "" :
+            '<div class="yours">You wrote: <span class="ko">' + d.yours + "</span></div>") +
+          sentenceBox(q) +
         "</div>" +
         '<div class="nav-row"><span></span><button class="btn" data-action="' + prefix + '-next">' +
           (st.i + 1 < total ? "Next →" : "See score →") + "</button></div>";
@@ -418,13 +477,15 @@ window.App = (function () {
 
     var feedback = "";
     if (s.phase === "feedback") {
+      var pd = s.last.ok ? null : diffParts(s.last.input || "", it.answer);
       feedback =
         '<div class="feedback ' + (s.last.ok ? "ok" : "bad") + '">' +
           (s.last.ok ? "✓ Correct" : "✗ Not quite") +
-          '<div class="ans">Answer: <span class="ko">' + esc(it.answer) + "</span> " + speak(it.fullKo) +
+          '<div class="ans">Answer: <span class="ko">' + (pd ? pd.key : esc(it.answer)) + "</span> " + speak(it.fullKo) +
             (window.RR(it.fullKo) ? ' <span class="romaji">' + esc(window.RR(it.fullKo)) + "</span>" : "") + "</div>" +
           '<div class="full muted">' + esc(it.fullKo) + "</div>" +
-          (s.last.ok ? "" : '<div class="yours">You wrote: ' + esc(s.last.input || "—") + "</div>") +
+          (s.last.ok || !s.last.input ? "" :
+            '<div class="yours">You wrote: <span class="ko">' + pd.yours + "</span></div>") +
         "</div>" +
         '<div class="nav-row"><span></span><button class="btn" data-action="practice-next">' +
           (s.i + 1 < total ? "Next →" : "Finish lesson →") + "</button></div>";
@@ -469,11 +530,17 @@ window.App = (function () {
       : '<div class="card review-opt disabled"><h3>🎯 Weak items</h3>' +
           '<p class="muted">Nothing here yet. Anything you miss in a quiz or review lands here automatically.</p></div>';
 
+    var conj = window.Conj
+      ? '<a class="card review-opt" href="#/review/conj"><h3>🔤 Conjugation drill</h3>' +
+          '<p class="muted">A random verb and a grammar pattern from the lessons — type the conjugated form. ' +
+          "Irregular verbs included.</p></a>"
+      : "";
+
     return (
       '<section class="view">' +
         "<h2>Review</h2>" +
-        '<p class="muted">Come back here any time to revisit earlier material so it sticks.</p>' +
-        '<div class="lesson-list">' + srs + mixed + weakCard + "</div>" +
+        '<p class="muted">Come back here any time to revisit earlier material so it sticks. ' + streakChip() + "</p>" +
+        '<div class="lesson-list">' + srs + mixed + weakCard + conj + "</div>" +
       "</section>"
     );
   }
@@ -482,6 +549,7 @@ window.App = (function () {
     var qs;
     if (mode === "weak") qs = Review.buildWeak();
     else if (mode === "srs") qs = window.SRS ? SRS.buildQuestions() : [];
+    else if (mode === "conj") qs = window.Conj ? Conj.build(10) : [];
     else qs = Review.buildMixed();
     reviewState = { mode: mode, questions: qs, i: 0, correct: 0, phase: "q", last: null };
   }
@@ -490,7 +558,9 @@ window.App = (function () {
     if (!reviewState || reviewState.mode !== mode) startReview(mode);
     var s = reviewState;
     var total = s.questions.length;
-    var title = mode === "weak" ? "Weak-item review" : (mode === "srs" ? "Today's review" : "Mixed review");
+    var title = mode === "weak" ? "Weak-item review"
+      : (mode === "srs" ? "Today's review"
+      : (mode === "conj" ? "Conjugation drill" : "Mixed review"));
     var backMenu = '<div class="nav-row"><a class="btn ghost" href="#/review">← Review menu</a><span></span></div>';
 
     if (total === 0) {
@@ -557,8 +627,8 @@ window.App = (function () {
 
     var q = s.questions[s.i];
     var prompt = q.promptKind === "audio"
-      ? '<div class="q-prompt listen"><button class="btn" data-speak="' + esc(q.promptKo) +
-          '">🔊 Play audio</button><p class="muted small">' + esc(q.label) + "</p></div>"
+      ? '<div class="q-prompt listen"><div class="listen-row"><button class="btn" data-speak="' + esc(q.promptKo) +
+          '">🔊 Play audio</button>' + speedButton() + '</div><p class="muted small">' + esc(q.label) + "</p></div>"
       : '<div class="q-prompt"><span class="q-label">' + esc(q.label) + "</span>" +
           '<div class="q-ko">' + esc(q.promptText) + "</div></div>";
 
@@ -633,7 +703,7 @@ window.App = (function () {
     } else if (page === "review") {
       active = "review";
       var mode = parts[1];
-      if (mode === "mixed" || mode === "weak" || mode === "srs") {
+      if (mode === "mixed" || mode === "weak" || mode === "srs" || mode === "conj") {
         html = renderReviewRun(mode);
       } else {
         reviewState = null;          // returning to the menu resets the runner
@@ -672,7 +742,7 @@ window.App = (function () {
     // If a Korean voice exists, auto-play listening prompts in the active runner.
     var runner = null;
     if (page === "lesson" && parts[2] === "4") runner = quizState;
-    else if (page === "review" && (parts[1] === "mixed" || parts[1] === "weak" || parts[1] === "srs")) runner = reviewState;
+    else if (page === "review" && (parts[1] === "mixed" || parts[1] === "weak" || parts[1] === "srs" || parts[1] === "conj")) runner = reviewState;
     if (runner && runner.phase === "q") {
       var q = runner.questions[runner.i];
       if (q && q.kind === "listen" && TTS.available()) TTS.speak(q.answer);
@@ -690,6 +760,21 @@ window.App = (function () {
              document.getElementById("practiceInput") ||
              document.getElementById("reviewInput");
     return el ? el.value : "";
+  }
+
+  // Unified grading: every typed answer anywhere feeds the same miss pile and
+  // SRS schedule. Wrong → weak pile + card back to box 1 (due immediately).
+  // Right → leaves the weak pile; the schedule only advances for cards already
+  // in it (so casual quizzes don't flood the daily review with new cards).
+  function gradeAnswer(ko, ok, missItem) {
+    Storage.markActivity();
+    if (ok) {
+      Storage.clearMiss(ko);
+      if (Storage.getSrs()[ko]) Storage.srsGrade(ko, true);
+    } else {
+      Storage.addMiss(missItem);
+      Storage.srsMiss(ko);
+    }
   }
 
   function handleClick(e) {
@@ -710,8 +795,8 @@ window.App = (function () {
       var q = quizState.questions[quizState.i];
       var val = currentInput();
       var ok = q.check(val);
-      if (ok) { quizState.correct++; Storage.clearMiss(q.answer); }
-      else { Storage.addMiss({ en: q.en, ko: q.answer, romaji: q.romaji }); }
+      gradeAnswer(q.answer, ok, { en: q.en, ko: q.answer, romaji: q.romaji });
+      if (ok) quizState.correct++;
       quizState.last = { ok: ok, input: val };
       quizState.phase = "feedback";
       render();
@@ -729,8 +814,8 @@ window.App = (function () {
       var it = practiceState.items[practiceState.i];
       var pv = currentInput();
       var pok = it.check(pv);
-      if (pok) { practiceState.correct++; Storage.clearMiss(it.fullKo); }
-      else { Storage.addMiss({ en: it.en, ko: it.fullKo, romaji: it.romaji }); }
+      gradeAnswer(it.fullKo, pok, { en: it.en, ko: it.fullKo, romaji: it.romaji });
+      if (pok) practiceState.correct++;
       practiceState.last = { ok: pok, input: pv };
       practiceState.phase = "feedback";
       render();
@@ -749,12 +834,12 @@ window.App = (function () {
       var rv = currentInput();
       var rok = rq.check(rv);
       if (rok) reviewState.correct++;
-      if (reviewState.mode === "srs") {
-        Storage.srsGrade(rq.answer, rok);   // reschedule this card
-      } else if (rok) {
+      if (reviewState.mode === "srs" && rok) {
+        Storage.markActivity();
+        Storage.srsGrade(rq.answer, true);   // advance the schedule
         Storage.clearMiss(rq.answer);
       } else {
-        Storage.addMiss({ en: rq.en, ko: rq.answer, romaji: rq.romaji });
+        gradeAnswer(rq.answer, rok, { en: rq.en, ko: rq.answer, romaji: rq.romaji });
       }
       reviewState.last = { ok: rok, input: rv };
       reviewState.phase = "feedback";
@@ -792,6 +877,7 @@ window.App = (function () {
       });
     } else if (action === "exam-opt") {
       if (examState.phase === "feedback") return;
+      Storage.markActivity();
       var chosen = parseInt(t.getAttribute("data-i"), 10);
       var eq = examState.questions[examState.i];
       var eok = chosen === eq.answerIndex;
@@ -808,6 +894,12 @@ window.App = (function () {
       render();
     } else if (action === "exam-retry") {
       startExam(examState.key); render();
+    } else if (action === "tts-rate") {
+      // Cycle audio speed in place (no re-render, so quiz input is kept).
+      var ri = TTS_RATES.indexOf(Storage.ttsRate());
+      var next = TTS_RATES[(ri + 1) % TTS_RATES.length];
+      Storage.setTtsRate(next);
+      t.textContent = rateLabel(next);
     } else if (action === "toggle-romaji") {
       Storage.setRomajiEnabled(!Storage.romajiEnabled());
       render();
@@ -830,6 +922,14 @@ window.App = (function () {
     } else if (action === "bm-filter") {
       glossBookmarked = !glossBookmarked;
       render();
+    } else if (action === "band") {
+      // Frequency-band contents render lazily on first open (3k+ words total).
+      var det = t.closest("details");
+      if (det) {
+        var body = det.querySelector(".band-body");
+        if (body && !body.innerHTML) body.innerHTML = Glossary.bandHTML(parseInt(t.getAttribute("data-band"), 10));
+        det.open = !det.open;
+      }
     }
   }
 

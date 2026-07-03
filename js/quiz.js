@@ -23,13 +23,15 @@ window.Quiz = (function () {
     return a;
   }
 
-  function makeQuestion(kind, promptText, answerKo, romaji, en) {
+  function makeQuestion(kind, promptText, answerKo, romaji, en, item) {
     return {
       kind: kind,                 // 'type' | 'listen'
       promptText: promptText,     // English (type) or "" (listen)
       answer: answerKo,           // correct 한글
       romaji: romaji || "",
       en: en || promptText || "", // English meaning (kept for the weak-item pile)
+      sko: (item && item.sko) || "",  // example sentence, shown in feedback
+      sen: (item && item.sen) || "",
       check: function (input) {
         return normalize(input) === normalize(answerKo);
       }
@@ -44,8 +46,8 @@ window.Quiz = (function () {
     var picked = shuffle(usable).slice(0, Math.min(count || 8, usable.length));
     var questions = picked.map(function (item, i) {
       var listen = (i % 2 === 1) || !item.en;   // need English for a 'type' prompt
-      if (listen) return makeQuestion("listen", "", item.ko, item.romaji, item.en);
-      return makeQuestion("type", item.en, item.ko, item.romaji, item.en);
+      if (listen) return makeQuestion("listen", "", item.ko, item.romaji, item.en, item);
+      return makeQuestion("type", item.en, item.ko, item.romaji, item.en, item);
     });
     return shuffle(questions);
   }
