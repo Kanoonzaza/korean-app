@@ -351,6 +351,38 @@ ul.notes li { margin: 6px 0; }
 /* listen prompt: play + speed side by side */
 .listen-row { display: flex; align-items: center; gap: 8px; }
 
+/* ---------- usage guide (example sentence + note + phrases) ---------- */
+.usage-block { margin-top: 4px; }
+.usage-sent { margin-bottom: 8px; }
+.usage-sent .ko { font-family: var(--kfont); font-size: 1.1rem; }
+.usage-note {
+  background: var(--surface-2); border-left: 3px solid var(--accent);
+  border-radius: 8px; padding: 8px 12px; margin: 8px 0;
+  font-size: 0.9rem; line-height: 1.5; color: var(--text);
+}
+.feedback .usage-note { margin-top: 10px; }
+.phrase-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.phrase-chip {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 5px 10px; font-size: 0.85rem;
+}
+.phrase-chip .ko-p { font-family: var(--kfont); }
+
+/* expandable vocab row (lesson Vocab step) */
+details.vocab-row { display: block; padding: 0; }
+details.vocab-row > summary {
+  display: flex; gap: 16px; align-items: center; justify-content: space-between;
+  padding: 12px 16px; cursor: pointer; list-style: none;
+}
+details.vocab-row > summary::-webkit-details-marker { display: none; }
+details.vocab-row .usage-block { padding: 0 16px 14px; }
+.usage-caret { color: var(--muted); transition: transform .15s; flex-shrink: 0; }
+details.vocab-row[open] .usage-caret { transform: rotate(90deg); }
+
+/* Words tab: usage shown only when the row is revealed */
+.word-usage { display: none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border); }
+.word-row.revealed .word-usage { display: block; }
+
 /* ---------- Core 5k word rows ---------- */
 .wrank { font-variant-numeric: tabular-nums; }
 .word-meaning.w5k { align-items: flex-start; }
@@ -385,6 +417,7 @@ ul.notes li { margin: 6px 0; }
   .step-label { display: none; }          /* stepper shrinks to dots on phone */
   .step { padding: 6px; }
   .vocab-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+  details.vocab-row > summary { flex-wrap: wrap; gap: 6px; }
   .meaning { align-items: flex-start; text-align: left; }
   .answer-row { flex-direction: column; }
 }

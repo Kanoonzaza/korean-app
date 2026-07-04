@@ -24,14 +24,19 @@ window.Quiz = (function () {
   }
 
   function makeQuestion(kind, promptText, answerKo, romaji, en, item) {
+    // Prefer the item's own sentence; else fall back to the usage guide.
+    var usage = (window.VOCAB_USAGE || {})[answerKo] || null;
+    var sko = (item && item.sko) || (usage && usage.s) || "";
+    var sen = (item && item.sen) || (usage && usage.se) || "";
     return {
       kind: kind,                 // 'type' | 'listen'
       promptText: promptText,     // English (type) or "" (listen)
       answer: answerKo,           // correct 한글
       romaji: romaji || "",
       en: en || promptText || "", // English meaning (kept for the weak-item pile)
-      sko: (item && item.sko) || "",  // example sentence, shown in feedback
-      sen: (item && item.sen) || "",
+      sko: sko,                   // example sentence, shown in feedback
+      sen: sen,
+      note: usage ? usage.u : "", // usage note, shown in feedback
       check: function (input) {
         return normalize(input) === normalize(answerKo);
       }

@@ -118,8 +118,17 @@ window.Glossary = (function () {
           '<span class="romaji">' + (r ? esc(r) + " · " : "") + "L" + esc(it.lesson) + "</span>" +
           '<button class="hide-btn" data-action="word-hide" title="Hide to test again">↺</button>' +
         "</div>" +
+        (usageMarkup(it.ko)) +
       "</div>"
     );
+  }
+
+  // Usage guide (sentence + note + phrases) for a word, shown when revealed.
+  // Reuses App.usageBlock so lesson vocab and the Words tab render identically.
+  function usageMarkup(ko) {
+    var u = window.VOCAB_USAGE && window.VOCAB_USAGE[ko];
+    if (!u || !window.App || !window.App.usageBlock) return "";
+    return '<div class="word-usage">' + window.App.usageBlock(u) + "</div>";
   }
 
   function listHTML(term, bookmarkedOnly) {

@@ -34,6 +34,27 @@ window.App = (function () {
     return '<button class="spk" data-speak="' + esc(text) + '" title="Listen" aria-label="Listen">🔊</button>';
   }
 
+  // Usage guide for a word (example sentence, note, phrases), or null.
+  function usageOf(ko) { return (window.VOCAB_USAGE || {})[ko] || null; }
+
+  // Shared renderer for a word's usage block (sentence + note + phrase chips).
+  // Used by the Vocab lesson step and the Words tab.
+  function usageBlock(u) {
+    if (!u) return "";
+    var sentence = u.s
+      ? '<div class="usage-sent"><span class="ko">' + esc(u.s) + "</span> " + speak(u.s) +
+          '<div class="muted small">' + esc(u.se || "") + "</div></div>"
+      : "";
+    var note = u.u ? '<div class="usage-note">💡 ' + esc(u.u) + "</div>" : "";
+    var phrases = (u.p && u.p.length)
+      ? '<div class="phrase-list">' + u.p.map(function (pr) {
+          return '<span class="phrase-chip"><span class="ko-p">' + esc(pr[0]) + "</span> " +
+            '<span class="muted">' + esc(pr[1]) + "</span></span>";
+        }).join("") + "</div>"
+      : "";
+    return '<div class="usage-block">' + sentence + note + phrases + "</div>";
+  }
+
   /* ----- TTS speed (cycles slow → normal → fast) ----- */
   var TTS_RATES = [0.7, 0.92, 1.1];
   function rateLabel(r) { return r === 0.7 ? "0.7×" : (r === 1.1 ? "1.1×" : "0.9×"); }
@@ -72,9 +93,13 @@ window.App = (function () {
 
   // Example-sentence block appended to feedback when the question carries one.
   function sentenceBox(q) {
-    if (!q || !q.sko) return "";
-    return '<div class="ex-sent"><span class="ko">' + esc(q.sko) + "</span> " + speak(q.sko) +
-      '<div class="muted small">' + esc(q.sen) + "</div></div>";
+    if (!q || (!q.sko && !q.note)) return "";
+    var sent = q.sko
+      ? '<div class="ex-sent"><span class="ko">' + esc(q.sko) + "</span> " + speak(q.sko) +
+          '<div class="muted small">' + esc(q.sen) + "</div></div>"
+      : "";
+    var note = q.note ? '<div class="usage-note">💡 ' + esc(q.note) + "</div>" : "";
+    return sent + note;
   }
 
   function pitfallsBox(lesson) {
@@ -339,17 +364,25 @@ window.App = (function () {
 
   function stepVocab(lesson) {
     var rows = lesson.vocab.map(function (v) {
+      var inner =
+        '<div class="ko-cell"><span class="ko">' + esc(v.ko) + "</span>" + speak(v.ko) + "</div>" +
+        '<div class="meaning"><span class="en">' + esc(v.en) + "</span>" +
+          (window.RR(v.ko) ? '<span class="romaji">' + esc(window.RR(v.ko)) + "</span>" : "") +
+          (v.note ? '<span class="vnote">' + esc(v.note) + "</span>" : "") +
+        "</div>";
+      var u = usageOf(v.ko);
+      if (!u) return '<div class="vocab-row">' + inner + "</div>";
+      // Expandable: tap the row to reveal the usage guide.
       return (
-        '<div class="vocab-row">' +
-          '<div class="ko-cell"><span class="ko">' + esc(v.ko) + "</span>" + speak(v.ko) + "</div>" +
-          '<div class="meaning"><span class="en">' + esc(v.en) + "</span>" +
-            (window.RR(v.ko) ? '<span class="romaji">' + esc(window.RR(v.ko)) + "</span>" : "") +
-            (v.note ? '<span class="vnote">' + esc(v.note) + "</span>" : "") +
-          "</div>" +
-        "</div>"
+        '<details class="vocab-row has-usage">' +
+          '<summary>' + inner + '<span class="usage-caret">›</span></summary>' +
+          usageBlock(u) +
+        "</details>"
       );
     }).join("");
-    return '<div class="step-body"><h2>Vocabulary</h2><div class="vocab-list">' + rows + "</div></div>";
+    return '<div class="step-body"><h2>Vocabulary</h2>' +
+      '<p class="muted small">Tap a word to see an example sentence and how it\'s used.</p>' +
+      '<div class="vocab-list">' + rows + "</div></div>";
   }
 
   function stepExamples(lesson) {
@@ -1012,7 +1045,7 @@ window.App = (function () {
     }
   }
 
-  return { init: init, refresh: render };
+  return { init: init, refresh: render, usageOf: usageOf, usageBlock: usageBlock };
 })();
 
 document.addEventListener("DOMContentLoaded", window.App.init);
