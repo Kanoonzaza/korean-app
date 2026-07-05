@@ -497,3 +497,23 @@ details.vocab-row[open] .usage-caret { transform: rotate(90deg); }
 .tr-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tr-right { color: var(--muted); font-size: 0.85rem; white-space: nowrap; }
 .undo-btn { margin-left: 8px; padding: 3px 10px; font-size: 0.75rem; }
+
+/* Retention stats strip (Progress) */
+.stats-strip { display: flex; align-items: flex-end; gap: 3px; height: 64px; margin: 10px 0 8px; }
+.st-col { flex: 1; height: 100%; display: flex; align-items: flex-end; }
+.st-bar { width: 100%; border-radius: 3px 3px 0 0; min-height: 0; }
+.st-bar.good { background: #5BBF8A; }
+.st-bar.mid { background: #E0A85C; }
+.st-bar.low { background: #E08A8A; }
+.st-bar.empty { background: transparent; }
+.stats-sum strong { color: var(--text); }
+
+/* Usage block on card backs */
+.anki-usage { margin-top: 16px; text-align: left; border-top: 1px dashed var(--border); padding-top: 10px; }
+
+/* Reading */
+.passage-text { font-family: var(--kfont); font-size: 1.15rem; line-height: 2; }
+.passage-text p { margin: 0 0 12px; }
+.gw { border-bottom: 1.5px dotted var(--accent); cursor: pointer; }
+.gloss-box { border-top: 1px solid var(--border); margin-top: 10px; padding-top: 10px; min-height: 1.4em; }
+.gloss-box .ko-p { font-family: var(--kfont); font-weight: 600; }

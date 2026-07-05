@@ -134,6 +134,7 @@ window.App = (function () {
           link("#/review", reviewLabel, "review") +
           link("#/cards", cardsLabel, "cards") +
           link("#/words", "Words", "words") +
+          link("#/reading", "Reading", "reading") +
           link("#/listening", "Listening", "listening") +
           link("#/progress", "Progress", "progress") +
         "</nav>" +
@@ -277,6 +278,7 @@ window.App = (function () {
           "<thead><tr><th>#</th><th>Lesson</th><th class='center'>Complete</th><th class='center'>Best quiz</th></tr></thead>" +
           "<tbody>" + rows + "</tbody>" +
         "</table>" +
+        statsPanel() +
         examsPanel() +
         '<div class="card">' +
           "<h4>Display</h4>" +
@@ -297,6 +299,52 @@ window.App = (function () {
         "</div>" +
         syncPanel() +
       "</section>"
+    );
+  }
+
+  /* ----- retention stats (Progress) ----- */
+  function statsPanel() {
+    function key(t) {
+      function p(x) { return (x < 10 ? "0" : "") + x; }
+      return t.getFullYear() + "-" + p(t.getMonth() + 1) + "-" + p(t.getDate());
+    }
+    var stats = Storage.getStats();
+    var days = [], maxN = 0;
+    for (var i = 29; i >= 0; i--) {
+      var t = new Date(); t.setDate(t.getDate() - i);
+      var s = stats[key(t)] || { r: 0, w: 0 };
+      var n = (s.r || 0) + (s.w || 0);
+      if (n > maxN) maxN = n;
+      days.push({ label: (t.getMonth() + 1) + "/" + t.getDate(), r: s.r || 0, w: s.w || 0, n: n });
+    }
+    function agg(k) {
+      var r = 0, n = 0;
+      days.slice(-k).forEach(function (d) { r += d.r; n += d.n; });
+      return { n: n, pct: n ? Math.round((r / n) * 100) : null };
+    }
+    var a7 = agg(7), a30 = agg(30);
+    if (!a30.n) {
+      return '<div class="card"><h4>Retention · last 30 days</h4>' +
+        '<p class="muted small">Answer questions anywhere (cards, quizzes, review, tests) and your daily accuracy shows up here.</p></div>';
+    }
+
+    var cells = days.map(function (d) {
+      var h = d.n ? Math.max(12, Math.round((d.n / maxN) * 100)) : 0;
+      var acc = d.n ? d.r / d.n : 0;
+      var cls = !d.n ? "empty" : (acc >= 0.9 ? "good" : (acc >= 0.7 ? "mid" : "low"));
+      return '<div class="st-col" title="' + d.label + " · " + d.r + "✓ " + d.w + '✗">' +
+        '<div class="st-bar ' + cls + '" style="height:' + h + '%"></div></div>';
+    }).join("");
+
+    return (
+      '<div class="card">' +
+        "<h4>Retention · last 30 days</h4>" +
+        '<div class="stats-strip">' + cells + "</div>" +
+        '<div class="stats-sum muted small">' +
+          "Last 7 days: " + (a7.pct == null ? "—" : "<strong>" + a7.pct + "%</strong> of " + a7.n) +
+          " · 30 days: " + "<strong>" + a30.pct + "%</strong> of " + a30.n + " answers" +
+        "</div>" +
+      "</div>"
     );
   }
 
@@ -772,6 +820,8 @@ window.App = (function () {
         top = '<div class="anki-front small"><div class="anki-en">' + esc(w.en) + "</div></div>";
         answer = koBlock + extras;
       }
+      var u = usageOf(w.ko);   // enrichment from vocab-usage stores, when authored
+      if (u) answer += '<div class="anki-usage">' + usageBlock(u) + "</div>";
       body = top +
         '<hr class="anki-hr" />' +
         '<div class="anki-back">' + answer + "</div>" +
@@ -920,6 +970,9 @@ window.App = (function () {
     } else if (page === "exam") {
       active = "progress";
       html = renderExam(parts[1]);
+    } else if (page === "reading") {
+      active = "reading";
+      html = window.Reading ? Reading.render(parts) : "";
     } else if (page === "words") {
       active = "words";
       html = Glossary.render(glossBookmarked);
@@ -978,6 +1031,7 @@ window.App = (function () {
   // in it (so casual quizzes don't flood the daily review with new cards).
   function gradeAnswer(ko, ok, missItem) {
     Storage.markActivity();
+    Storage.recordAnswer(ok);
     if (ok) {
       Storage.clearMiss(ko);
       if (Storage.getSrs()[ko]) Storage.srsGrade(ko, true);
@@ -1000,6 +1054,13 @@ window.App = (function () {
     var action = t.getAttribute("data-action");
     if (!action) return;
     e.preventDefault();
+
+    // Reading view owns all "read-*" actions (see js/reading.js).
+    if (action.indexOf("read-") === 0) {
+      Reading.handle(action, t);
+      render();
+      return;
+    }
 
     if (action === "quiz-submit") {
       var q = quizState.questions[quizState.i];
@@ -1046,6 +1107,7 @@ window.App = (function () {
       if (rok) reviewState.correct++;
       if (reviewState.mode === "srs" && rok) {
         Storage.markActivity();
+        Storage.recordAnswer(true);
         Storage.srsGrade(rq.answer, true);   // advance the schedule
         Storage.clearMiss(rq.answer);
       } else {
@@ -1091,6 +1153,7 @@ window.App = (function () {
       var chosen = parseInt(t.getAttribute("data-i"), 10);
       var eq = examState.questions[examState.i];
       var eok = chosen === eq.answerIndex;
+      Storage.recordAnswer(eok);
       if (eok) examState.correct++;
       examState.last = { ok: eok, chosen: chosen };
       examState.phase = "feedback";
@@ -1111,8 +1174,10 @@ window.App = (function () {
       if (cardsCur && cardsCur.dir === "EK") TTS.speak(cardsCur.w.ko);
     } else if (action === "cards-grade") {
       if (cardsCur) {
-        cardsUndo = Cards.grade(cardsCur.id, parseInt(t.getAttribute("data-g"), 10) || 0);
+        var gVal = parseInt(t.getAttribute("data-g"), 10) || 0;
+        cardsUndo = Cards.grade(cardsCur.id, gVal);
         Storage.markActivity();
+        Storage.recordAnswer(gVal > 0);      // Again = miss; Hard/Good/Easy = pass
         cardsDone++;
       }
       cardsCur = null; cardsRevealed = false;

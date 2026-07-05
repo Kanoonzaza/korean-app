@@ -32,6 +32,10 @@ No build step, no server, no dependencies — just open the file.
   Again / Hard / Good / Easy; simplified SM-2 scheduling with a daily new-card
   limit, separate from the Review tab's schedule. One-step undo for misclicked
   grades; a word's second direction is buried on any day its partner was studied.
+- **Reading** — graded passages (Levels 4–5) with tap-to-gloss words, passage
+  audio, and TOPIK-style comprehension questions; best scores saved.
+- **Retention stats** — every graded answer (cards, quizzes, review, tests,
+  reading) feeds a 30-day accuracy strip on the Progress tab.
 - **Listening** — embedded free podcasts (Didi, IYAGI, SpongeMind, Choisusu).
 - **Progress** — completion ✓ and best quiz score per lesson, saved in your browser.
 - **Audio** — 🔊 buttons use your browser's Korean voice (Web Speech API). If no
@@ -139,6 +143,7 @@ js/quiz.js             quiz generation + grading
 js/practice.js         sentence practice
 js/review.js           mixed + weak-item review sets
 js/cards.js            Anki-style flashcards (Cards tab)
+js/reading.js          graded reading passages (Reading tab)
 js/listening.js        podcast library view
 js/app.js              nav, router, lesson stepper, review runner
 ```

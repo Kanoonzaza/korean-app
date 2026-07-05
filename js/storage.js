@@ -199,6 +199,34 @@ window.Storage = (function () {
     },
     getExam: function (key) { return (load().__exams || {})[key] || null; },
 
+    /* ----- daily answer stats (retention) ----- *
+     * __stats["YYYY-MM-DD"] = { r: <right>, w: <wrong> } — every graded answer
+     * anywhere (quiz, practice, review, exam, cards) increments one counter.
+     */
+    recordAnswer: function (ok) {
+      var d = load();
+      if (!d.__stats) d.__stats = {};
+      var k = dayKey(new Date());
+      var s = d.__stats[k] || { r: 0, w: 0 };
+      if (ok) s.r++; else s.w++;
+      d.__stats[k] = s;
+      save(d);
+    },
+    getStats: function () { return load().__stats || {}; },
+
+    /* ----- reading passages ----- *
+     * __reads[id] = { best: 0..100 }
+     */
+    saveRead: function (id, pct) {
+      var d = load();
+      if (!d.__reads) d.__reads = {};
+      var cur = d.__reads[id] || { best: null };
+      if (cur.best == null || pct > cur.best) cur.best = pct;
+      d.__reads[id] = cur;
+      save(d);
+    },
+    getRead: function (id) { return (load().__reads || {})[id] || null; },
+
     /* ----- daily streak ----- *
      * __days["2026-07-03"] = 1 for every day with at least one answered question.
      */
@@ -303,6 +331,26 @@ window.Storage = (function () {
           } else if (rm2 && (rm2.u || 0) > (lm.u || 0)) {
             out.__cardsMeta = rm2;
           }
+          return;
+        }
+        if (k === "__stats") {
+          out.__stats = out.__stats || {};
+          var rst = remote.__stats || {};
+          Object.keys(rst).forEach(function (day) {
+            var l = out.__stats[day], r = rst[day] || {};
+            if (!l) { out.__stats[day] = r; return; }
+            l.r = Math.max(l.r || 0, r.r || 0);   // per-device max (avoids double-counting)
+            l.w = Math.max(l.w || 0, r.w || 0);
+          });
+          return;
+        }
+        if (k === "__reads") {
+          out.__reads = out.__reads || {};
+          var rr2 = remote.__reads || {};
+          Object.keys(rr2).forEach(function (id) {
+            var l = out.__reads[id], r = rr2[id];
+            if (!l || (r.best || 0) > (l.best || 0)) out.__reads[id] = r;
+          });
           return;
         }
         if (k === "__exams") {
