@@ -9,6 +9,9 @@ window.App = (function () {
   var reviewState = null;   // { mode, questions, i, correct, phase, last }
   var glossBookmarked = false; // glossary: showing bookmarked-only?
   var examState = null;     // { key, questions, i, correct, phase, last }
+  var cardsCur = null;      // current flashcard (a WORDS5K entry) in the Cards runner
+  var cardsRevealed = false;
+  var cardsDone = 0;        // cards graded this session (for the finish screen)
 
   /* ---------- helpers ---------- */
   function esc(s) {
@@ -120,12 +123,15 @@ window.App = (function () {
     }
     var due = window.SRS ? SRS.count() : 0;
     var reviewLabel = "Review" + (due > 0 ? ' <span class="nav-badge">' + due + "</span>" : "");
+    var avail = window.Cards ? Cards.available() : 0;
+    var cardsLabel = "Cards" + (avail > 0 ? ' <span class="nav-badge">' + avail + "</span>" : "");
     return (
       '<header class="topbar">' +
         '<div class="brand"><a href="#/lessons">한국어 <span>Study</span></a></div>' +
         '<nav>' +
           link("#/lessons", "Lessons", "lessons") +
           link("#/review", reviewLabel, "review") +
+          link("#/cards", cardsLabel, "cards") +
           link("#/words", "Words", "words") +
           link("#/listening", "Listening", "listening") +
           link("#/progress", "Progress", "progress") +
@@ -625,6 +631,112 @@ window.App = (function () {
       questionInner(s.questions[s.i], s, "review") + backMenu + "</section>";
   }
 
+  /* ----- Cards (Anki-style flashcards, English → Korean) ----- */
+  function renderCardsDeck() {
+    var c = Cards.counts();
+    var total = c.nw + c.learn + c.due;
+    var npd = Cards.newPerDay();
+    var study = total > 0
+      ? '<a class="btn study-btn" href="#/cards/study">Study now</a>'
+      : '<div class="muted small">All done for today — come back tomorrow, or raise the new-cards limit below.</div>';
+    return (
+      '<section class="view">' +
+        "<h2>Cards</h2>" +
+        '<p class="muted">Anki-style flashcards over the Core 5k list — see the English, recall the Korean, then grade yourself. ' + streakChip() + "</p>" +
+        '<div class="card deck-card">' +
+          "<h3>Core vocabulary</h3>" +
+          '<p class="muted small">English → Korean · ' + c.total + " words by frequency · " + c.seen + " seen</p>" +
+          '<div class="deck-counts">' +
+            '<div class="dc new"><div class="n">' + c.nw + '</div><div class="l">New</div></div>' +
+            '<div class="dc learn"><div class="n">' + c.learn + '</div><div class="l">Learning</div></div>' +
+            '<div class="dc due"><div class="n">' + c.due + '</div><div class="l">Due</div></div>' +
+          "</div>" + study +
+        "</div>" +
+        '<div class="card">' +
+          "<h4>Deck options</h4>" +
+          '<div class="nav-row"><span class="muted small">New cards per day</span>' +
+            '<span class="npd-ctl">' +
+              '<button class="btn ghost small-btn" data-action="cards-new-minus">−</button>' +
+              '<span class="npd-val">' + npd + "</span>" +
+              '<button class="btn ghost small-btn" data-action="cards-new-plus">+</button>' +
+            "</span></div>" +
+          '<p class="muted small">Cards you grade come back on an Anki-like schedule: 1 min → 10 min while learning, then growing day intervals. This deck is separate from Review → Today\'s review.</p>' +
+        "</div>" +
+      "</section>"
+    );
+  }
+
+  // Headword highlighted inside its example sentence (when it appears verbatim).
+  function highlightIn(sent, ko) {
+    var i = sent.indexOf(ko);
+    if (i < 0) return esc(sent);
+    return esc(sent.slice(0, i)) + '<span class="hl">' + esc(ko) + "</span>" + esc(sent.slice(i + ko.length));
+  }
+
+  function renderCardsStudy() {
+    if (!cardsCur) { cardsCur = Cards.next(); cardsRevealed = false; }
+    var back = '<div class="nav-row"><a class="btn ghost" href="#/cards">← Deck</a><span></span></div>';
+
+    if (!cardsCur) {
+      return (
+        '<section class="view"><h2>Cards</h2>' +
+          '<div class="card score-card"><div class="big-score">🎉</div>' +
+            "<p>Session finished — " + cardsDone + " card" + (cardsDone === 1 ? "" : "s") + " studied.</p>" +
+            '<p class="muted small">Learning cards return in a few minutes; reviews come back on their day. ' + streakChip() + "</p>" +
+          "</div>" + back +
+        "</section>"
+      );
+    }
+
+    var w = cardsCur;
+    var c = Cards.counts();
+    var countsRow =
+      '<div class="cards-remaining" title="new · learning · due">' +
+        '<span class="cc-new">' + c.nw + "</span> · " +
+        '<span class="cc-learn">' + c.learn + "</span> · " +
+        '<span class="cc-due">' + c.due + "</span>" +
+        '<span class="wrank muted small">#' + w.r + "</span>" +
+      "</div>";
+
+    var front = '<div class="anki-front"><div class="anki-en">' + esc(w.en) + "</div></div>";
+    var body;
+    if (!cardsRevealed) {
+      body = front +
+        '<button class="btn show-btn" data-action="cards-show">Show answer</button>';
+    } else {
+      var r = window.RR ? window.RR(w.ko) : "";
+      var sentence = w.sko
+        ? '<div class="anki-sent"><span class="ko-s">' + highlightIn(w.sko, w.ko) + "</span> " + speak(w.sko) +
+            '<div class="muted small">' + esc(w.sen || "") + "</div></div>"
+        : "";
+      var pv = Cards.previews(w.ko);
+      var G = [["again", "Again"], ["hard", "Hard"], ["good", "Good"], ["easy", "Easy"]];
+      var grades = G.map(function (g, i) {
+        return '<button class="grade-btn ' + g[0] + '" data-action="cards-grade" data-g="' + i + '">' +
+          '<span class="ivl">' + esc(pv[i]) + "</span>" + g[1] + "</button>";
+      }).join("");
+      body =
+        '<div class="anki-front small"><div class="anki-en">' + esc(w.en) + "</div></div>" +
+        '<hr class="anki-hr" />' +
+        '<div class="anki-back">' +
+          '<div class="anki-ko"><span class="ko">' + esc(w.ko) + "</span>" + speak(w.ko) + "</div>" +
+          (r ? '<div class="romaji">' + esc(r) + "</div>" : "") +
+          sentence +
+        "</div>" +
+        '<div class="grade-row">' + grades + "</div>";
+    }
+
+    return (
+      '<section class="view">' +
+        "<h2>Cards</h2>" + countsRow +
+        '<div class="card anki-card">' + body + "</div>" +
+        '<p class="muted small center-note">' +
+          (cardsRevealed ? "Keys: 1 Again · 2 Hard · 3 Good · 4 Easy" : "Space or Enter shows the answer") + "</p>" +
+        back +
+      "</section>"
+    );
+  }
+
   /* ----- exam / checkpoint (multiple choice) ----- */
   var EXAM_TITLES = { "4": "Level 4 checkpoint", "5": "Level 5 checkpoint", "topik": "Mock TOPIK test" };
 
@@ -741,6 +853,14 @@ window.App = (function () {
       } else {
         reviewState = null;          // returning to the menu resets the runner
         html = renderReviewHome();
+      }
+    } else if (page === "cards") {
+      active = "cards";
+      if (parts[1] === "study") {
+        html = renderCardsStudy();
+      } else {
+        cardsCur = null; cardsRevealed = false; cardsDone = 0;   // deck screen resets the runner
+        html = renderCardsDeck();
       }
     } else if (page === "syllabus") {
       active = "lessons";
@@ -927,6 +1047,22 @@ window.App = (function () {
       render();
     } else if (action === "exam-retry") {
       startExam(examState.key); render();
+    } else if (action === "cards-show") {
+      cardsRevealed = true;
+      render();
+      if (cardsCur) TTS.speak(cardsCur.ko);          // auto-play the answer, Anki-style
+    } else if (action === "cards-grade") {
+      if (cardsCur) {
+        Cards.grade(cardsCur.ko, parseInt(t.getAttribute("data-g"), 10) || 0);
+        Storage.markActivity();
+        cardsDone++;
+      }
+      cardsCur = null; cardsRevealed = false;
+      render();
+    } else if (action === "cards-new-minus" || action === "cards-new-plus") {
+      var step = action === "cards-new-plus" ? 5 : -5;
+      Cards.setNewPerDay(Cards.newPerDay() + step);
+      render();
     } else if (action === "tts-rate") {
       // Cycle audio speed in place (no re-render, so quiz input is kept).
       var ri = TTS_RATES.indexOf(Storage.ttsRate());
@@ -994,9 +1130,26 @@ window.App = (function () {
   // During feedback the answer input is gone, so Enter lands on <body>:
   // catch it at the document level and advance to the next question.
   function handleGlobalKey(e) {
-    if (e.key !== "Enter") return;
     var el = e.target;
-    if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.tagName === "BUTTON" || el.tagName === "A")) return;
+    if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA")) return;
+
+    // Cards runner: Space/Enter reveals then grades Good; 1–4 grade directly.
+    // (Skipped when a button/link is focused — the browser fires its click natively.)
+    if (location.hash.indexOf("#/cards/study") === 0 &&
+        !(el && (el.tagName === "BUTTON" || el.tagName === "A"))) {
+      if (e.key === " " || e.key === "Enter") {
+        var btn = document.querySelector('[data-action="cards-show"]') ||
+                  document.querySelector('[data-action="cards-grade"][data-g="2"]');
+        if (btn) { e.preventDefault(); btn.click(); return; }
+      }
+      if (cardsRevealed && e.key >= "1" && e.key <= "4") {
+        var gb = document.querySelector('[data-action="cards-grade"][data-g="' + (parseInt(e.key, 10) - 1) + '"]');
+        if (gb) { e.preventDefault(); gb.click(); return; }
+      }
+    }
+
+    if (e.key !== "Enter") return;
+    if (el && (el.tagName === "BUTTON" || el.tagName === "A")) return;
     var next = document.querySelector('[data-action="quiz-next"],[data-action="practice-next"],[data-action="review-next"],[data-action="exam-next"]');
     if (next) { e.preventDefault(); next.click(); }
   }

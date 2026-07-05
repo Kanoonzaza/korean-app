@@ -8,3 +8,6 @@ Desktop.ini
 
 # Local progress backups you might export here
 korean-app-progress*.json
+
+# Local Claude Code config
+.claude/

@@ -23,6 +23,10 @@ No build step, no server, no dependencies — just open the file.
   - *Mixed review* — questions pulled from every lesson you've completed.
   - *Weak items* — anything you answer wrong (in a quiz **or** in review) is saved
     automatically; answer it correctly once and it retires from the pile.
+- **Cards** — Anki-style flashcards over the Core 5k list (English → Korean):
+  see the meaning, reveal the Korean (with audio + example sentence), grade
+  yourself Again / Hard / Good / Easy. Simplified SM-2 scheduling with a daily
+  new-card limit; separate from the Review tab's schedule.
 - **Listening** — embedded free podcasts (Didi, IYAGI, SpongeMind, Choisusu).
 - **Progress** — completion ✓ and best quiz score per lesson, saved in your browser.
 - **Audio** — 🔊 buttons use your browser's Korean voice (Web Speech API). If no
@@ -129,6 +133,7 @@ js/tts.js              Korean text-to-speech
 js/quiz.js             quiz generation + grading
 js/practice.js         sentence practice
 js/review.js           mixed + weak-item review sets
+js/cards.js            Anki-style flashcards (Cards tab)
 js/listening.js        podcast library view
 js/app.js              nav, router, lesson stepper, review runner
 ```

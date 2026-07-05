@@ -149,6 +149,27 @@ window.Storage = (function () {
       save(d);
     },
 
+    /* ----- Anki-style card schedule (Cards tab) ----- *
+     * __cards[ko] = { st: "learn"|"relearn"|"rev", step, ivl, ef, due, u }
+     * __cardsMeta = { day: "YYYY-MM-DD", introduced, newPerDay, u }
+     * "u" = last-updated ms, used by the sync merge (most recent wins).
+     */
+    getCards: function () { return load().__cards || {}; },
+    setCard: function (ko, state) {
+      var d = load();
+      if (!d.__cards) d.__cards = {};
+      state.u = Date.now();
+      d.__cards[ko] = state;
+      save(d);
+    },
+    getCardsMeta: function () { return load().__cardsMeta || {}; },
+    setCardsMeta: function (m) {
+      var d = load();
+      m.u = Date.now();
+      d.__cardsMeta = m;
+      save(d);
+    },
+
     /* ----- exam / checkpoint results ----- *
      * __exams[key] = { best: 0..100, passed: bool }   (key: "4", "5", "topik")
      */
@@ -245,6 +266,27 @@ window.Storage = (function () {
             var l = out.__srs[ko], r = rs[ko];
             if (!l || (r.due || 0) > (l.due || 0)) out.__srs[ko] = r; // keep most recent schedule
           });
+          return;
+        }
+        if (k === "__cards") {
+          out.__cards = out.__cards || {};
+          var rc = remote.__cards || {};
+          Object.keys(rc).forEach(function (ko) {
+            var l = out.__cards[ko], r = rc[ko];
+            if (!l || (r.u || 0) > (l.u || 0)) out.__cards[ko] = r; // most recent grading wins
+          });
+          return;
+        }
+        if (k === "__cardsMeta") {
+          var lm = out.__cardsMeta, rm2 = remote.__cardsMeta;
+          if (!lm) { out.__cardsMeta = rm2; return; }
+          if (rm2 && lm.day === rm2.day) {
+            // Same study day on both devices: new cards introduced on either count.
+            lm.introduced = Math.max(lm.introduced || 0, rm2.introduced || 0);
+            if ((rm2.u || 0) > (lm.u || 0)) lm.newPerDay = rm2.newPerDay;
+          } else if (rm2 && (rm2.u || 0) > (lm.u || 0)) {
+            out.__cardsMeta = rm2;
+          }
           return;
         }
         if (k === "__exams") {

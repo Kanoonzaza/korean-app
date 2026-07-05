@@ -431,3 +431,51 @@ details.vocab-row[open] .usage-caret { transform: rotate(90deg); }
   .btn { padding: 13px 20px; }
   .lvl-group > summary, .lesson-group > summary { padding-top: 13px; padding-bottom: 13px; }
 }
+
+/* ----- Cards tab (Anki-style flashcards) ----- */
+.deck-card h3 { margin: 0 0 2px; }
+.deck-counts { display: flex; gap: 10px; margin: 14px 0 16px; }
+.dc { flex: 1; text-align: center; border-radius: 12px; padding: 10px 6px; background: var(--surface-2, #22262f); }
+.dc .n { font-size: 1.45rem; font-weight: 700; line-height: 1.2; }
+.dc .l { font-size: 0.72rem; color: var(--muted); }
+.dc.new .n { color: #7AA2E3; }
+.dc.learn .n { color: #E0A85C; }
+.dc.due .n { color: #5BBF8A; }
+.study-btn { display: block; text-align: center; }
+.npd-ctl { display: inline-flex; align-items: center; gap: 10px; }
+.npd-val { min-width: 2ch; text-align: center; font-weight: 600; }
+
+.cards-remaining { display: flex; align-items: center; gap: 4px; font-size: 0.85rem; margin-bottom: 10px; }
+.cards-remaining .cc-new { color: #7AA2E3; }
+.cards-remaining .cc-learn { color: #E0A85C; }
+.cards-remaining .cc-due { color: #5BBF8A; }
+.cards-remaining .wrank { margin-left: auto; }
+
+.anki-card { display: flex; flex-direction: column; min-height: 46vh; }
+.anki-front { flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; padding: 18px 6px; }
+.anki-front.small { flex: 0 0 auto; padding: 4px 6px 10px; }
+.anki-front.small .anki-en { font-size: 0.95rem; color: var(--muted); }
+.anki-en { font-size: 1.3rem; line-height: 1.45; }
+.anki-hr { border: 0; border-top: 1px solid var(--border); margin: 0 0 14px; }
+.anki-back { flex: 1; text-align: center; }
+.anki-ko .ko { font-size: 2.2rem; }
+.anki-back .romaji { color: var(--muted); font-style: italic; margin-top: 2px; }
+.anki-sent { margin: 14px auto 0; max-width: 480px; font-size: 0.95rem; }
+.anki-sent .hl { color: #6FD3E0; }
+.show-btn { margin-top: 14px; }
+
+.grade-row { display: flex; gap: 8px; margin-top: 16px; }
+.grade-btn { flex: 1; padding: 9px 4px 10px; border-radius: 12px; cursor: pointer; font-weight: 600;
+  font-size: 0.92rem; background: transparent; color: var(--text); border: 1px solid var(--border); }
+.grade-btn .ivl { display: block; font-weight: 400; font-size: 0.7rem; color: var(--muted); margin-bottom: 2px; }
+.grade-btn:hover { filter: brightness(1.15); background: var(--surface); }
+.grade-btn.again { border-color: #E08A8A; color: #E08A8A; }
+.grade-btn.hard  { border-color: #E0A85C; color: #E0A85C; }
+.grade-btn.good  { border-color: #5BBF8A; color: #5BBF8A; }
+.grade-btn.easy  { border-color: #7AA2E3; color: #7AA2E3; }
+.center-note { text-align: center; }
+
+@media (max-width: 480px) {
+  .anki-card { min-height: 52vh; }
+  .grade-btn { padding: 11px 2px 12px; font-size: 0.85rem; }
+}
