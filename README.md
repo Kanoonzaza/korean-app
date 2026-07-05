@@ -14,6 +14,8 @@ No build step, no server, no dependencies — just open the file.
 
 ## Features
 
+- **Today panel** — the home screen opens with a one-glance daily plan:
+  flashcards available, lesson reviews due, and the next unfinished lesson.
 - **Lessons** — 3 Level 4 lessons, each a 5-step guided flow:
   Grammar → Vocab → Examples → Quiz → Practice, with a "Common mistakes" callout.
 - **Quizzes** — type-the-Korean (English prompt) and listening (hear it, type it).
@@ -28,7 +30,8 @@ No build step, no server, no dependencies — just open the file.
   Anki deck) as two cards each — Korean→English first, English→Korean lagging
   200 words behind (like the "lag200" reorder). Reveal, then grade yourself
   Again / Hard / Good / Easy; simplified SM-2 scheduling with a daily new-card
-  limit, separate from the Review tab's schedule.
+  limit, separate from the Review tab's schedule. One-step undo for misclicked
+  grades; a word's second direction is buried on any day its partner was studied.
 - **Listening** — embedded free podcasts (Didi, IYAGI, SpongeMind, Choisusu).
 - **Progress** — completion ✓ and best quiz score per lesson, saved in your browser.
 - **Audio** — 🔊 buttons use your browser's Korean voice (Web Speech API). If no

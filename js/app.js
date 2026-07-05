@@ -9,9 +9,10 @@ window.App = (function () {
   var reviewState = null;   // { mode, questions, i, correct, phase, last }
   var glossBookmarked = false; // glossary: showing bookmarked-only?
   var examState = null;     // { key, questions, i, correct, phase, last }
-  var cardsCur = null;      // current flashcard (a WORDS5K entry) in the Cards runner
+  var cardsCur = null;      // current card ({id, dir, w}) in the Cards runner
   var cardsRevealed = false;
   var cardsDone = 0;        // cards graded this session (for the finish screen)
+  var cardsUndo = null;     // one-step undo token from the last grade
 
   /* ---------- helpers ---------- */
   function esc(s) {
@@ -147,7 +148,54 @@ window.App = (function () {
       s + "-day streak</span>";
   }
 
+  /* ---------- home: Today panel ---------- */
+  // One glance at everything waiting today, across both schedulers.
+  function todayPanel() {
+    var cardsAvail = window.Cards ? Cards.available() : 0;
+    var srsDue = window.SRS ? SRS.count() : 0;
+    var weak = Storage.missCount();
+
+    function row(href, icon, label, count) {
+      return '<a class="today-row" href="' + href + '">' +
+        '<span>' + icon + " " + label + "</span>" +
+        '<span class="tag">' + count + "</span></a>";
+    }
+    var rows = "";
+    if (cardsAvail > 0) rows += row("#/cards/study", "🃏", "Cards to study", cardsAvail);
+    if (srsDue > 0) rows += row("#/review/srs", "📅", "Lesson review due", srsDue);
+    if (weak > 0) rows += row("#/review/weak", "🎯", "Weak items to clear", weak);
+    if (!rows) rows = '<p class="muted small" style="margin:0">All caught up — nothing waiting. 🎉</p>';
+
+    return (
+      '<div class="card today-card">' +
+        '<div class="today-head"><h4>Today</h4>' + streakChip() + "</div>" +
+        rows +
+      "</div>"
+    );
+  }
+
   /* ---------- home ---------- */
+  // One-glance daily plan: flashcards available, lesson reviews due, next lesson.
+  function todayPanel() {
+    var cardsN = window.Cards ? Cards.available() : 0;
+    var srsN = window.SRS ? SRS.count() : 0;
+    var nextL = (window.LESSONS || []).filter(function (l) { return !Storage.getLesson(l.id).done; })[0];
+
+    function row(href, icon, label, count, cta) {
+      return '<a class="today-row" href="' + href + '">' +
+        '<span class="tr-label">' + icon + " " + label + "</span>" +
+        '<span class="tr-right">' + (count != null ? '<span class="tag">' + count + "</span> " : "") + cta + " →</span></a>";
+    }
+
+    var rows = "";
+    if (cardsN > 0) rows += row("#/cards/study", "🃏", "Flashcards", cardsN, "Study");
+    if (srsN > 0) rows += row("#/review/srs", "📅", "Lesson review", srsN, "Review");
+    if (nextL) rows += row("#/lesson/" + nextL.id + "/1", "📖", "Lesson " + esc(nextL.id) + " · " + esc(nextL.title), null, "Continue");
+    if (!rows) rows = '<p class="muted small" style="margin:6px 0 0">All caught up for today 🎉</p>';
+
+    return '<div class="card today-card"><h4>Today ' + streakChip() + "</h4>" + rows + "</div>";
+  }
+
   function renderHome() {
     var cards = (window.LESSONS || []).map(function (l) {
       var pct = Storage.percent(l.id);
@@ -170,8 +218,8 @@ window.App = (function () {
       '<section class="view">' +
         '<div class="head-row"><h2>Level 4 & 5 · Lessons</h2>' +
           '<a class="btn ghost small-btn" href="#/syllabus">📋 Syllabus</a></div>' +
-        '<p class="muted">Continuing past your TTMIK deck — Level 4 & 5 grammar, one step at a time. ' +
-          streakChip() + "</p>" +
+        '<p class="muted">Continuing past your TTMIK deck — Level 4 & 5 grammar, one step at a time.</p>' +
+        todayPanel() +
         '<div class="lesson-list">' + cards + "</div>" +
       "</section>"
     );
@@ -676,6 +724,7 @@ window.App = (function () {
           '<div class="card score-card"><div class="big-score">🎉</div>' +
             "<p>Session finished — " + cardsDone + " card" + (cardsDone === 1 ? "" : "s") + " studied.</p>" +
             '<p class="muted small">Learning cards return in a few minutes; reviews come back on their day. ' + streakChip() + "</p>" +
+            (cardsUndo ? '<button class="btn ghost" data-action="cards-undo">↶ Undo last grade</button>' : "") +
           "</div>" + back +
         "</section>"
       );
@@ -689,6 +738,7 @@ window.App = (function () {
         '<span class="cc-learn">' + c.learn + "</span> · " +
         '<span class="cc-due">' + c.due + "</span>" +
         '<span class="dir-tag">' + (ke ? "KO → EN" : "EN → KO") + "</span>" +
+        (cardsUndo ? '<button class="btn ghost small-btn undo-btn" data-action="cards-undo" title="Undo last grade">↶ Undo</button>' : "") +
         '<span class="wrank muted small">#' + w.r + "</span>" +
       "</div>";
 
@@ -861,7 +911,7 @@ window.App = (function () {
       if (parts[1] === "study") {
         html = renderCardsStudy();
       } else {
-        cardsCur = null; cardsRevealed = false; cardsDone = 0;   // deck screen resets the runner
+        cardsCur = null; cardsRevealed = false; cardsDone = 0; cardsUndo = null;   // deck screen resets the runner
         html = renderCardsDeck();
       }
     } else if (page === "syllabus") {
@@ -1061,12 +1111,21 @@ window.App = (function () {
       if (cardsCur && cardsCur.dir === "EK") TTS.speak(cardsCur.w.ko);
     } else if (action === "cards-grade") {
       if (cardsCur) {
-        Cards.grade(cardsCur.id, parseInt(t.getAttribute("data-g"), 10) || 0);
+        cardsUndo = Cards.grade(cardsCur.id, parseInt(t.getAttribute("data-g"), 10) || 0);
         Storage.markActivity();
         cardsDone++;
       }
       cardsCur = null; cardsRevealed = false;
       render();
+    } else if (action === "cards-undo") {
+      if (cardsUndo) {
+        Cards.undo(cardsUndo);
+        cardsCur = Cards.cardById(cardsUndo.id);   // bring the card back, revealed
+        cardsRevealed = true;
+        cardsDone = Math.max(0, cardsDone - 1);
+        cardsUndo = null;
+        render();
+      }
     } else if (action === "cards-new-minus" || action === "cards-new-plus") {
       var step = action === "cards-new-plus" ? 5 : -5;
       Cards.setNewPerDay(Cards.newPerDay() + step);

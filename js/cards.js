@@ -20,9 +20,11 @@ window.Cards = (function () {
   var DEFAULT_NEW = 20;
 
   var cardList = null;          // built once: [{id, dir, w, pos}] in intro order
+  var purged = false;           // legacy bare-word card keys removed this session?
 
   function deck() {
     if (cardList) return cardList;
+    if (!purged) { purged = true; Storage.purgeLegacyCards(); }
     var words = window.WORDSNEXT || [];
     var out = [];
     words.forEach(function (w, i) {
@@ -38,6 +40,10 @@ window.Cards = (function () {
     var d = deck();
     for (var i = 0; i < d.length; i++) if (d[i].id === id) return d[i];
     return null;
+  }
+
+  function siblingId(id) {
+    return (id.slice(0, 3) === "KE|" ? "EK|" : "KE|") + id.slice(3);
   }
 
   function dayKey(t) {
@@ -70,17 +76,22 @@ window.Cards = (function () {
   function counts() {
     var st = Storage.getCards();
     var eod = endOfToday();
-    var learn = 0, due = 0, seen = 0;
+    var today = dayKey(new Date());
+    var learn = 0, due = 0, seen = 0, unseen = 0;
     deck().forEach(function (c) {
       var s = st[c.id];
-      if (!s) return;
+      if (!s) {
+        // Buried new siblings (partner direction studied today) aren't available.
+        var sib = st[siblingId(c.id)];
+        if (!(sib && sib.u && dayKey(new Date(sib.u)) === today)) unseen++;
+        return;
+      }
       seen++;
       if ((s.due || 0) > eod) return;
       if (s.st === "rev") due++; else learn++;
     });
     var m = meta();
     var fresh = Math.max(0, m.newPerDay - m.introduced);
-    var unseen = deck().length - seen;
     return {
       nw: Math.min(fresh, unseen),
       learn: learn,
@@ -104,10 +115,18 @@ window.Cards = (function () {
     var st = Storage.getCards();
     var now = Date.now(), eod = endOfToday();
     var learnNow = null, revDue = null, learnToday = null, firstNew = null;
+    var today = dayKey(new Date());
+
+    // Bury new siblings, Anki-style: don't introduce a new card on a day its
+    // partner direction was already studied (it unburies tomorrow).
+    function buried(c) {
+      var sib = st[siblingId(c.id)];
+      return !!(sib && sib.u && dayKey(new Date(sib.u)) === today);
+    }
 
     deck().forEach(function (c) {
       var s = st[c.id];
-      if (!s) { if (!firstNew) firstNew = c; return; }
+      if (!s) { if (!firstNew && !buried(c)) firstNew = c; return; }
       if ((s.due || 0) > eod) return;
       if (s.st === "rev") {
         if (!revDue || s.due < st[revDue.id].due) revDue = c;
@@ -166,6 +185,7 @@ window.Cards = (function () {
     return graduate(Math.max(i + 1, Math.round(i * ef)), ef);
   }
 
+  // Returns a one-step undo token for undo().
   function grade(id, g) {
     var st = Storage.getCards();
     var cur = st[id] || null;
@@ -175,6 +195,18 @@ window.Cards = (function () {
       Storage.setCardsMeta(m);
     }
     Storage.setCard(id, schedule(cur, g));
+    return { id: id, prev: cur, wasNew: !cur };
+  }
+
+  function undo(tok) {
+    if (!tok) return;
+    if (tok.wasNew) {
+      var m = meta();
+      m.introduced = Math.max(0, m.introduced - 1);
+      Storage.setCardsMeta(m);
+    }
+    if (tok.prev) Storage.setCard(tok.id, tok.prev);
+    else Storage.removeCard(tok.id);
   }
 
   /* ----- interval previews shown above the grade buttons ----- */
@@ -198,6 +230,7 @@ window.Cards = (function () {
     available: available,
     next: next,
     grade: grade,
+    undo: undo,
     previews: previews,
     newPerDay: newPerDay,
     setNewPerDay: setNewPerDay,

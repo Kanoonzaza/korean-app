@@ -162,6 +162,21 @@ window.Storage = (function () {
       d.__cards[ko] = state;
       save(d);
     },
+    removeCard: function (id) {
+      var d = load();
+      if (d.__cards && d.__cards[id]) { delete d.__cards[id]; save(d); }
+    },
+    // One-time cleanup: cards graded before the continuation deck were keyed
+    // by the bare word (no "KE|"/"EK|" prefix) and are dead entries now.
+    purgeLegacyCards: function () {
+      var d = load();
+      if (!d.__cards) return;
+      var changed = false;
+      Object.keys(d.__cards).forEach(function (k) {
+        if (k.indexOf("|") < 0) { delete d.__cards[k]; changed = true; }
+      });
+      if (changed) save(d);
+    },
     getCardsMeta: function () { return load().__cardsMeta || {}; },
     setCardsMeta: function (m) {
       var d = load();
@@ -272,6 +287,7 @@ window.Storage = (function () {
           out.__cards = out.__cards || {};
           var rc = remote.__cards || {};
           Object.keys(rc).forEach(function (ko) {
+            if (ko.indexOf("|") < 0) return;            // ignore legacy bare-word keys
             var l = out.__cards[ko], r = rc[ko];
             if (!l || (r.u || 0) > (l.u || 0)) out.__cards[ko] = r; // most recent grading wins
           });
