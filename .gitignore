@@ -11,3 +11,6 @@ korean-app-progress*.json
 
 # Local Claude Code config
 .claude/
+tools/*.tsv
+tools/*.txt
+tools/*.new
