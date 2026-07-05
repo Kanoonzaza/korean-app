@@ -631,7 +631,7 @@ window.App = (function () {
       questionInner(s.questions[s.i], s, "review") + backMenu + "</section>";
   }
 
-  /* ----- Cards (Anki-style flashcards, English → Korean) ----- */
+  /* ----- Cards (Anki-style flashcards, both directions, EK lagging) ----- */
   function renderCardsDeck() {
     var c = Cards.counts();
     var total = c.nw + c.learn + c.due;
@@ -642,10 +642,10 @@ window.App = (function () {
     return (
       '<section class="view">' +
         "<h2>Cards</h2>" +
-        '<p class="muted">Anki-style flashcards over the Core 5k list — see the English, recall the Korean, then grade yourself. ' + streakChip() + "</p>" +
+        '<p class="muted">Anki-style flashcards continuing past your Core 5k deck — every word here is new. ' + streakChip() + "</p>" +
         '<div class="card deck-card">' +
-          "<h3>Core vocabulary</h3>" +
-          '<p class="muted small">English → Korean · ' + c.total + " words by frequency · " + c.seen + " seen</p>" +
+          "<h3>Beyond Core 5k</h3>" +
+          '<p class="muted small">' + c.words + " words · " + c.total + " cards (KO→EN + EN→KO, recall lags 200 words) · " + c.seen + " seen</p>" +
           '<div class="deck-counts">' +
             '<div class="dc new"><div class="n">' + c.nw + '</div><div class="l">New</div></div>' +
             '<div class="dc learn"><div class="n">' + c.learn + '</div><div class="l">Learning</div></div>' +
@@ -666,13 +666,6 @@ window.App = (function () {
     );
   }
 
-  // Headword highlighted inside its example sentence (when it appears verbatim).
-  function highlightIn(sent, ko) {
-    var i = sent.indexOf(ko);
-    if (i < 0) return esc(sent);
-    return esc(sent.slice(0, i)) + '<span class="hl">' + esc(ko) + "</span>" + esc(sent.slice(i + ko.length));
-  }
-
   function renderCardsStudy() {
     if (!cardsCur) { cardsCur = Cards.next(); cardsRevealed = false; }
     var back = '<div class="nav-row"><a class="btn ghost" href="#/cards">← Deck</a><span></span></div>';
@@ -688,41 +681,50 @@ window.App = (function () {
       );
     }
 
-    var w = cardsCur;
+    var card = cardsCur, w = card.w, ke = card.dir === "KE";
     var c = Cards.counts();
     var countsRow =
       '<div class="cards-remaining" title="new · learning · due">' +
         '<span class="cc-new">' + c.nw + "</span> · " +
         '<span class="cc-learn">' + c.learn + "</span> · " +
         '<span class="cc-due">' + c.due + "</span>" +
+        '<span class="dir-tag">' + (ke ? "KO → EN" : "EN → KO") + "</span>" +
         '<span class="wrank muted small">#' + w.r + "</span>" +
       "</div>";
 
-    var front = '<div class="anki-front"><div class="anki-en">' + esc(w.en) + "</div></div>";
+    var r = window.RR ? window.RR(w.ko) : "";
+    var extras = (r ? '<div class="romaji">' + esc(r) + "</div>" : "") +
+      (w.hj ? '<div class="hanja muted small">' + esc(w.hj) + "</div>" : "");
+    var koBlock = '<div class="anki-ko"><span class="ko">' + esc(w.ko) + "</span>" + speak(w.ko) + "</div>";
+
+    // KE: Korean on the front (audio auto-plays), English on the back.
+    // EK: English on the front, Korean on the back — like the Anki deck.
+    var front = ke
+      ? '<div class="anki-front">' + koBlock + "</div>"
+      : '<div class="anki-front"><div class="anki-en">' + esc(w.en) + "</div></div>";
+
     var body;
     if (!cardsRevealed) {
       body = front +
         '<button class="btn show-btn" data-action="cards-show">Show answer</button>';
     } else {
-      var r = window.RR ? window.RR(w.ko) : "";
-      var sentence = w.sko
-        ? '<div class="anki-sent"><span class="ko-s">' + highlightIn(w.sko, w.ko) + "</span> " + speak(w.sko) +
-            '<div class="muted small">' + esc(w.sen || "") + "</div></div>"
-        : "";
-      var pv = Cards.previews(w.ko);
+      var pv = Cards.previews(card.id);
       var G = [["again", "Again"], ["hard", "Hard"], ["good", "Good"], ["easy", "Easy"]];
       var grades = G.map(function (g, i) {
         return '<button class="grade-btn ' + g[0] + '" data-action="cards-grade" data-g="' + i + '">' +
           '<span class="ivl">' + esc(pv[i]) + "</span>" + g[1] + "</button>";
       }).join("");
-      body =
-        '<div class="anki-front small"><div class="anki-en">' + esc(w.en) + "</div></div>" +
+      var top, answer;
+      if (ke) {
+        top = '<div class="anki-front small">' + koBlock + "</div>";
+        answer = '<div class="anki-en">' + esc(w.en) + "</div>" + extras;
+      } else {
+        top = '<div class="anki-front small"><div class="anki-en">' + esc(w.en) + "</div></div>";
+        answer = koBlock + extras;
+      }
+      body = top +
         '<hr class="anki-hr" />' +
-        '<div class="anki-back">' +
-          '<div class="anki-ko"><span class="ko">' + esc(w.ko) + "</span>" + speak(w.ko) + "</div>" +
-          (r ? '<div class="romaji">' + esc(r) + "</div>" : "") +
-          sentence +
-        "</div>" +
+        '<div class="anki-back">' + answer + "</div>" +
         '<div class="grade-row">' + grades + "</div>";
     }
 
@@ -900,6 +902,11 @@ window.App = (function () {
       var q = runner.questions[runner.i];
       if (q && q.kind === "listen" && TTS.available()) TTS.speak(q.answer);
     }
+    // Cards: KE fronts show Korean — auto-play it like the Anki deck does.
+    if (page === "cards" && parts[1] === "study" && cardsCur && !cardsRevealed &&
+        cardsCur.dir === "KE" && TTS.available()) {
+      TTS.speak(cardsCur.w.ko);
+    }
     // Exam: auto-play listening-type questions.
     if (page === "exam" && examState && examState.phase === "q") {
       var eq2 = examState.questions[examState.i];
@@ -1050,10 +1057,11 @@ window.App = (function () {
     } else if (action === "cards-show") {
       cardsRevealed = true;
       render();
-      if (cardsCur) TTS.speak(cardsCur.ko);          // auto-play the answer, Anki-style
+      // EK reveals the Korean answer — speak it. (KE already spoke on the front.)
+      if (cardsCur && cardsCur.dir === "EK") TTS.speak(cardsCur.w.ko);
     } else if (action === "cards-grade") {
       if (cardsCur) {
-        Cards.grade(cardsCur.ko, parseInt(t.getAttribute("data-g"), 10) || 0);
+        Cards.grade(cardsCur.id, parseInt(t.getAttribute("data-g"), 10) || 0);
         Storage.markActivity();
         cardsDone++;
       }

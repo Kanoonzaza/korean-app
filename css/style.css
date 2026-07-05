@@ -479,3 +479,9 @@ details.vocab-row[open] .usage-caret { transform: rotate(90deg); }
   .anki-card { min-height: 52vh; }
   .grade-btn { padding: 11px 2px 12px; font-size: 0.85rem; }
 }
+
+/* Cards: direction chip + hanja (continuation deck) */
+.dir-tag { margin-left: 8px; font-size: 0.7rem; padding: 2px 8px; border-radius: 999px;
+  border: 1px solid var(--border); color: var(--muted); letter-spacing: 0.03em; }
+.anki-back .hanja { margin-top: 4px; letter-spacing: 0.1em; }
+.anki-front .anki-ko .ko { font-size: 2.2rem; }

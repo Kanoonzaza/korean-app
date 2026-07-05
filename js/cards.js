@@ -1,25 +1,42 @@
-/* cards.js — Anki-style flashcards (English → Korean) over the Core 5k list.
+/* cards.js — Anki-style flashcards over the continuation deck (WORDSNEXT).
  *
- * Deck = window.WORDS5K in frequency order. Per-card schedule lives in
- * Storage under "__cards"; a word with no entry is "new". Grading follows a
- * simplified SM-2: new cards pass through learning steps (1 min → 10 min),
- * graduated cards grow by an ease factor, and "Again" sends a card to
- * relearning with a shrunken interval. Separate from the Leitner __srs
- * schedule used by Review → Today's review.
+ * Every word makes TWO cards, like the user's Anki setup:
+ *   KE (Korean → English, recognition) and EK (English → Korean, recall).
+ * New cards are introduced in word order with the EK card lagging LAG words
+ * behind its KE card (the "lag200" reorder): the queue position of KE word i
+ * is i, of EK word i is i + LAG. Per-card schedule lives in Storage under
+ * "__cards" keyed by "KE|word" / "EK|word"; a card with no entry is "new".
+ * Grading is a simplified SM-2: learning steps (1 min → 10 min), then day
+ * intervals growing by an ease factor; "Again" relearns with a shrunken
+ * interval. Separate from the Leitner __srs used by Review → Today's review.
  */
 window.Cards = (function () {
   var MIN = 60000, DAY = 86400000;
+  var LAG = 200;                // EK card of word i unlocks at position i + LAG
   var LEARN_STEPS = [1, 10];    // minutes
   var HARD_LEARN_MIN = 5;       // "Hard" on a learning card: retry in 5 min
   var RELEARN_MIN = 10;         // relearning step
   var GRAD_IVL = 1, EASY_IVL = 4;    // graduation intervals (days)
   var DEFAULT_NEW = 20;
 
-  function deck() { return window.WORDS5K || []; }
+  var cardList = null;          // built once: [{id, dir, w, pos}] in intro order
 
-  function wordByKo(ko) {
+  function deck() {
+    if (cardList) return cardList;
+    var words = window.WORDSNEXT || [];
+    var out = [];
+    words.forEach(function (w, i) {
+      out.push({ id: "KE|" + w.ko, dir: "KE", w: w, pos: i * 2 });        // ties: KE first
+      out.push({ id: "EK|" + w.ko, dir: "EK", w: w, pos: (i + LAG) * 2 + 1 });
+    });
+    out.sort(function (a, b) { return a.pos - b.pos; });
+    cardList = out;
+    return out;
+  }
+
+  function cardById(id) {
     var d = deck();
-    for (var i = 0; i < d.length; i++) if (d[i].ko === ko) return d[i];
+    for (var i = 0; i < d.length; i++) if (d[i].id === id) return d[i];
     return null;
   }
 
@@ -51,15 +68,15 @@ window.Cards = (function () {
 
   /* ----- counts (deck screen + study header) ----- */
   function counts() {
-    var cards = Storage.getCards();
+    var st = Storage.getCards();
     var eod = endOfToday();
     var learn = 0, due = 0, seen = 0;
-    deck().forEach(function (w) {
-      var c = cards[w.ko];
-      if (!c) return;
+    deck().forEach(function (c) {
+      var s = st[c.id];
+      if (!s) return;
       seen++;
-      if ((c.due || 0) > eod) return;
-      if (c.st === "rev") due++; else learn++;
+      if ((s.due || 0) > eod) return;
+      if (s.st === "rev") due++; else learn++;
     });
     var m = meta();
     var fresh = Math.max(0, m.newPerDay - m.introduced);
@@ -69,7 +86,8 @@ window.Cards = (function () {
       learn: learn,
       due: due,
       seen: seen,
-      total: deck().length
+      total: deck().length,
+      words: (window.WORDSNEXT || []).length
     };
   }
 
@@ -79,33 +97,29 @@ window.Cards = (function () {
   }
 
   /* ----- queue ----- */
-  // Next card to show: learning due now → reviews due today → a new card
-  // (within today's allotment) → learn-ahead on the earliest learning card
-  // still due today. Null when the session is finished.
+  // Next card to show: learning due now → reviews due today → a new card in
+  // intro order (within today's allotment) → learn-ahead on the earliest
+  // learning card still due today. Null when the session is finished.
   function next() {
-    var cards = Storage.getCards();
+    var st = Storage.getCards();
     var now = Date.now(), eod = endOfToday();
-    var learnNow = null, revDue = null, learnToday = null;
+    var learnNow = null, revDue = null, learnToday = null, firstNew = null;
 
-    deck().forEach(function (w) {
-      var c = cards[w.ko];
-      if (!c || (c.due || 0) > eod) return;
-      if (c.st === "rev") {
-        if (!revDue || c.due < cards[revDue.ko].due) revDue = w;
-      } else if (c.due <= now) {
-        if (!learnNow || c.due < cards[learnNow.ko].due) learnNow = w;
+    deck().forEach(function (c) {
+      var s = st[c.id];
+      if (!s) { if (!firstNew) firstNew = c; return; }
+      if ((s.due || 0) > eod) return;
+      if (s.st === "rev") {
+        if (!revDue || s.due < st[revDue.id].due) revDue = c;
+      } else if (s.due <= now) {
+        if (!learnNow || s.due < st[learnNow.id].due) learnNow = c;
       } else {
-        if (!learnToday || c.due < cards[learnToday.ko].due) learnToday = w;
+        if (!learnToday || s.due < st[learnToday.id].due) learnToday = c;
       }
     });
     if (learnNow) return learnNow;
     if (revDue) return revDue;
-
-    var m = meta();
-    if (m.introduced < m.newPerDay) {
-      var d = deck();
-      for (var i = 0; i < d.length; i++) if (!cards[d[i].ko]) return d[i];
-    }
+    if (firstNew && meta().introduced < meta().newPerDay) return firstNew;
     return learnToday;
   }
 
@@ -152,15 +166,15 @@ window.Cards = (function () {
     return graduate(Math.max(i + 1, Math.round(i * ef)), ef);
   }
 
-  function grade(ko, g) {
-    var cards = Storage.getCards();
-    var cur = cards[ko] || null;
+  function grade(id, g) {
+    var st = Storage.getCards();
+    var cur = st[id] || null;
     if (!cur) {                       // first time seen: counts against today's new allotment
       var m = meta();
       m.introduced++;
       Storage.setCardsMeta(m);
     }
-    Storage.setCard(ko, schedule(cur, g));
+    Storage.setCard(id, schedule(cur, g));
   }
 
   /* ----- interval previews shown above the grade buttons ----- */
@@ -174,8 +188,8 @@ window.Cards = (function () {
     var min = Math.round((s.due - Date.now()) / MIN);
     return "<" + Math.max(1, min) + "m";
   }
-  function previews(ko) {
-    var cur = Storage.getCards()[ko] || null;
+  function previews(id) {
+    var cur = Storage.getCards()[id] || null;
     return [0, 1, 2, 3].map(function (g) { return fmtSched(schedule(cur, g)); });
   }
 
@@ -187,6 +201,6 @@ window.Cards = (function () {
     previews: previews,
     newPerDay: newPerDay,
     setNewPerDay: setNewPerDay,
-    wordByKo: wordByKo
+    cardById: cardById
   };
 })();
