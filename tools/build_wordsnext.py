@@ -73,6 +73,11 @@ V1_WORDS5K = os.path.join(APP, "v1", "content", "words5k.js")
 V1_LESSONS = os.path.join(APP, "v1", "content", "lessons.js")
 # v2 lesson files (content/lessons/*.js) get appended here by Task 6; their
 # vocab is excluded once they exist. Empty until then.
+# - List entries as os.path.join(APP, ...) paths, e.g.:
+#       os.path.join(APP, "content", "lessons", "lesson01.js")
+# - Vocab is matched via the ko key in either style:  ko: "word"  or  "ko": "word"
+# - A listed file that yields ZERO ko-matches aborts the run (SystemExit) so a
+#   renamed key or reformatted lesson file can never silently skip exclusion.
 V2_LESSON_FILES = []
 
 # Grammar homographs / conjugation-stem artifacts that the MeCab NNG/MAG +
@@ -152,12 +157,21 @@ def known_words():
         if len(r) < 5: continue
         w = as_single_word(strip_html(r[4]))
         if w: known.add(w)
-    # (c) v1 lessons + (d) v1 words5k — still valid known-word sources; the v2
-    #     lesson files are added once Task 6 authors them (V2_LESSON_FILES).
-    for path, pat in [(V1_LESSONS, r'ko:\s*"([^"]+)"'), (V1_WORDS5K, r'"ko":\s*"([^"]+)"')] \
-                     + [(p, r'ko:\s*"([^"]+)"') for p in V2_LESSON_FILES]:
+    # (c) v1 lessons + (d) v1 words5k — still valid known-word sources.
+    for path, pat in [(V1_LESSONS, r'ko:\s*"([^"]+)"'), (V1_WORDS5K, r'"ko":\s*"([^"]+)"')]:
         src = io.open(path, encoding="utf-8").read()
         known.update(m.group(1) for m in re.finditer(pat, src))
+    # (e) v2 lesson files (Task 6). Both key styles accepted; a listed file
+    #     with zero matches means the exclusion silently broke — fail loudly.
+    for path in V2_LESSON_FILES:
+        src = io.open(path, encoding="utf-8").read()
+        found = [m.group(1) for m in re.finditer(r'"?ko"?\s*:\s*"([^"]+)"', src)]
+        if not found:
+            raise SystemExit(
+                f"ERROR: V2 lesson file {path} yielded ZERO ko-matches - its vocab "
+                f"would not be excluded. Check the file's key format (expected "
+                f'ko: "..." or "ko": "...") or remove it from V2_LESSON_FILES.')
+        known.update(found)
     return known
 
 def suppressed(w, known):
@@ -247,6 +261,11 @@ def write_deck(entries):
 
 def build_reconcile(base_path, known, keng):
     base = parse_deck(base_path)
+    if len(base) < 1000:
+        raise SystemExit(
+            f"ERROR: base deck {base_path} parsed to only {len(base)} entries "
+            f"(expected ~2500). The file is likely reformatted or mangled - refusing "
+            f"to emit a shrunken deck. Restore it from git before rerunning.")
     target = len(base)
     kept = [e for e in base if not suppressed(e["ko"], known) and e["ko"] not in BLOCK]
     dropped_known = [e["ko"] for e in base if suppressed(e["ko"], known)]
@@ -258,6 +277,10 @@ def build_reconcile(base_path, known, keng):
         en = clean(pick_gloss(keng, d["w"]))
         if not en: continue                     # no usable gloss — skip
         added.append({"ko": d["w"], "en": en, "pos": d["pos"]})
+    if len(kept) + len(added) < target:
+        print(f"WARNING: deck below target ({len(kept) + len(added)} < {target}) - "
+              f"tier-B refill ran out of candidates within the top {MAX_CORPUS_SCAN} "
+              f"corpus tokens; raise MAX_CORPUS_SCAN or accept the smaller deck.")
     out = renumber(kept + added)
     write_deck(out)
     print(f"reconciled against {os.path.relpath(base_path, APP)}: "
