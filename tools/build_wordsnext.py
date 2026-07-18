@@ -110,6 +110,10 @@ BLOCK = {
     "니스",  # varnish clip / the city Nice — not worth a card
     "비치",  # verb stem of 비치다 / 비치하다 root; kengdic gloss garbled
     "신기",  # root of 신기하다, rarely standalone
+    "병신",  # offensive slur — unacceptable as a study card
+    "콜걸",  # crude loanword, negligible learning value at this rank
+    "포르노",  # crude loanword, negligible learning value at this rank
+    "바카라",  # casino loanword, negligible learning value at this rank
 }
 
 HEADER = """\
@@ -245,7 +249,8 @@ def build_reconcile(base_path, known, keng):
     base = parse_deck(base_path)
     target = len(base)
     kept = [e for e in base if not suppressed(e["ko"], known) and e["ko"] not in BLOCK]
-    dropped = [e["ko"] for e in base if suppressed(e["ko"], known) or e["ko"] in BLOCK]
+    dropped_known = [e["ko"] for e in base if suppressed(e["ko"], known)]
+    dropped_block = [e["ko"] for e in base if e["ko"] in BLOCK and not suppressed(e["ko"], known)]
     base_kos = set(e["ko"] for e in base)
     added = []
     for d in gen_tier_b(known, base_kos, keng):
@@ -256,10 +261,13 @@ def build_reconcile(base_path, known, keng):
     out = renumber(kept + added)
     write_deck(out)
     print(f"reconciled against {os.path.relpath(base_path, APP)}: "
-          f"{len(base)} base -> kept {len(kept)}, dropped {len(dropped)} now-known/blocked, "
+          f"{len(base)} base -> kept {len(kept)}, dropped {len(dropped_known)} now-known "
+          f"+ {len(dropped_block)} BLOCK-listed, "
           f"refilled {len(added)} -> wrote {len(out)} words to {OUT}")
-    if dropped:
-        print("dropped:", " ".join(dropped))
+    if dropped_known:
+        print("dropped (now known):", " ".join(dropped_known))
+    if dropped_block:
+        print("dropped (BLOCK):", " ".join(dropped_block))
 
 def build_from_scratch(known, keng):
     print("WARNING: no existing deck found - building from scratch; the hand",
