@@ -23,41 +23,54 @@ def strip_html(s):
     s = s.replace("&nbsp;", " ").replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", '"').replace("&#39;", "'")
     return re.sub(r"\s+", " ", s).strip()
 
+def as_single_word(ko):
+    """Return the hangul-only word if this stripped Korean field is a single
+    vocabulary token (one whitespace token, none of . ? ! ~ - / ( ), else None.
+    Shared rule: build_wordsnext.py must import this, not re-derive it."""
+    if len(ko.split()) != 1 or re.search(r"[.?!~\-/(]", ko):
+        return None
+    return re.sub(r"[^가-힣]", "", ko) or None
+
 def js_module(pairs):  # [(name, obj)] -> file text
     out = [GEN]
     for name, obj in pairs:
         out.append(f"export const {name} = {json.dumps(obj, ensure_ascii=False, indent=0)};\n")
     return "\n".join(out)
 
-# --- TTMIK deck ---
-tt_words, sentences = set(), []
-for r in rows_of(TTMIK_TXT):
-    if len(r) < 5: continue
-    ko = strip_html(r[4])
-    if not ko: continue
-    en = strip_html(r[3]) if len(r) > 3 else ""
-    tags = (r[16] if len(r) > 16 else "").split()
-    toks = ko.split()
-    if len(toks) == 1 and not re.search(r"[.?!~\-/(]", ko):
-        w = re.sub(r"[^가-힣]", "", ko)
-        if w: tt_words.add(w)
-    else:
-        m = next((mm for t in tags if (mm := re.match(r"TTMIK-(\d+\.\d+)", t))), None)
-        sentences.append({"ko": ko, "en": en,
-                          "lesson": m.group(1) if m else "",
-                          "tags": [t for t in tags if t.startswith(("TTMIK-", "KGIU-"))]})
+def main():
+    # --- TTMIK deck ---
+    tt_words, sentences = set(), []
+    for r in rows_of(TTMIK_TXT):
+        # TTMIK columns: 3=English HTML, 4=Korean HTML, 16=space-separated tags
+        if len(r) < 5: continue
+        ko = strip_html(r[4])
+        if not ko: continue
+        en = strip_html(r[3]) if len(r) > 3 else ""
+        tags = (r[16] if len(r) > 16 else "").split()
+        w = as_single_word(ko)
+        if w:
+            tt_words.add(w)
+        else:
+            m = next((mm for t in tags if (mm := re.match(r"TTMIK-(\d+\.\d+)", t))), None)
+            sentences.append({"ko": ko, "en": en,
+                              "lesson": m.group(1) if m else "",
+                              "tags": [t for t in tags if t.startswith(("TTMIK-", "KGIU-"))]})
 
-# --- Core 5k deck ---
-core = set()
-for r in rows_of(CORE_TXT):
-    m = re.search(r"<b[^>]*>(.+?)</b>", r[1]) if len(r) > 1 else None
-    if m:
-        w = strip_html(m.group(1))
-        if w: core.add(w)
+    # --- Core 5k deck ---
+    core = set()
+    for r in rows_of(CORE_TXT):
+        # Core 5k columns: 1=HTML containing the word as <b style='font-size:2em'>WORD</b>
+        m = re.search(r"<b[^>]*>(.+?)</b>", r[1]) if len(r) > 1 else None
+        if m:
+            w = strip_html(m.group(1))
+            if w: core.add(w)
 
-os.makedirs(os.path.join(APP, "content"), exist_ok=True)
-with open(os.path.join(APP, "content", "known.js"), "w", encoding="utf-8") as f:
-    f.write(js_module([("KNOWN_TTMIK", sorted(tt_words)), ("KNOWN_CORE5K", sorted(core))]))
-with open(os.path.join(APP, "content", "ttmik-sentences.js"), "w", encoding="utf-8") as f:
-    f.write(js_module([("TTMIK_SENTENCES", sentences)]))
-print(f"known.js: {len(tt_words)} TTMIK + {len(core)} Core5k words; ttmik-sentences.js: {len(sentences)} sentences")
+    os.makedirs(os.path.join(APP, "content"), exist_ok=True)
+    with open(os.path.join(APP, "content", "known.js"), "w", encoding="utf-8") as f:
+        f.write(js_module([("KNOWN_TTMIK", sorted(tt_words)), ("KNOWN_CORE5K", sorted(core))]))
+    with open(os.path.join(APP, "content", "ttmik-sentences.js"), "w", encoding="utf-8") as f:
+        f.write(js_module([("TTMIK_SENTENCES", sentences)]))
+    print(f"known.js: {len(tt_words)} TTMIK + {len(core)} Core5k words; ttmik-sentences.js: {len(sentences)} sentences")
+
+if __name__ == "__main__":
+    main()
