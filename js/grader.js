@@ -3,8 +3,13 @@
 // v1/js/app.js:18-96. Pure functions — no storage, no DOM.
 //
 // normalize(): trim, collapse internal whitespace to single spaces, drop a
-// trailing run of . ? ! ~ , then trim again. (Note: v1 does NOT lowercase and
-// does NOT strip commas or internal punctuation.)
+// trailing run of . ? ! ~ , then trim again. (Note: v1 does NOT lowercase.)
+//
+// v2 DEVIATION from v1 (deliberate): commas (ASCII "," and ideographic "、")
+// are removed from BOTH expected and typed before comparison. Dictation plays
+// sentences via TTS — punctuation is inaudible, so it must never fail an
+// answer. Everything else is exactly v1; the diff still shows the original
+// un-normalized strings.
 //
 // grade(expected, typed) -> { ok, diffHtml }. diffHtml is "" when ok; otherwise
 // an LCS character diff of the raw strings: the learner's answer with intruding
@@ -14,6 +19,7 @@
 export function normalize(s) {
   return (s || "")
     .trim()
+    .replace(/[,、]/g, "")   // v2: commas are inaudible over TTS — never fail on them
     .replace(/\s+/g, " ")
     .replace(/[.?!~]+$/g, "")
     .trim();
