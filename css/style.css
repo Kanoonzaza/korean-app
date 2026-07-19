@@ -97,3 +97,10 @@ nav a {
 nav a:hover { text-decoration: none; }
 nav a .glyph { font-size: 1.35rem; line-height: 1; }
 nav a.active { color: var(--accent); }
+
+/* answer diff — classes emitted by js/grader.js grade() diffHtml (ported from v1) */
+.ans, .yours { font-weight: 400; color: var(--text); margin-top: 8px; }
+.yours { color: var(--muted); }
+.ans .ko { font-size: 1.25rem; }
+.d-bad { color: var(--bad); text-decoration: line-through; }
+.d-miss { color: var(--ok); text-decoration: underline; text-underline-offset: 3px; }

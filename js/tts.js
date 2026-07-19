@@ -1,6 +1,9 @@
 // tts.js — speak Korean via the browser's Web Speech API.
-// Ported from v1/js/tts.js. Silently no-ops when no Korean voice is available so
-// the UI can hide the 🔊 control. Touches window.speechSynthesis only.
+// Ported from v1/js/tts.js. Touches window.speechSynthesis only.
+//
+// NOTE: speak() does NOT no-op when no Korean voice exists — it still speaks
+// with the browser's default voice (lang hint "ko-KR"). Gating the 🔊 control
+// on voice availability is the UI's job, via hasKorean().
 
 const supported = typeof window !== "undefined" && typeof window.speechSynthesis !== "undefined";
 let koVoice = null;

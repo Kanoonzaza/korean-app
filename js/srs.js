@@ -7,6 +7,12 @@
 //
 // State shape: { st: "learn"|"relearn"|"rev", step?, ivl?, ef, due }
 // Grades:      0 = Again, 1 = Hard, 2 = Good, 3 = Easy
+//
+// Contract for consumers:
+//   - A NEW (never-graded) card = pass null/undefined as `cur`.
+//   - Persist the object returned by schedule() VERBATIM as the card's state.
+//   - NEVER hand-construct scheduler states — only feed back what schedule()
+//     returned (or null for new).
 
 const MIN = 60000, DAY = 86400000;
 const LEARN_STEPS = [1, 10];      // minutes

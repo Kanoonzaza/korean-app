@@ -12,9 +12,15 @@
 // un-normalized strings.
 //
 // grade(expected, typed) -> { ok, diffHtml }. diffHtml is "" when ok; otherwise
-// an LCS character diff of the raw strings: the learner's answer with intruding
-// chars marked .d-bad, the key with missed chars marked .d-miss. All rendered
-// text is HTML-escaped.
+// an LCS character diff of the raw strings. All rendered text is HTML-escaped.
+//
+// diffHtml emits these presentational classes — consumers MUST have styles for
+// all of them (defined in css/style.css under "answer diff"):
+//   .ans    — the answer-key label row
+//   .yours  — the "You wrote" label row
+//   .ko     — Korean font span (shared app class)
+//   .d-miss — chars in the key the learner missed (accent underline)
+//   .d-bad  — intruding chars in the learner's answer (red strikethrough)
 
 export function normalize(s) {
   return (s || "")
