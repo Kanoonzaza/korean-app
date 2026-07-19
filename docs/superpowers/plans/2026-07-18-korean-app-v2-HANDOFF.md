@@ -3,10 +3,13 @@
 **Written:** 2026-07-20 by the planning session (Fable), for continuation by a fresh
 session (any model) after a usage-limit cutoff. Read this FIRST, then the plan.
 
-**The three governing documents, in priority order:**
+**The governing documents, in priority order:**
 1. This handoff (current state + binding amendments)
-2. `docs/superpowers/plans/2026-07-18-korean-app-v2.md` (the task-by-task plan)
-3. `docs/superpowers/specs/2026-07-18-korean-app-v2-design.md` (the approved design)
+2. `2026-07-18-korean-app-v2-BRAINDUMP.md` (same folder) — **grammar cribs for every
+   remaining lesson, behavioral rulings for Tasks 7–11, and per-task review focus.
+   Written by the planning model; use it as the review key and nuance tie-breaker.**
+3. `docs/superpowers/plans/2026-07-18-korean-app-v2.md` (the task-by-task plan)
+4. `docs/superpowers/specs/2026-07-18-korean-app-v2-design.md` (the approved design)
 
 **Repo:** `C:\Users\HP\Claude work\Korean\korean-learning-app`, branch **`v2`**.
 v1 app preserved read-only in `v1/` (deleted only in plan Task 12).
