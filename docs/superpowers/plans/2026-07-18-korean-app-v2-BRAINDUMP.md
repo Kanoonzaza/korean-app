@@ -242,6 +242,9 @@ deck sentences containing THOSE (never the new point itself).
 - **5.30 Drill 5** — ruling as 4.20; combinable = all Level 5 taught points.
 
 ### Batch-coordination rules (Tasks 6B–6D)
+0. **Romanization ruling (supersedes the plan's "hyphenless"):** per-syllable
+   hyphenated Revised Romanization, lowercase — v1's style, and what Task 6A shipped
+   (e.g. "an-nyeong-ha-se-yo"). All batches must match 6A.
 1. Word Builder lessons across BOTH levels share one vocab namespace — no word may
    appear in two lessons; coordinate 4.06/4.13/4.22/5.06/5.13/5.22 (esp. 회식, 운동장).
 2. Later batches must re-run the full-file leakage script (it catches cross-batch
