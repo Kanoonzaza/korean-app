@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>한국어 Study</title>
+
+  <!-- PWA / mobile -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#0F1115" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="한국어" />
+  <!-- iOS ignores SVG here — it needs a real PNG for the home-screen icon -->
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main id="view"><!-- rendered by the router --></main>
+
+  <nav aria-label="Primary">
+    <a href="#/today"><span class="glyph" aria-hidden="true">🏠</span><span class="label">Today</span></a>
+    <a href="#/learn"><span class="glyph" aria-hidden="true">📚</span><span class="label">Learn</span></a>
+    <a href="#/practice"><span class="glyph" aria-hidden="true">✏️</span><span class="label">Practice</span></a>
+    <a href="#/me"><span class="glyph" aria-hidden="true">👤</span><span class="label">Me</span></a>
+  </nav>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
