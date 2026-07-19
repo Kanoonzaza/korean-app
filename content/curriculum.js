@@ -19,6 +19,9 @@
 //   4.10 사이에, 사이에서, 중에, 중에서: 사이에 중에서 -> 3
 //   4.11 아무나, 아무도, 아무거나, 아무것도: 아무 -> 2
 //   4.12 -아/어 보다: 해 봤 해 보 해 봐 해 볼 아 봤 어 봤 아 봐 어 봐 아 볼 어 볼 아 보 어 보 -> 1
+//   4.12 audit note: the raw deck has one TTMIK-4.12 tag, but it is a cross-reference
+//   on the Level-3 vocab card 알아보다 (tags KGIU-11.01 TTMIK-3.27 TTMIK-4.12), not
+//   evidence the pattern was taught; pattern hits = 1 -> status "new" (controller-approved).
 //   4.14 가끔, 자주, 별로, 맨날, 항상: 가끔 자주 별로 맨날 항상 -> 15
 //   4.15 아무 + noun + (이)나/도: 아무 -> 2
 //   4.18 가장, 제일, 최고: 가장 제일 최고 최상 -> 2
@@ -112,5 +115,5 @@ export const CURRICULUM = [
   { "id": "5.27", "ttmik": "Level 5 Lesson 27", "title": "You know / Isn't it / You see", "point": "-잖아(요)", "status": "compressed", "canDo": "I can remind the listener of something we both know." },
   { "id": "5.28", "ttmik": "Level 5 Lesson 28", "title": "To have no other choice but to ...", "point": "-(으)ㄹ 수밖에 없다", "status": "new", "canDo": "I can say I have no choice but to do something." },
   { "id": "5.29", "ttmik": "Level 5 Lesson 29", "title": "They said they had done / would do", "point": "-았/었다고, -(으)ㄹ 거라고", "status": "new", "canDo": "I can report past and future statements second-hand." },
-  { "id": "5.30", "ttmik": "Level 5 Lesson 30", "title": "Sentence Building Drill 5", "point": "복습 / 문장 만들기", "status": "new", "canDo": "I can combine Level 5 grammar into longer natural sentences." },
+  { "id": "5.30", "ttmik": "Level 5 Lesson 30", "title": "Sentence Building Drill 5", "point": "복습 / 문장 만들기", "status": "new", "canDo": "I can combine Level 5 grammar into longer natural sentences." }
 ];
