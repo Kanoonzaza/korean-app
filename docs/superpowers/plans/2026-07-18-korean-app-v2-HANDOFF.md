@@ -40,25 +40,20 @@ c6de12d fix: router teardown + unknown-route fallback + shell cleanups (Task 4 f
 5b97709 docs: engine contracts + diff styles                  (Task 5 fix)
 ```
 
-**Task 6A is IN FLIGHT**: a background agent is authoring `content/lessons/l4.js`
-(lessons 4.01–4.15: full bodies for "new", short bodies for compressed 4.04/4.10,
-nothing for "known" 4.02/4.07/4.08/4.14), registering the file in
-`V2_LESSON_FILES` in `tools/build_wordsnext.py`, rerunning that tool, and
-committing as `content: L4 lessons 4.01-4.15 (TTMIK-aligned)`.
-
-**On pickup, check Task 6A's fate:**
-```bash
-git log --oneline -3            # is the L4 commit there?
-ls content/lessons/             # does l4.js exist?
-git status --short              # uncommitted partial work?
-```
-- Committed & validation clean → proceed to review it (workflow §3), then Task 6B.
-- Absent/partial → re-dispatch Task 6A per plan Task 6 + amendments §2.6 below.
-  (If uncommitted edits exist, inspect before discarding — they may be salvageable.)
+**Task 6A is COMMITTED and SPEC-REVIEWED** (commit `7d64d9c`; review findings
+committed at `docs/superpowers/plans/reviews/2026-07-20-task6a-spec-review.md` —
+verdict: compliant, zero blocking issues). A polish commit
+(`content: L4 polish - canonical pitfalls` — three missing crib pitfalls for
+4.01/4.09/4.12) was dispatched last; check `git log` for it. If absent, apply
+those three additions per the review file's polish list, revalidate, commit.
+Content batches use the spec review (against the BRAINDUMP cribs) as the deep
+review; a separate quality pass on lesson data files is not required.
 
 **Remaining after 6A:** 6B (l4.js 4.16–4.30, append to same file), 6C+6D
 (`content/lessons/l5.js`, two batches covering 5.01–5.30), then plan Tasks 7–12
-exactly as written in the plan, amended by §2 below.
+exactly as written in the plan, amended by §2 below. Reviewers of content batches:
+review against BRAINDUMP Part A cribs and commit findings under
+`docs/superpowers/plans/reviews/`.
 
 ## 2. Binding amendments made during execution (override the plan where they conflict)
 
