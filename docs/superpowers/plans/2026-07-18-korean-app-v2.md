@@ -1,5 +1,10 @@
 # Korean App v2 (Anki-Continuation) Implementation Plan
 
+> **STATUS (2026-07-20):** Tasks 0–5 COMPLETE (reviewed, fixes landed); Task 6A in
+> flight. Before executing anything, read
+> `2026-07-18-korean-app-v2-HANDOFF.md` in this folder — it records the current
+> state and BINDING amendments that override this plan where they conflict.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Rebuild the Korean learning app as v2 — a mobile-first, zero-build vanilla-JS PWA whose entire content model continues from the user's two Anki decks (TTMIK Supplement L1–3, fully studied; Korean Core 5k, ongoing).
