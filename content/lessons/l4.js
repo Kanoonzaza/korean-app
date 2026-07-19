@@ -33,7 +33,7 @@ export const L4 = [
       "explanation": "-(으)ㄹ수록 on its own already means 'the more ...'. Korean often doubles it by putting the same verb with -(으)면 in front for emphasis: 하면 할수록 = 'the more you do it'. Both halves must use the same verb. You can drop the -(으)면 half with no change in meaning, just a little less emphasis. It attaches to verbs and adjectives the same way, following the (으) rule you know from -(으)면 and -(으)ㄹ 거예요.",
       "notes": ["The -(으)면 front half is optional; -(으)ㄹ수록 by itself is enough.", "A very common fixed phrase: 많으면 많을수록 좋아요 = 'the more, the better'.", "ㄹ-stems attach directly: 살다 → 살수록, 만들다 → 만들수록."]
     },
-    "pitfalls": ["Both halves must use the SAME verb — 공부하면 볼수록 is wrong.", "Don't split it as 수 + 록; -(으)ㄹ수록 is one ending, unrelated to -(으)ㄹ 수 있다.", "Use -을수록 after a consonant stem (많을수록), -ㄹ수록 after a vowel stem (클수록)."],
+    "pitfalls": ["Both halves must use the SAME verb — 공부하면 볼수록 is wrong.", "Don't split it as 수 + 록; -(으)ㄹ수록 is one ending, unrelated to -(으)ㄹ 수 있다.", "Use -을수록 after a consonant stem (많을수록), -ㄹ수록 after a vowel stem (클수록).", "No past tense inside -(으)ㄹ수록: 먹었을수록 is wrong — say 먹을수록; tense goes in the main clause."],
     "bridge": ["TTMIK으로 공부하면, 재미있어요.", "리모콘을 찾으면, TV를 볼 수 있어요."],
     "vocab": [
       {"ko": "성장하다", "en": "to grow, to develop", "romaji": "seong-jang-ha-da", "pos": "verb", "note": "of a person, plant, or company"},
@@ -63,7 +63,7 @@ export const L4 = [
       "explanation": "리 is a noun meaning 'reason' or 'logic', and 리가 없다 means 'there is no such reason' → 'no way that could be true'. You attach it to a verb or adjective stem just like -(으)ㄹ 거예요. It expresses that you find something highly unlikely or impossible to believe. The ready-made phrase 그럴 리가 없어요 ('that can't be') is extremely common. For past events, put the tense on the stem: 갔을 리가 없어요.",
       "notes": ["그럴 리가 없어요 = 'that can't be' is worth memorizing as a set phrase.", "For past events use -았/었을 리가 없다: 벌써 갔을 리가 없어요.", "가 is the subject marker and is sometimes dropped in speech: 그럴 리 없어요."]
     },
-    "pitfalls": ["Keep 없다 — swapping in 있다 (리가 있다) turns it into a rhetorical question, not a plain statement.", "Don't insert 수: it's -(으)ㄹ 리가 없다, never -(으)ㄹ 수 리가 없다.", "Use -을 after a consonant stem (있을 리가 없어요), -ㄹ after a vowel stem (올 리가 없어요)."],
+    "pitfalls": ["Keep 없다 — swapping in 있다 (리가 있다) turns it into a rhetorical question, not a plain statement.", "리 is a noun, so it is spaced from the verb: 올 리가 없어요, never 올리가 없어요.", "Don't confuse it with -(으)ㄹ 수 없다: 수 없다 = 'can't' (ability), 리가 없다 = 'can't be true' (likelihood).", "Use -을 after a consonant stem (있을 리가 없어요), -ㄹ after a vowel stem (올 리가 없어요)."],
     "bridge": ["그럴 수도 있어요.", "그럴 거예요."],
     "vocab": [
       {"ko": "의심하다", "en": "to doubt, to suspect", "romaji": "ui-sim-ha-da", "pos": "verb", "note": "의심하다 + 을/를 (suspect someone/something)"},
@@ -164,7 +164,7 @@ export const L4 = [
       "summary": "How to say 'you shouldn't / you're not allowed to' — a prohibition.",
       "formation": "V-stem + -(으)면 안 되다.\n• vowel or ㄹ stem → -면 안 되다  (가다 → 가면 안 돼요)\n• consonant stem → -으면 안 되다  (먹다 → 먹으면 안 돼요)\n• 하다 → 하면 안 돼요\nLiterally 'if you do X, it becomes not-okay'.",
       "explanation": "This is the mirror image of the permission pattern -아/어도 되다. -(으)면 is the 'if' ending you know, and 안 되다 means 'it won't do / it's not okay'. Together: 'if you do X, that's not allowed' → 'you must not X'. The 안 sits right before 되다, and 되다 usually appears as 돼요 (spoken) or, more formally, 안 됩니다. To ask 'Is it not allowed to ...?', just raise your intonation: -(으)면 안 돼요?",
-      "notes": ["Spelling: 되 + 어요 → 돼요, never 되요.", "안 goes before 되다 (…으면 안 돼요), not before the main verb.", "The opposite ('it's okay to / you don't have to') uses -아/어도 되다."]
+      "notes": ["Spelling: 되 + 어요 → 돼요, never 되요.", "안 goes before 되다 (…으면 안 돼요), not before the main verb.", "The opposite ('it's okay to / you don't have to') uses -아/어도 되다.", "Double negative 안 -(으)면 안 되다 = 'must do': 안 가면 안 돼요 = 'you have to go' — extremely common in speech."]
     },
     "pitfalls": ["Don't drop 안 — without it, -(으)면 돼요 means 'it's fine to' (the opposite!).", "Use -으면 after a consonant stem (먹으면 안 돼요), -면 after a vowel stem (가면 안 돼요).", "Write 돼요, not 되요, in 안 돼요."],
     "bridge": ["지금 한국어 공부 안 하면 후회할 거예요.", "이거 다 먹으면, 배가 아플 거예요."],
@@ -242,8 +242,8 @@ export const L4 = [
       "explanation": "Attach -아/어 (the same vowel form as -아/어요) plus 보다 ('to see') to mean 'do X and see' → 'try doing X'. In the past, -아/어 봤어요 means 'I've tried / I once did (and experienced) it'. As a request, -아/어 보세요 is a friendly 'go ahead and try'. Note: when the main verb is already 보다 ('to see/watch'), don't stack it — just say 보세요, not 봐 보세요.",
       "notes": ["Past -아/어 봤어요 often means 'I have (once) experienced ...'.", "-아/어 보세요 = 'try it', softer than a bare command.", "With 보다 itself, don't double it up: 'try watching' is just 보세요."]
     },
-    "pitfalls": ["The vowel follows the same ㅏ/ㅗ vs other rule as -아/어요: 가 보다, 먹어 보다, 해 보다.", "-아/어 보다 is 'try doing' (an attempt); it's different from -고 싶다 'want to'.", "Don't stack 보다 on itself: say 보세요, not 봐 보세요."],
-    "bridge": ["어제 여기에서 누구 만났어요?", "비가 와서 못 갔어요."],
+    "pitfalls": ["The vowel follows the same ㅏ/ㅗ vs other rule as -아/어요: 가 보다, 먹어 보다, 해 보다.", "Auxiliary 보다 is written with a space after the -아/어 form: 가 보세요, 먹어 봤어요 — same spacing as 가 주세요.", "-아/어 보다 is 'try doing' (an attempt); it's different from -고 싶다 'want to'.", "Don't stack 보다 on itself: say 보세요, not 봐 보세요."],
+    "bridge": ["무서워요. 같이 가 주세요.", "10 분 기다려 주세요."],
     "vocab": [
       {"ko": "시도하다", "en": "to attempt, to try", "romaji": "si-do-ha-da", "pos": "verb", "note": "make an attempt at something new"},
       {"ko": "재도전", "en": "another try, re-challenge", "romaji": "jae-do-jeon", "pos": "noun", "note": "재- prefix = 're-, again'; 재도전하다"},
