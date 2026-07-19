@@ -97,8 +97,3 @@ nav a {
 nav a:hover { text-decoration: none; }
 nav a .glyph { font-size: 1.35rem; line-height: 1; }
 nav a.active { color: var(--accent); }
-
-/* ---------- desktop ---------- */
-@media (min-width: 700px) {
-  main#view { max-width: var(--maxw); }
-}

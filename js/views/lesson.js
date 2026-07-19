@@ -1,6 +1,7 @@
-// Lesson player stub. The /learn/<id> sub-path is handled inside the syllabus
-// stub for now, so this module registers no route yet. Task 7 replaces this
-// with the real lesson player registered on /learn/<id>.
+// Lesson player stub — registers no route yet.
+// The router matches STATIC prefixes only (no dynamic segments), so Task 7
+// must handle /learn/<id> as the params tail passed to the single "/learn"
+// prefix registered by syllabus.js — NOT by registering a dynamic route here.
 export function register() {
   // no-op until Task 7
 }

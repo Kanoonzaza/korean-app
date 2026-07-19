@@ -1,3 +1,10 @@
+// localStorage-backed store, all keys prefixed "kov2.".
+//
+// NOTE: every accessor (lessons(), cards(), days(), ...) returns a FRESH parse
+// of the stored JSON — a plain object snapshot, not a live reference. Mutating
+// the returned object without calling a setter is silently lost. Always
+// read-modify-write: take the whole object, change it, pass it to the setter
+// (or use an item-level helper like setLesson/setCard/setDay).
 const P = "kov2.";
 function get(k, fallback) { try { return JSON.parse(localStorage.getItem(P + k)) ?? fallback; } catch { return fallback; } }
 function set(k, v) { localStorage.setItem(P + k, JSON.stringify(v)); }
@@ -13,6 +20,7 @@ export const store = {
   setWeak: v => set("weak", v),
   days: () => get("days", {}),                       // {"2026-07-18": {right, wrong, done:[...]}}
   setDays: v => set("days", v),
+  setDay(dateKey, v) { const m = get("days", {}); m[dateKey] = v; set("days", m); },
   settings: () => get("settings", { ttsRate: 1, newPerDay: 20 }),
   setSettings: v => set("settings", v),
   exportAll() { const o = {}; for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k.startsWith(P)) o[k] = localStorage.getItem(k); } return JSON.stringify(o); },
