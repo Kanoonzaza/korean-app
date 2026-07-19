@@ -4,12 +4,16 @@
 //   https://tulcealibrary.ro/wp-content/uploads/2020/11/Talk-To-Me-In-Korean-%E2%80%93-Level-4.pdf
 //   https://tulcealibrary.ro/wp-content/uploads/2020/11/Talk-To-Me-In-Korean-%E2%80%93-Level-5.pdf
 // Both levels = 30 lessons each (60 total). Dedup status computed over content/ttmik-sentences.js
-// (1,596 studied L1-3 sentences): status=known if forward-tagged OR pattern in >=5 sentences,
+// (1,596 studied L1-3 sentences; when extending to Level 6+ the dedup corpus must grow to
+// ALL previously-studied levels, not stay frozen at L1-3): status=known if forward-tagged OR pattern in >=5 sentences,
 // compressed if 3-4, else new. Word Builder / spacing / contraction / drill lessons carry no
 // surface grammar pattern, so they are counted as new by design.
 // Dedup fragments used (point: fragments -> hits):
 //   4.01 -(으)면 -(으)ㄹ수록: 수록 -> 0
 //   4.02 -(으)ㄹ래요?: ㄹ래요 을래요 할래 갈래 볼래 줄래 살래 올래 먹을래 마실래 탈래 놀래 -> 1
+//   4.02 audit note: status "known" via the forward-tag branch of the rule — the studied
+//   deck contains a sentence tagged TTMIK-4.02 (the only L4/L5 tag in the sentence bank),
+//   so the lesson was taught despite pattern hits = 1.
 //   4.03 -(으)ㄹ 리가 없다: 리가 없 -> 0
 //   4.04 -지요 / -죠: 지요 죠 -> 3
 //   4.05 당신: 당신 -> 2
