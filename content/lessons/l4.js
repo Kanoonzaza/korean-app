@@ -23,6 +23,18 @@
  *   4.12 https://www.topikguide.com/verb-%EC%95%84-%EC%96%B4-%EB%B3%B4%EB%8B%A4-to-try-doing-something-korean-verb-ending/  (-아/어 보다)
  *   4.13 https://en.wiktionary.org/wiki/%EB%B6%88  +  koreantopik.com (Word Builder 不, 불/부 reading)
  *   4.15 https://www.koreantopik.com/2017/05/l2g45-grammar-anyone-nobodyanywhere.html  (아무 + noun + (이)나/도)
+ *   4.16 https://www.90daykorean.com/korean-spacing/  (띄어쓰기 — particles attach, 안/못 spaced)
+ *   4.17 https://practice-korean.com/grammar/contractions/  (축약형 — 것→거/게/건/걸, 나는→난, 무엇→뭐)
+ *   4.18 https://www.howtostudykorean.com/unit1/unit-1-lessons-17-25-2/lesson-19/  (가장/제일 superlative)
+ *   4.19 https://courses.talktomeinkorean.com/core-grammar-level-4-non  (TTMIK L4 L19, 덜 = less / not fully)
+ *   4.20 (Sentence Building Drill #1 — no new grammar; combines already-taught 4.01–4.19 points)
+ *   4.21 https://www.koreanvalley.com/korean-grammar-blog/korean-spacing-rules-made-easy-particles-dependent-nouns-and-word-spacing  (띄어쓰기 — dependent nouns)
+ *   4.22 https://en.wiktionary.org/wiki/%E5%A0%B4  (Word Builder 場, place/venue)
+ *   4.23 https://practice-korean.com/grammar/contractions/  +  되어→돼 / 하여→해 rule (축약형 part 2)
+ *   4.24 https://courses.talktomeinkorean.com/core-grammar-level-4-non  (TTMIK L4 L24, 훨씬 = much/by far)
+ *   4.28 https://www.howtostudykorean.com/unit1/unit-1-lessons-17-25-2/lesson-18/  (-아/어지다, become + adjective)
+ *   4.29 https://ltl-korea.com/grammar-bank/change-in-korean/  (-게 되다 = come to / end up doing)
+ *   4.30 (Sentence Building Drill #2 — no new grammar; combines already-taught 4.01–4.29 points)
  */
 export const L4 = [
   {
@@ -319,6 +331,326 @@ export const L4 = [
       {"ko": "저는 아무 노래나 들어요.", "en": "I listen to any song.", "romaji": "jeo-neun a-mu no-rae-na deu-reo-yo", "blankWord": "아무 노래나"},
       {"ko": "저는 아무 이유도 없어요.", "en": "I have no reason at all.", "romaji": "jeo-neun a-mu i-yu-do eop-seo-yo", "blankWord": "아무 이유도"},
       {"ko": "일을 아무렇게나 하지 마세요.", "en": "Don't do the work carelessly.", "romaji": "i-reul a-mu-reo-ke-na ha-ji ma-se-yo", "blankWord": "아무렇게나"}
+    ]
+  },
+  {
+    "id": "4.16", "level": 4, "title": "Spacing in Korean (part 1)", "point": "띄어쓰기",
+    "grammar": {
+      "summary": "The basic word-spacing rules of written Korean: particles attach, everything else is separated.",
+      "formation": "• Particles (조사) attach to the noun before them with NO space: 저는, 학교에서, 밥을.\n• Every full word is separated by a space: 저는 밥을 먹어요.\n• The negatives 안 and 못 are separate words: 안 먹어요, 못 가요.\n• Native number + counter is spaced: 한 번, 두 명 (but attached with Arabic numerals: 2명).",
+      "explanation": "Korean is written with spaces (띄어쓰기), but the rules differ from English. The key idea: a particle is not its own word — it glues onto the noun before it (저 + 는 → 저는), so you never leave a space before 는/이/가/을/를/에/에서/도. Everything that IS a full word — nouns, verbs, adverbs — takes a space around it. The negation adverbs 안 and 못 count as their own words, so 안 먹어요 is spaced. Good spacing makes your writing far easier to read.",
+      "notes": ["A particle never starts a new chunk: write 학교에서, never 학교 에서.", "한번 (attached) = 'once / just try it', but 한 번 (spaced) = 'one time' as a count.", "안/못 are spaced from the verb: 안 가요, 못 봐요."]
+    },
+    "pitfalls": ["Don't put a space before a particle: 저 는 is wrong — write 저는.", "안 and 못 are separate words: write 안 먹어요, not 안먹어요.", "한번 'once / give it a go' is attached, but counting 'one time' is 한 번 with a space."],
+    "bridge": ["저도 학생이에요.", "수박은 사과보다 더 커요."],
+    "vocab": [
+      {"ko": "띄어쓰기", "en": "word spacing (between words)", "romaji": "tti-eo-sseu-gi", "pos": "noun", "note": "띄어쓰기하다 = to put spaces"},
+      {"ko": "붙여쓰기", "en": "writing without a space", "romaji": "bu-chyeo-sseu-gi", "pos": "noun", "note": "opposite of 띄어쓰기"},
+      {"ko": "낱말", "en": "a word (individual word)", "romaji": "nan-mal", "pos": "noun", "note": "same idea as 단어"},
+      {"ko": "어절", "en": "a spacing unit (word chunk)", "romaji": "eo-jeol", "pos": "noun", "note": "the chunk between two spaces"},
+      {"ko": "규범", "en": "a norm, standard rule", "romaji": "gyu-beom", "pos": "noun", "note": "an official rule to follow"}
+    ],
+    "sentences": [
+      {"ko": "한국어는 띄어쓰기가 정말 어려워요.", "en": "Korean spacing is really hard.", "romaji": "han-gu-geo-neun tti-eo-sseu-gi-ga jeong-mal eo-ryeo-wo-yo", "blankWord": "띄어쓰기가"},
+      {"ko": "조사는 앞 낱말에 붙여써요.", "en": "A particle is written attached to the word before it.", "romaji": "jo-sa-neun ap nan-ma-re bu-chyeo-sseo-yo", "blankWord": "붙여써요"},
+      {"ko": "동사 앞에서 '안'을 띄어써요.", "en": "You space '안' before the verb.", "romaji": "dong-sa a-pe-seo a-neul tti-eo-sseo-yo", "blankWord": "띄어써요"},
+      {"ko": "낱말과 낱말 사이를 띄어요.", "en": "You put a space between one word and the next.", "romaji": "nan-mal-gwa nan-mal sa-i-reul tti-eo-yo", "blankWord": "띄어요"},
+      {"ko": "이 규범을 알면 띄어쓰기가 쉬워요.", "en": "If you know this norm, spacing is easy.", "romaji": "i gyu-beo-meul al-myeon tti-eo-sseu-gi-ga swi-wo-yo", "blankWord": "규범을"},
+      {"ko": "어절은 띄어쓰기의 단위예요.", "en": "An 어절 is the unit of spacing.", "romaji": "eo-jeo-reun tti-eo-sseu-gi-ui da-ni-ye-yo", "blankWord": "어절은"}
+    ]
+  },
+  {
+    "id": "4.17", "level": 4, "title": "Word Contractions (part 1)", "point": "축약형",
+    "grammar": {
+      "summary": "Common spoken contractions of frequent words — the 것 family and shrinking pronouns.",
+      "formation": "• 것 → 거;  것이 → 게;  것은 → 건;  것을 → 걸\n• 나는 → 난;  나를 → 날;  너는 → 넌\n• 무엇 → 뭐;  이것/그것/저것 → 이거/그거/저거\n• -지요 → -죠 (from Lesson 4)",
+      "explanation": "In casual speech and casual writing, Koreans shorten many frequent words. The biggest family is 것 ('thing'): 것 → 거, and with particles 것이 → 게, 것은 → 건, 것을 → 걸. Pronouns shrink too: 나는 → 난, 나를 → 날, 너는 → 넌. And 무엇 → 뭐, 이것 → 이거. These forms are everywhere in conversation, but keep the full forms for formal writing.",
+      "notes": ["것 is the most-contracted word: 거/게/건/걸 all come from 것.", "The 게 from 것이 (subject) is a different morpheme from the 게 in -게 되다 — same shape, different origin.", "-지요 → -죠 (Lesson 4) is a contraction too."]
+    },
+    "pitfalls": ["Contractions belong to casual speech/writing — use full forms (것이, 나는) in formal writing.", "게 from 것이 is not the 게 of -게 되다; don't mix them up.", "Contract only where it's standard (무엇 → 뭐); don't invent new ones."],
+    "bridge": ["그런 것 같아요.", "이상한 것 같아요."],
+    "vocab": [
+      {"ko": "축약", "en": "contraction, shortening", "romaji": "chu-gyak", "pos": "noun", "note": "축약하다 = to contract"},
+      {"ko": "준말", "en": "a contracted / shortened word", "romaji": "jun-mal", "pos": "noun", "note": "opposite of 본말"},
+      {"ko": "구어체", "en": "colloquial (spoken) style", "romaji": "gu-eo-che", "pos": "noun", "note": "language as actually spoken"},
+      {"ko": "격식", "en": "formality, formal manner", "romaji": "gyeok-sik", "pos": "noun", "note": "격식을 차리다 = to be formal"},
+      {"ko": "말버릇", "en": "a speech habit", "romaji": "mal-beo-reut", "pos": "noun", "note": "a word one says out of habit"}
+    ],
+    "sentences": [
+      {"ko": "'것'은 말할 때 '거'로 축약해요.", "en": "'것' contracts to '거' when you speak.", "romaji": "geo-seun mal-hal ttae geo-ro chu-gya-kae-yo", "blankWord": "축약해요"},
+      {"ko": "'것이'는 '게'가 돼요.", "en": "'것이' becomes '게'.", "romaji": "geo-si-neun ge-ga dwae-yo", "blankWord": "돼요"},
+      {"ko": "'나는'은 '난'으로 축약해요.", "en": "'나는' contracts to '난'.", "romaji": "na-neu-neun na-neu-ro chu-gya-kae-yo", "blankWord": "축약해요"},
+      {"ko": "구어체에서는 '무엇'이 '뭐'예요.", "en": "In colloquial style '무엇' is '뭐'.", "romaji": "gu-eo-che-e-seo-neun mu-eo-si mwo-ye-yo", "blankWord": "구어체에서는"},
+      {"ko": "격식 있는 글에서는 준말을 안 써요.", "en": "In formal writing you don't use contractions.", "romaji": "gyeok-sik in-neun geu-re-seo-neun jun-ma-reul an sseo-yo", "blankWord": "준말을"},
+      {"ko": "저는 말버릇처럼 '뭐'를 자주 써요.", "en": "I say '뭐' a lot, almost as a habit.", "romaji": "jeo-neun mal-beo-reut-cheo-reom mwo-reul ja-ju sseo-yo", "blankWord": "말버릇처럼"}
+    ]
+  },
+  {
+    "id": "4.18", "level": 4, "title": "Most / Best (superlative)", "point": "가장, 제일, 최고",
+    "grammar": {
+      "summary": "How to say something is 'the most ...' or 'the best' — the Korean superlative.",
+      "formation": "• 가장 / 제일 + adjective/adverb = 'the most ...' — they sit right before the word they boost.\n  제일 커요 (is biggest), 가장 빨리 (fastest).\n• Out of a group, pair with 중에서 (Lesson 10): 이 중에서 제일 좋아요.\n• 최고 is a NOUN ('the best'): 최고예요; 최고의 + noun (최고의 방법).",
+      "explanation": "가장 and 제일 are adverbs meaning 'most'; place them directly before an adjective or adverb: 제일 커요 = 'is biggest', 가장 빨리 = 'fastest'. 제일 is a little more colloquial and 가장 a little more written, but they're interchangeable. 최고 is different — it is a noun meaning 'the best (one)', so you say 이게 최고예요 or 최고의 + noun. To pick 'the ~est out of a group', add 중에서.",
+      "notes": ["가장 = neutral/written, 제일 = more colloquial; both mean 'most'.", "최고 is a noun: 최고예요 ('it's the best'), 최고의 실력 ('the best skill').", "'Which do you like most?' pairs with 중에서: 이 중에서 뭐가 제일 좋아요?"]
+    },
+    "pitfalls": ["가장/제일 modify an adjective or adverb, not a bare noun: 제일 사람 is wrong → 제일 좋은 사람.", "최고 is a noun, not an adverb — don't say 최고 빨라요; say 제일 빨라요.", "Put 가장/제일 right before the word it boosts: 제일 커요, 가장 빨리."],
+    "bridge": ["비빔밥하고 냉면 중에서 어느 것을 더 좋아해요?", "수박은 사과보다 더 커요."],
+    "vocab": [
+      {"ko": "최상", "en": "the best, the highest", "romaji": "choe-sang", "pos": "noun", "note": "最上; 최상의 + noun (최상의 선택)"},
+      {"ko": "최악", "en": "the worst", "romaji": "choe-ak", "pos": "noun", "note": "最惡; opposite of 최상"},
+      {"ko": "최강", "en": "the strongest", "romaji": "choe-gang", "pos": "noun", "note": "最强; 최강의 팀 = the strongest team"},
+      {"ko": "최우선", "en": "the top priority", "romaji": "choe-u-seon", "pos": "noun", "note": "最優先; put first of all"},
+      {"ko": "으뜸", "en": "the best, number one", "romaji": "eu-tteum", "pos": "noun", "note": "native word; 으뜸이다 = to be the best"},
+      {"ko": "정점", "en": "the peak, the climax", "romaji": "jeong-jeom", "pos": "noun", "note": "頂點; the highest point"},
+      {"ko": "압권", "en": "the highlight, the standout", "romaji": "ap-gwon", "pos": "noun", "note": "壓卷; the best part of something"},
+      {"ko": "손꼽히다", "en": "to be counted among the best", "romaji": "son-kko-pi-da", "pos": "verb", "note": "최고로 손꼽히다 = to be reckoned the best"}
+    ],
+    "sentences": [
+      {"ko": "이 식당이 이 동네에서 제일 맛있어요.", "en": "This restaurant is the tastiest in this neighborhood.", "romaji": "i sik-dang-i i dong-ne-e-seo je-il ma-si-sseo-yo", "blankWord": "제일"},
+      {"ko": "건강이 저한테 최우선이에요.", "en": "Health is my top priority.", "romaji": "geon-gang-i jeo-han-te choe-u-seon-i-e-yo", "blankWord": "최우선이에요"},
+      {"ko": "그 영화에서 마지막 장면이 압권이에요.", "en": "The last scene of that movie is the standout.", "romaji": "geu yeong-hwa-e-seo ma-ji-mak jang-myeon-i ap-gwon-i-e-yo", "blankWord": "압권이에요"},
+      {"ko": "저는 여기 음식 중에서 이게 제일 좋아요.", "en": "Of the food here, I like this one best.", "romaji": "jeo-neun yeo-gi eum-sik jung-e-seo i-ge je-il jo-a-yo", "blankWord": "제일"},
+      {"ko": "어제 날씨는 최악이었어요.", "en": "Yesterday's weather was the worst.", "romaji": "eo-je nal-ssi-neun choe-a-gi-eo-sseo-yo", "blankWord": "최악이었어요"},
+      {"ko": "이 방법이 가장 단순해요.", "en": "This method is the simplest.", "romaji": "i bang-beo-bi ga-jang dan-sun-hae-yo", "blankWord": "가장"},
+      {"ko": "김치찌개는 이 집에서 으뜸이에요.", "en": "The kimchi stew is number one at this place.", "romaji": "gim-chi-jji-gae-neun i ji-be-seo eu-tteu-mi-e-yo", "blankWord": "으뜸이에요"}
+    ]
+  },
+  {
+    "id": "4.19", "level": 4, "title": "Less / Not completely", "point": "덜",
+    "grammar": {
+      "summary": "How to say something is done 'less', or 'not all the way / not fully'.",
+      "formation": "덜 + verb/adjective — the adverb 덜 is the opposite of 더 ('more').\n• comparative sense: 이게 덜 비싸요 (this is less expensive)\n• incompleteness sense: 덜 익었어요 (not fully cooked), 덜 말랐어요 (not fully dry)",
+      "explanation": "덜 is a single adverb placed before a verb or adjective. Its first sense mirrors 더: 더 = more, 덜 = less (오늘은 덜 추워요 = 'it's less cold today'). Its second sense is 'not completely / not all the way': 밥이 덜 됐어요 = 'the rice isn't fully cooked', 잠이 덜 깼어요 = 'I'm not fully awake'. Context tells you which sense is meant. Like any adverb, it can't attach directly to a noun.",
+      "notes": ["덜 is the opposite of 더: 더 좋아요 (more) ↔ 덜 좋아요 (less).", "The 'not fully' sense is common with cooking / drying / waking: 덜 익다, 덜 마르다, 덜 깨다.", "다 (all / completely) is the natural opposite of the 'not fully' sense."]
+    },
+    "pitfalls": ["Don't read 덜 only as 'less' — it also means 'not fully' (덜 익었어요 = undercooked).", "덜 modifies a verb/adjective, not a noun: 덜 돈 is wrong → say 돈이 덜 들어요 (costs less).", "덜 goes before the word it lowers: 덜 매워요, 덜 비싸요."],
+    "bridge": ["이거보다 더 좋아요.", "오늘은 어제보다 더워요."],
+    "vocab": [
+      {"ko": "미흡하다", "en": "to be insufficient, lacking", "romaji": "mi-heu-pa-da", "pos": "adj", "note": "未洽; falls a little short"},
+      {"ko": "어중간하다", "en": "to be halfway, neither enough nor not", "romaji": "eo-jung-gan-ha-da", "pos": "adj", "note": "於中間; not quite enough"},
+      {"ko": "미완성", "en": "incompleteness, an unfinished state", "romaji": "mi-wan-seong", "pos": "noun", "note": "未完成; opposite of 완성"},
+      {"ko": "설익다", "en": "to be half-cooked, underripe", "romaji": "seol-lik-da", "pos": "verb", "note": "설- prefix = 'not fully'"},
+      {"ko": "완화", "en": "easing, relief, relaxation", "romaji": "wan-hwa", "pos": "noun", "note": "緩和; 완화하다 = to ease"},
+      {"ko": "급감", "en": "a sharp decrease", "romaji": "geup-gam", "pos": "noun", "note": "急減; 급감하다 = to drop sharply"},
+      {"ko": "절감", "en": "cutting down, reduction", "romaji": "jeol-gam", "pos": "noun", "note": "節減; 비용을 절감하다 = to cut costs"}
+    ],
+    "sentences": [
+      {"ko": "오늘은 어제보다 덜 추워요.", "en": "Today is less cold than yesterday.", "romaji": "o-neu-reun eo-je-bo-da deol chu-wo-yo", "blankWord": "덜"},
+      {"ko": "이 김치는 덜 매워요.", "en": "This kimchi is less spicy.", "romaji": "i gim-chi-neun deol mae-wo-yo", "blankWord": "덜"},
+      {"ko": "밥이 아직 덜 됐어요.", "en": "The rice isn't fully cooked yet.", "romaji": "ba-bi a-jik deol dwae-sseo-yo", "blankWord": "덜"},
+      {"ko": "이게 저것보다 덜 비싸요.", "en": "This is less expensive than that.", "romaji": "i-ge jeo-geot-bo-da deol bi-ssa-yo", "blankWord": "덜"},
+      {"ko": "준비가 덜 돼서 걱정이에요.", "en": "I'm worried because I'm not fully ready.", "romaji": "jun-bi-ga deol dwae-seo geok-jeong-i-e-yo", "blankWord": "덜"},
+      {"ko": "제 실력이 아직 미흡해요.", "en": "My skills are still lacking.", "romaji": "je sil-lyeo-gi a-jik mi-heu-pae-yo", "blankWord": "미흡해요"},
+      {"ko": "이 방법으로 비용을 절감할 수 있어요.", "en": "You can cut costs with this method.", "romaji": "i bang-beo-beu-ro bi-yong-eul jeol-gam-hal su i-sseo-yo", "blankWord": "절감할"}
+    ]
+  },
+  {
+    "id": "4.20", "level": 4, "title": "Sentence Building Drill #1", "point": "복습 / 문장 만들기",
+    "grammar": {
+      "summary": "A review lesson: combine the Level 4 grammar you've learned so far into longer sentences.",
+      "formation": "No new form. Each example stacks two or more points you already know — e.g. -(으)면 안 되다 (Lesson 9) + 아무거나 (Lesson 11), or 제일 (Lesson 18) + -(으)ㄹ수록 (Lesson 1).",
+      "explanation": "This is a sentence-building drill, not a new pattern. It trains you to snap together points from Lessons 1–19: 'the more/the more', prohibitions, 'try doing', 'any/no', superlatives, and 'less'. Read each example and notice which two grammar points it joins, then make your own along the same lines.",
+      "notes": ["No new grammar here — everything comes from Lessons 1–19.", "Aim to combine at least two patterns in each sentence.", "Say each one out loud to build fluency."]
+    },
+    "pitfalls": ["Keep each combined point in its own correct form — combining doesn't change how each one conjugates.", "Mind your spacing (Lesson 16) and pick full or contracted forms (Lesson 17) to match your register."],
+    "bridge": ["리모콘을 찾으면, TV를 볼 수 있어요.", "저는 요즘에 평소보다 더 바빠요."],
+    "vocab": [],
+    "sentences": [
+      {"ko": "성실하면 성실할수록 좋지만, 너무 무리하면 안 돼요.", "en": "The more diligent, the better — but you mustn't overdo it.", "romaji": "seong-sil-ha-myeon seong-sil-hal-su-rok jo-chi-man, neo-mu mu-ri-ha-myeon an dwae-yo", "blankWord": "안 돼요"},
+      {"ko": "여기에서는 아무거나 만지면 안 돼요.", "en": "Here you mustn't touch just anything.", "romaji": "yeo-gi-e-seo-neun a-mu-geo-na man-ji-myeon an dwae-yo", "blankWord": "아무거나"},
+      {"ko": "이 중에서 제일 좋은 방법을 한번 찾아 보세요.", "en": "Try finding the best method out of these.", "romaji": "i jung-e-seo je-il jo-eun bang-beo-beul han-beon cha-ja bo-se-yo", "blankWord": "제일"},
+      {"ko": "저는 주말에 아무 데도 안 가고 일을 덜 하고 싶어요.", "en": "On the weekend I want to go nowhere and work less.", "romaji": "jeo-neun ju-ma-re a-mu de-do an ga-go i-reul deol ha-go si-peo-yo", "blankWord": "덜"},
+      {"ko": "그 사람이 이 김치를 안 먹어 봤을 리가 없어요.", "en": "There's no way he hasn't tried this kimchi.", "romaji": "geu sa-ra-mi i gim-chi-reul an meo-geo bwa-sseul li-ga eop-seo-yo", "blankWord": "먹어 봤을"},
+      {"ko": "가장 어려운 문제도 풀면 풀수록 재미있어요.", "en": "Even the hardest problem gets more fun the more you solve it.", "romaji": "ga-jang eo-ryeo-un mun-je-do pul-myeon pul-su-rok jae-mi-i-sseo-yo", "blankWord": "가장"}
+    ]
+  },
+  {
+    "id": "4.21", "level": 4, "title": "Spacing in Korean (part 2)", "point": "띄어쓰기",
+    "grammar": {
+      "summary": "The harder spacing case: dependent (bound) nouns take a space BEFORE them.",
+      "formation": "• Dependent nouns are spaced: 갈 수 있어요, 할 것 같아요, 아는 것, 간 지 오래됐어요.\n• Auxiliary verbs after -아/어 are usually spaced: 가 보세요, 먹어 주세요.\n• But fused compound verbs are one word (no space): 들어가다, 들어오다, 돌아가다.",
+      "explanation": "Building on Lesson 16, this covers the trickiest chunk: dependent nouns like 수, 것/거, 지, 데. They look attached, but they are separate words, so you put a space before them: 갈 수 있어요 (not 갈수), 할 거예요 (not 할거예요). Auxiliary verbs after the -아/어 form are also usually spaced (가 보세요). Watch out — some verb+verb combos have fused into single words (들어가다) and take no space.",
+      "notes": ["수, 것/거, 지, 데, 줄 are dependent nouns — always a space before them.", "-(으)ㄹ 거예요 is 갈 거예요 (거 is a dependent noun), not 갈거예요.", "Fused compounds are one word: 들어가다, 들어오다, 돌아가다 — no space."]
+    },
+    "pitfalls": ["Put a space before a dependent noun: 갈수 있어요 is wrong → 갈 수 있어요.", "-(으)ㄹ 거예요 needs the space: 할거예요 → 할 거예요.", "An auxiliary verb after -아/어 is spaced: 가보세요 → 가 보세요, 먹어주세요 → 먹어 주세요."],
+    "bridge": ["이거 읽을 수 있어요?", "여기 비싼 것 같아요."],
+    "vocab": [
+      {"ko": "의존명사", "en": "a dependent (bound) noun", "romaji": "ui-jon-myeong-sa", "pos": "noun", "note": "依存名詞; e.g. 수, 것, 지 — needs a space before it"},
+      {"ko": "관형사", "en": "a determiner (pre-noun word)", "romaji": "gwan-hyeong-sa", "pos": "noun", "note": "冠形詞; e.g. 이/그/저, 새, 헌"},
+      {"ko": "보조사", "en": "an auxiliary particle", "romaji": "bo-jo-sa", "pos": "noun", "note": "補助詞; e.g. 은/는, 도, 만"},
+      {"ko": "어미", "en": "a word ending", "romaji": "eo-mi", "pos": "noun", "note": "語尾; the conjugating tail of a verb/adjective"}
+    ],
+    "sentences": [
+      {"ko": "'수'는 의존명사예요. 그래서 앞을 띄어써요.", "en": "'수' is a dependent noun, so you space before it.", "romaji": "su-neun ui-jon-myeong-sa-ye-yo. geu-rae-seo a-peul tti-eo-sseo-yo", "blankWord": "의존명사예요"},
+      {"ko": "'갈 수 있어요'는 '수' 앞을 띄어써요.", "en": "In '갈 수 있어요' you space before '수'.", "romaji": "gal su i-sseo-yo-neun su a-peul tti-eo-sseo-yo", "blankWord": "띄어써요"},
+      {"ko": "'할 거예요'도 '거' 앞을 띄어써요.", "en": "In '할 거예요' too, you space before '거'.", "romaji": "hal geo-ye-yo-do geo a-peul tti-eo-sseo-yo", "blankWord": "띄어써요"},
+      {"ko": "'이', '그', '저'는 관형사예요.", "en": "'이', '그', '저' are determiners.", "romaji": "i, geu, jeo-neun gwan-hyeong-sa-ye-yo", "blankWord": "관형사예요"},
+      {"ko": "'은', '는', '도'는 보조사예요.", "en": "'은', '는', '도' are auxiliary particles.", "romaji": "eun, neun, do-neun bo-jo-sa-ye-yo", "blankWord": "보조사예요"},
+      {"ko": "동사의 어미는 붙여써요.", "en": "A verb's ending is written attached.", "romaji": "dong-sa-ui eo-mi-neun bu-chyeo-sseo-yo", "blankWord": "어미는"}
+    ]
+  },
+  {
+    "id": "4.22", "level": 4, "title": "Word Builder 5", "point": "場 (장)",
+    "grammar": {
+      "summary": "場 (장) means 'place / venue / field'; spotting it points to a place where something happens.",
+      "formation": "場 (장) is a Sino-Korean building block. It usually sits at the END of a word, after another root: 運動 + 場 → 운동장, 市 + 場 → 시장.",
+      "explanation": "場 (장) means 'a place / open ground / venue where something happens'. You already meet it in 운동장 (sports ground), 시장 (market), 극장 (theater), 수영장 (swimming pool), 주차장 (parking lot), 공연장 (concert hall), 경기장 (stadium), and 현장 (the scene). Spot 장 at the end of a word and you can guess it names a place for some activity. The words below add more.",
+      "notes": ["Already-known 場 words: 운동장, 시장, 극장, 수영장, 주차장, 공연장, 경기장, 현장, 장면.", "場 (장, 'place') is a different hanja from 長 (장, 'chief/head', as in 사장 = boss, 교장 = principal) — same sound, different character.", "입장 and 등장 also use 場: 입장 = entry (into a venue), 등장 = appearing on stage."]
+    },
+    "pitfalls": ["Don't confuse 場 (장, place) with 長 (장, chief) — 사장/교장 use 長, not 場.", "場 attaches to Sino-Korean roots (운동장, 시장); you can't paste it onto native words freely."],
+    "bridge": [],
+    "vocab": [
+      {"ko": "시험장", "en": "an exam hall / test venue", "romaji": "si-heom-jang", "pos": "noun", "note": "試驗場; where a test is held"},
+      {"ko": "공사장", "en": "a construction site", "romaji": "gong-sa-jang", "pos": "noun", "note": "工事場; where building work happens"},
+      {"ko": "목장", "en": "a ranch, a pasture", "romaji": "mok-jang", "pos": "noun", "note": "牧場; for raising livestock"},
+      {"ko": "농장", "en": "a farm", "romaji": "nong-jang", "pos": "noun", "note": "農場; for growing crops or animals"},
+      {"ko": "광장", "en": "a plaza, a public square", "romaji": "gwang-jang", "pos": "noun", "note": "廣場; a large open public space"},
+      {"ko": "퇴장", "en": "leaving / exiting (a stage or field)", "romaji": "toe-jang", "pos": "noun", "note": "退場; opposite of 등장/입장"},
+      {"ko": "장터", "en": "a marketplace, market ground", "romaji": "jang-teo", "pos": "noun", "note": "場 + 터 (ground); where a market is held"}
+    ],
+    "sentences": [
+      {"ko": "저는 주말에 농장에서 일했어요.", "en": "I worked on a farm over the weekend.", "romaji": "jeo-neun ju-ma-re nong-jang-e-seo il-hae-sseo-yo", "blankWord": "농장에서"},
+      {"ko": "여기는 공사장이에요. 그래서 위험해요.", "en": "This is a construction site, so it's dangerous.", "romaji": "yeo-gi-neun gong-sa-jang-i-e-yo. geu-rae-seo wi-heom-hae-yo", "blankWord": "공사장이에요"},
+      {"ko": "시험장에서는 조용히 하세요.", "en": "Please be quiet in the exam hall.", "romaji": "si-heom-jang-e-seo-neun jo-yong-hi ha-se-yo", "blankWord": "시험장에서는"},
+      {"ko": "말들이 목장에 있어요.", "en": "The horses are in the pasture.", "romaji": "mal-deu-ri mok-jang-e i-sseo-yo", "blankWord": "목장에"},
+      {"ko": "광장에 사람이 아주 많아요.", "en": "There are a lot of people in the square.", "romaji": "gwang-jang-e sa-ra-mi a-ju ma-na-yo", "blankWord": "광장에"},
+      {"ko": "그 선수가 반칙으로 퇴장했어요.", "en": "That player was sent off for a foul.", "romaji": "geu seon-su-ga ban-chi-geu-ro toe-jang-hae-sseo-yo", "blankWord": "퇴장했어요"},
+      {"ko": "저는 주말마다 장터에 가요.", "en": "I go to the market ground every weekend.", "romaji": "jeo-neun ju-mal-ma-da jang-teo-e ga-yo", "blankWord": "장터에"}
+    ]
+  },
+  {
+    "id": "4.23", "level": 4, "title": "Word Contractions (part 2)", "point": "축약형",
+    "grammar": {
+      "summary": "More spoken contractions — including the real 되어 → 돼 spelling rule.",
+      "formation": "• 되어 → 돼;  하여 → 해;  -아/어 주어 → 줘\n• 무엇을 → 뭘;  이것이 → 이게;  그것을 → 그걸\n• 그러면 → 그럼;  그런데 → 근데;  아이 → 애;  이야기 → 얘기",
+      "explanation": "This continues Lesson 17. The big rule here is 되어 → 돼: whenever 되 + 어 meet they fuse to 돼 (됐어요 = 되었어요), and likewise 하여 → 해. Discourse words also shrink: 그러면 → 그럼, 그런데 → 근데, and 아이 → 애, 이야기 → 얘기. Most of these are casual, but the 되/돼 spelling in particular you must get right even in careful writing.",
+      "notes": ["The 되어 → 돼 rule is real spelling, not just slang: 됐어요, 안 돼요.", "Test 되/돼 by swapping in 하/해: if 해 fits, write 돼; if 하 fits, write 되.", "근데 (from 그런데) is fine in speech but keep 그런데 in formal writing."]
+    },
+    "pitfalls": ["돼 comes from 되 + 어: write 돼요 / 됐어요, never 되요 / 됬어요.", "그럼 / 근데 / 얘기 are casual — use 그러면 / 그런데 / 이야기 in formal writing.", "Contract only vowel-friendly pairs (무엇을 → 뭘, 그것을 → 그걸); don't force odd ones."],
+    "bridge": ["그러면 이거는 뭐예요?", "너무 좋아요. 그런데 너무 비싸요."],
+    "vocab": [
+      {"ko": "본말", "en": "the original (full) form", "romaji": "bon-mal", "pos": "noun", "note": "opposite of 준말 / 줄임말"},
+      {"ko": "줄임말", "en": "an abbreviation, a shortened word", "romaji": "ju-rim-mal", "pos": "noun", "note": "same idea as 준말"},
+      {"ko": "일상어", "en": "everyday language", "romaji": "il-sang-eo", "pos": "noun", "note": "日常語; words used in daily life"},
+      {"ko": "표준어", "en": "the standard language", "romaji": "pyo-jun-eo", "pos": "noun", "note": "標準語; the official standard form"},
+      {"ko": "말씨", "en": "one's way of speaking, diction", "romaji": "mal-ssi", "pos": "noun", "note": "tone and choice of words"}
+    ],
+    "sentences": [
+      {"ko": "'됐어요'는 '되었어요'의 줄임말이에요.", "en": "'됐어요' is the contraction of '되었어요'.", "romaji": "dwae-sseo-yo-neun doe-eo-sseo-yo-ui ju-rim-ma-ri-e-yo", "blankWord": "줄임말이에요"},
+      {"ko": "'그러면'을 '그럼'으로 축약해요.", "en": "'그러면' contracts to '그럼'.", "romaji": "geu-reo-myeo-neul geu-reo-meu-ro chu-gya-kae-yo", "blankWord": "축약해요"},
+      {"ko": "'근데'는 '그런데'의 준말이에요.", "en": "'근데' is the contraction of '그런데'.", "romaji": "geun-de-neun geu-reon-de-ui jun-ma-ri-e-yo", "blankWord": "준말이에요"},
+      {"ko": "일상어에서는 '얘기'를 자주 써요.", "en": "In everyday language people often say '얘기'.", "romaji": "il-sang-eo-e-seo-neun yae-gi-reul ja-ju sseo-yo", "blankWord": "일상어에서는"},
+      {"ko": "표준어에서는 '이야기'가 본말이에요.", "en": "In the standard language '이야기' is the full form.", "romaji": "pyo-jun-eo-e-seo-neun i-ya-gi-ga bon-ma-ri-e-yo", "blankWord": "본말이에요"},
+      {"ko": "그 사람은 말씨가 부드러워요.", "en": "That person's way of speaking is gentle.", "romaji": "geu sa-ra-meun mal-ssi-ga bu-deu-reo-wo-yo", "blankWord": "말씨가"}
+    ]
+  },
+  {
+    "id": "4.24", "level": 4, "title": "Much (more) / Much (less)", "point": "훨씬",
+    "grammar": {
+      "summary": "How to emphasize a big difference — 'much / far (more or less)' — with 훨씬.",
+      "formation": "훨씬 (+ 더 / 덜) + adjective/adverb = 'much / far ...'.\n• 훨씬 더 커요 (much bigger), 훨씬 덜 비싸요 (much less expensive)\n• needs a comparison in mind, usually marked with 보다.",
+      "explanation": "훨씬 means 'by far / much', and it strengthens a comparison. It usually pairs with 더 ('more') or 덜 ('less', Lesson 19): 이게 저것보다 훨씬 더 좋아요 = 'this is much better than that'. Unlike 많이 ('a lot'), 훨씬 specifically boosts a comparative, so it only makes sense when you are comparing to something — stated with 보다 or understood from context.",
+      "notes": ["훨씬 pairs with 더 / 덜: 훨씬 더 빨라요, 훨씬 덜 매워요.", "It needs a comparison target — usually marked with 보다 or clear from context.", "훨씬 can also come right before the adjective: 훨씬 좋아요 = 'much better'."]
+    },
+    "pitfalls": ["훨씬 needs a comparison in mind; on a plain statement with no 'than', it sounds incomplete.", "Use 훨씬 더, not 많이 더, to intensify a comparative: 많이 더 좋아요 is wrong → 훨씬 더 좋아요.", "훨씬 boosts adjectives/adverbs, not nouns: 훨씬 사람 is wrong."],
+    "bridge": ["버스보다 지하철이 더 빨라요.", "제가 현우 씨보다 더 건강해요."],
+    "vocab": [
+      {"ko": "월등하다", "en": "to be far superior, outstanding", "romaji": "wol-deung-ha-da", "pos": "adj", "note": "越等; a clear cut above the rest"},
+      {"ko": "격차", "en": "a gap, a disparity", "romaji": "gyeok-cha", "pos": "noun", "note": "隔差; the size of a difference"},
+      {"ko": "대폭", "en": "greatly, by a large margin", "romaji": "dae-pok", "pos": "adv", "note": "大幅; 대폭 오르다 = to rise sharply"},
+      {"ko": "현저하다", "en": "to be marked, remarkable", "romaji": "hyeon-jeo-ha-da", "pos": "adj", "note": "顯著; clearly noticeable"},
+      {"ko": "압도적", "en": "overwhelming, dominant", "romaji": "ap-do-jeok", "pos": "adj", "note": "壓倒的; by an overwhelming degree"},
+      {"ko": "갑절", "en": "double, twice as much", "romaji": "gap-jeol", "pos": "noun", "note": "two times the amount"},
+      {"ko": "능가하다", "en": "to surpass, to exceed", "romaji": "neung-ga-ha-da", "pos": "verb", "note": "凌駕; to go beyond another"},
+      {"ko": "우세하다", "en": "to be superior, to have the upper hand", "romaji": "u-se-ha-da", "pos": "adj", "note": "優勢; ahead in a contest"}
+    ],
+    "sentences": [
+      {"ko": "지하철이 버스보다 훨씬 빨라요.", "en": "The subway is much faster than the bus.", "romaji": "ji-ha-cheo-ri beo-seu-bo-da hwol-ssin ppal-la-yo", "blankWord": "훨씬"},
+      {"ko": "이게 저것보다 훨씬 더 비싸요.", "en": "This is much more expensive than that.", "romaji": "i-ge jeo-geot-bo-da hwol-ssin deo bi-ssa-yo", "blankWord": "훨씬"},
+      {"ko": "오늘은 어제보다 훨씬 덜 추워요.", "en": "Today is much less cold than yesterday.", "romaji": "o-neu-reun eo-je-bo-da hwol-ssin deol chu-wo-yo", "blankWord": "훨씬"},
+      {"ko": "이 방법이 저 방법보다 훨씬 좋아요.", "en": "This method is much better than that one.", "romaji": "i bang-beo-bi jeo bang-beop-bo-da hwol-ssin jo-a-yo", "blankWord": "훨씬"},
+      {"ko": "두 사람의 실력 격차가 커요.", "en": "The skill gap between the two people is big.", "romaji": "du sa-ra-mui sil-lyeok gyeok-cha-ga keo-yo", "blankWord": "격차가"},
+      {"ko": "이 가수는 압도적으로 인기가 많아요.", "en": "This singer is overwhelmingly popular.", "romaji": "i ga-su-neun ap-do-jeo-geu-ro in-gi-ga ma-na-yo", "blankWord": "압도적으로"},
+      {"ko": "그 선수가 다른 선수를 능가해요.", "en": "That player surpasses the other players.", "romaji": "geu seon-su-ga da-reun seon-su-reul neung-ga-hae-yo", "blankWord": "능가해요"}
+    ]
+  },
+  {
+    "id": "4.28", "level": 4, "title": "To become + adjective", "point": "-아/어지다",
+    "grammar": {
+      "summary": "How to say something 'becomes / gets' more (adjective) — a change of state.",
+      "formation": "Adjective stem + -아/어지다; the whole thing conjugates as a VERB.\n• ㅏ/ㅗ stem → -아지다  (좋다 → 좋아지다)\n• other vowel → -어지다  (예쁘다 → 예뻐지다)\n• 하다 → -해지다  (따뜻하다 → 따뜻해지다)\nConjugates: 좋아져요 / 좋아졌어요 / 좋아질 거예요.",
+      "explanation": "Attach -아/어지다 to an adjective stem to say something 'becomes / gets' that way — marking a change of state. The vowel follows the same ㅏ/ㅗ vs. other rule as -아/어요, and 하다-adjectives become -해지다. Once attached, the result behaves like a verb: 날씨가 추워졌어요 = 'the weather got cold'. Present -아/어져요 describes an ongoing change ('is getting ~'); past -아/어졌어요 states that the change happened.",
+      "notes": ["Vowel rule matches -아/어요: 좋아지다, 많아지다, 예뻐지다, 따뜻해지다.", "Present 좋아져요 = 'is getting better'; past 좋아졌어요 = 'has gotten better'.", "This is for adjectives; to say you 'come to do' a verb, use -게 되다 (next lesson)."]
+    },
+    "pitfalls": ["-아/어지다 attaches to adjectives; for 'coming to do' a verb, use -게 되다 (Lesson 29).", "The vowel follows -아/어요: 좋아지다, 예뻐지다, 따뜻해지다 — not 좋어지다.", "Write 좋아졌어요 for a completed change; 좋아져요 means it's still changing."],
+    "bridge": ["예전보다 더 잘 해요.", "이 영화 재미있을 것 같아요."],
+    "vocab": [
+      {"ko": "선명하다", "en": "to be vivid, clear-cut", "romaji": "seon-myeong-ha-da", "pos": "adj", "note": "鮮明; sharp and distinct"},
+      {"ko": "촉촉하다", "en": "to be moist, damp", "romaji": "chok-cho-ka-da", "pos": "adj", "note": "pleasantly wet, not dry"},
+      {"ko": "매끄럽다", "en": "to be smooth, sleek", "romaji": "mae-kkeu-reop-da", "pos": "adj", "note": "ㅂ-irregular: 매끄러워요"},
+      {"ko": "뻣뻣하다", "en": "to be stiff, rigid", "romaji": "ppeot-ppeo-ta-da", "pos": "adj", "note": "not soft or flexible"},
+      {"ko": "산뜻하다", "en": "to be fresh, crisp, refreshing", "romaji": "san-tteu-ta-da", "pos": "adj", "note": "light and clean-feeling"},
+      {"ko": "느슨하다", "en": "to be loose, slack", "romaji": "neu-seun-ha-da", "pos": "adj", "note": "opposite of 팽팽하다"},
+      {"ko": "팽팽하다", "en": "to be taut, tight", "romaji": "paeng-paeng-ha-da", "pos": "adj", "note": "stretched tight"},
+      {"ko": "흐릿하다", "en": "to be blurry, faint", "romaji": "heu-ri-ta-da", "pos": "adj", "note": "opposite of 선명하다"}
+    ],
+    "sentences": [
+      {"ko": "봄이 오면 날씨가 따뜻해져요.", "en": "When spring comes, the weather gets warm.", "romaji": "bo-mi o-myeon nal-ssi-ga tta-tteu-tae-jyeo-yo", "blankWord": "따뜻해져요"},
+      {"ko": "운동을 하면 몸이 튼튼해져요.", "en": "If you exercise, your body gets stronger.", "romaji": "un-dong-eul ha-myeon mo-mi teun-teun-hae-jyeo-yo", "blankWord": "튼튼해져요"},
+      {"ko": "청소를 해서 방이 깨끗해졌어요.", "en": "I cleaned, so the room got clean.", "romaji": "cheong-so-reul hae-seo bang-i kkae-kkeu-tae-jyeo-sseo-yo", "blankWord": "깨끗해졌어요"},
+      {"ko": "세수를 하면 얼굴이 촉촉해져요.", "en": "When you wash your face, it gets moist.", "romaji": "se-su-reul ha-myeon eol-gu-ri chok-cho-kae-jyeo-yo", "blankWord": "촉촉해져요"},
+      {"ko": "사진이 예전보다 훨씬 선명해졌어요.", "en": "The photo got much clearer than before.", "romaji": "sa-jin-i ye-jeon-bo-da hwol-ssin seon-myeong-hae-jyeo-sseo-yo", "blankWord": "선명해졌어요"},
+      {"ko": "끈이 팽팽해졌어요.", "en": "The string got taut.", "romaji": "kkeu-ni paeng-paeng-hae-jyeo-sseo-yo", "blankWord": "팽팽해졌어요"},
+      {"ko": "요즘 한국어 실력이 좋아지고 있어요.", "en": "These days my Korean skills are getting better.", "romaji": "yo-jeum han-gu-geo sil-lyeo-gi jo-a-ji-go i-sseo-yo", "blankWord": "좋아지고"}
+    ]
+  },
+  {
+    "id": "4.29", "level": 4, "title": "To gradually/eventually get to...", "point": "-게 되다",
+    "grammar": {
+      "summary": "How to say you 'came to / ended up / got to' do something, usually through circumstances.",
+      "formation": "Verb stem + -게 되다.  되다 conjugates: 되다 / 됐어요 / 돼요 / 될 거예요.\n• 가다 → 가게 되다   • 먹다 → 먹게 되다   • 하다 → 하게 되다",
+      "explanation": "Attach -게 되다 to a verb stem to say you 'ended up / came to / got to' do something — usually because of outside circumstances rather than your own plan. 한국에서 일하게 됐어요 = 'I ended up working in Korea'. It's the standard, humble way to announce news about yourself (회사를 옮기게 됐어요 = 'it came about that I'm changing companies'). 되다 spells as 돼요 / 됐어요. Contrast with Lesson 28: adjectives 'become' with -아/어지다; verbs 'come about' with -게 되다.",
+      "notes": ["Very common for humble announcements: 결혼하게 됐어요 = 'I'm getting married (as it turned out)'.", "It implies circumstance or arrangement, not pure personal choice.", "Spelling: 되 + 어 → 돼, so 됐어요 / 돼요, never 됬어요 / 되요."]
+    },
+    "pitfalls": ["-게 되다 is for verbs (come to do); adjectives use -아/어지다 (Lesson 28).", "Write 됐어요 / 돼요, not 됬어요 / 되요.", "It frames the change as external — for a deliberate plan, plain past (했어요) is more direct."],
+    "bridge": ["한국어가 너무 재미있어서 매일 공부하고 있어요.", "그런 것 같아요."],
+    "vocab": [
+      {"ko": "취업하다", "en": "to get a job, to get employed", "romaji": "chwi-eo-pa-da", "pos": "verb", "note": "就業; to enter the workforce"},
+      {"ko": "입사하다", "en": "to join a company", "romaji": "ip-sa-ha-da", "pos": "verb", "note": "入社; opposite of 퇴사하다"},
+      {"ko": "퇴사하다", "en": "to leave a company, to resign", "romaji": "toe-sa-ha-da", "pos": "verb", "note": "退社; to quit one's job"},
+      {"ko": "전학하다", "en": "to transfer schools", "romaji": "jeon-ha-ka-da", "pos": "verb", "note": "轉學; to change to another school"},
+      {"ko": "유학하다", "en": "to study abroad", "romaji": "yu-ha-ka-da", "pos": "verb", "note": "留學; to study in another country"},
+      {"ko": "적응하다", "en": "to adapt, to adjust", "romaji": "jeo-geung-ha-da", "pos": "verb", "note": "適應; 적응하다 + 에 (adjust to)"},
+      {"ko": "합격하다", "en": "to pass (an exam), to be accepted", "romaji": "hap-gyeo-ka-da", "pos": "verb", "note": "合格; opposite of 불합격"}
+    ],
+    "sentences": [
+      {"ko": "저는 내년에 한국에서 유학하게 됐어요.", "en": "I ended up going to study in Korea next year.", "romaji": "jeo-neun nae-nyeon-e han-gu-ge-seo yu-ha-ka-ge dwae-sseo-yo", "blankWord": "유학하게 됐어요"},
+      {"ko": "열심히 공부해서 시험에 합격하게 됐어요.", "en": "I studied hard and ended up passing the exam.", "romaji": "yeol-sim-hi gong-bu-hae-seo si-heo-me hap-gyeo-ka-ge dwae-sseo-yo", "blankWord": "합격하게 됐어요"},
+      {"ko": "새 회사에 입사하게 됐어요.", "en": "It turned out I'm joining a new company.", "romaji": "sae hoe-sa-e ip-sa-ha-ge dwae-sseo-yo", "blankWord": "입사하게 됐어요"},
+      {"ko": "이제 이 도시에 적응하게 됐어요.", "en": "By now I've come to adjust to this city.", "romaji": "i-je i do-si-e jeo-geung-ha-ge dwae-sseo-yo", "blankWord": "적응하게 됐어요"},
+      {"ko": "어제 그 친구를 다시 만나게 됐어요.", "en": "Yesterday I ended up meeting that friend again.", "romaji": "eo-je geu chin-gu-reul da-si man-na-ge dwae-sseo-yo", "blankWord": "만나게 됐어요"},
+      {"ko": "사정이 있어서 회사를 퇴사하게 됐어요.", "en": "Due to circumstances, I ended up leaving the company.", "romaji": "sa-jeong-i i-sseo-seo hoe-sa-reul toe-sa-ha-ge dwae-sseo-yo", "blankWord": "퇴사하게 됐어요"},
+      {"ko": "저는 한국 음식을 아주 좋아하게 됐어요.", "en": "I've come to really like Korean food.", "romaji": "jeo-neun han-guk eum-si-geul a-ju jo-a-ha-ge dwae-sseo-yo", "blankWord": "좋아하게 됐어요"}
+    ]
+  },
+  {
+    "id": "4.30", "level": 4, "title": "Sentence Building Drill #2", "point": "복습 / 문장 만들기",
+    "grammar": {
+      "summary": "A second review drill — combine Level 4 grammar, now including 훨씬, -아/어지다, and -게 되다.",
+      "formation": "No new form. Stack points from Lessons 1–29 — e.g. 훨씬 (Lesson 24) + -아/어지다 (Lesson 28), or -게 되다 (Lesson 29) + -아/어서.",
+      "explanation": "Like Drill 1, this builds longer sentences by combining patterns you already know, now reaching through Lesson 29. Notice how 'much more' (훨씬), 'become' (-아/어지다), and 'end up doing' (-게 되다) slot together with earlier grammar. Read each, spot the two points, then compose your own.",
+      "notes": ["No new grammar — this draws on Lessons 1–29.", "Combine at least two patterns in each sentence.", "Mind 되다 spelling (돼요 / 됐어요) and the -아/어 vowel in -아/어지다."]
+    },
+    "pitfalls": ["Each point keeps its own conjugation when combined.", "Watch spacing and register — pick full or contracted forms to match the situation."],
+    "bridge": ["예전보다 한국어를 더 잘 해요.", "저는 요즘에 평소보다 더 바빠요."],
+    "vocab": [],
+    "sentences": [
+      {"ko": "요즘 날씨가 훨씬 따뜻해졌어요.", "en": "The weather has gotten much warmer lately.", "romaji": "yo-jeum nal-ssi-ga hwol-ssin tta-tteu-tae-jyeo-sseo-yo", "blankWord": "따뜻해졌어요"},
+      {"ko": "한국 생활에 적응하게 돼서 마음이 편해졌어요.", "en": "I came to adjust to life in Korea, so I feel more at ease.", "romaji": "han-guk saeng-hwa-re jeo-geung-ha-ge dwae-seo ma-eu-mi pyeon-hae-jyeo-sseo-yo", "blankWord": "적응하게 돼서"},
+      {"ko": "봄이 와서 날씨가 덜 추워졌어요.", "en": "Spring came, so it's gotten less cold.", "romaji": "bo-mi wa-seo nal-ssi-ga deol chu-wo-jyeo-sseo-yo", "blankWord": "추워졌어요"},
+      {"ko": "제일 가고 싶은 회사에 입사하게 됐어요.", "en": "I ended up joining the company I most wanted to.", "romaji": "je-il ga-go si-peun hoe-sa-e ip-sa-ha-ge dwae-sseo-yo", "blankWord": "입사하게 됐어요"},
+      {"ko": "노력해서 실력이 훨씬 좋아졌어요.", "en": "I made an effort, so my skills got much better.", "romaji": "no-ryeo-kae-seo sil-lyeo-gi hwol-ssin jo-a-jyeo-sseo-yo", "blankWord": "좋아졌어요"},
+      {"ko": "이제 아무거나 잘 먹게 됐어요.", "en": "By now I've come to eat just about anything.", "romaji": "i-je a-mu-geo-na jal meok-ge dwae-sseo-yo", "blankWord": "먹게 됐어요"}
     ]
   }
 ];
