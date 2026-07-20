@@ -119,7 +119,29 @@ BLOCK = {
     "콜걸",  # crude loanword, negligible learning value at this rank
     "포르노",  # crude loanword, negligible learning value at this rank
     "바카라",  # casino loanword, negligible learning value at this rank
+    "지랄",  # vulgar — unacceptable as a study card
+    "제인",  # zein / the name Jane — proper-noun-grade, not worth a card
+    "아담",  # the name Adam (아담하다's root never stands alone in this sense)
+    "어스",  # bare loanword fragment "earth (electrical ground)"
+    "캐리",  # bare loanword fragment "carry"
+    "컨텐츠",  # nonstandard spelling of 콘텐츠
+    "하여금",  # bound grammar word (only in 로 하여금 construction)
+    "더러",  # particle homograph (-더러 "to sb"); kengdic gloss garbled
+    "그립",  # loan fragment; kengdic gloss wrong ("graph")
+    "당기",  # obscure ("oriflamme"); not a useful card
+    "스카",  # niche music-genre loanword
+    "여주",  # city name; kengdic gloss dubious ("litchi")
+    # 2026-07-20 second junk wave from the same depth — see REFILL note below
+    "비아", "가도", "개소", "나인", "마르", "보인", "자란", "무스", "노아", "이드",
+    "자구", "로빈",
 }
+
+# REFILL disabled 2026-07-20: tier-B candidate quality is exhausted at corpus
+# rank ~7500 (two consecutive refill waves yielded only proper nouns, loanword
+# fragments, and mis-glossed rarities — see BLOCK's tail). The deck now only
+# shrinks as lessons absorb words or BLOCK grows; that is intended. Re-enable
+# only with a better-curated source list.
+REFILL = False
 
 HEADER = """\
 /* wordsnext.js — continuation vocabulary beyond the user's known decks.
@@ -272,15 +294,16 @@ def build_reconcile(base_path, known, keng):
     dropped_block = [e["ko"] for e in base if e["ko"] in BLOCK and not suppressed(e["ko"], known)]
     base_kos = set(e["ko"] for e in base)
     added = []
-    for d in gen_tier_b(known, base_kos, keng):
-        if len(kept) + len(added) >= target: break
-        en = clean(pick_gloss(keng, d["w"]))
-        if not en: continue                     # no usable gloss — skip
-        added.append({"ko": d["w"], "en": en, "pos": d["pos"]})
-    if len(kept) + len(added) < target:
-        print(f"WARNING: deck below target ({len(kept) + len(added)} < {target}) - "
-              f"tier-B refill ran out of candidates within the top {MAX_CORPUS_SCAN} "
-              f"corpus tokens; raise MAX_CORPUS_SCAN or accept the smaller deck.")
+    if REFILL:
+        for d in gen_tier_b(known, base_kos, keng):
+            if len(kept) + len(added) >= target: break
+            en = clean(pick_gloss(keng, d["w"]))
+            if not en: continue                 # no usable gloss — skip
+            added.append({"ko": d["w"], "en": en, "pos": d["pos"]})
+        if len(kept) + len(added) < target:
+            print(f"WARNING: deck below target ({len(kept) + len(added)} < {target}) - "
+                  f"tier-B refill ran out of candidates within the top {MAX_CORPUS_SCAN} "
+                  f"corpus tokens; raise MAX_CORPUS_SCAN or accept the smaller deck.")
     out = renumber(kept + added)
     write_deck(out)
     print(f"reconciled against {os.path.relpath(base_path, APP)}: "

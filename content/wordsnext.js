@@ -2517,18 +2517,6 @@ export const WORDSNEXT = [
 {"r": 7508, "ko": "리라", "en": "lyre; Lyra; lira s", "pos": "명사"},
 {"r": 7509, "ko": "배팅", "en": "batting", "pos": "명사"},
 {"r": 7510, "ko": "행하", "en": "giving gifts or money to the workers", "pos": "명사"},
-{"r": 7511, "ko": "아담", "en": "adam", "pos": "명사"},
-{"r": 7512, "ko": "어스", "en": "a ground, a ground connection, a ground wire", "pos": "명사"},
-{"r": 7513, "ko": "컨텐츠", "en": "contents", "pos": "명사"},
-{"r": 7514, "ko": "고치", "en": "cocoon", "pos": "명사"},
-{"r": 7515, "ko": "여주", "en": "litchi", "pos": "명사"},
-{"r": 7516, "ko": "캐리", "en": "carry", "pos": "명사"},
-{"r": 7517, "ko": "하여금", "en": "making sb do sth, used to say MADE TO DO, FORCED TO DO grammatically", "pos": "부사"},
-{"r": 7518, "ko": "더러", "en": "occassionally, now and then; 354202254353236214...354227220352262214", "pos": "부사"},
-{"r": 7519, "ko": "지랄", "en": "fucking crazy", "pos": "명사"},
-{"r": 7520, "ko": "그립", "en": "graph", "pos": "명사"},
-{"r": 7521, "ko": "내주", "en": "next week", "pos": "명사"},
-{"r": 7522, "ko": "당기", "en": "oriflamme", "pos": "명사"},
-{"r": 7523, "ko": "스카", "en": "ska", "pos": "명사"},
-{"r": 7524, "ko": "제인", "en": "zein", "pos": "명사"}
+{"r": 7511, "ko": "고치", "en": "cocoon", "pos": "명사"},
+{"r": 7512, "ko": "내주", "en": "next week", "pos": "명사"}
 ];
