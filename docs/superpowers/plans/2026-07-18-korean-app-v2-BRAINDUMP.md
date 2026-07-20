@@ -342,3 +342,191 @@ deck sentences containing THOSE (never the new point itself).
   offline reload from a cold cache; v1/ deletion doesn't break wordsnext tool (it must
   reconcile against content/wordsnext.js — verify the fallback is no longer needed);
   README documents the two content tools + re-export workflow.
+
+---
+
+## PART D — GOLD grammar blocks (authored by the planning model — paste-ready)
+
+These are **authoritative, finished** `grammar` + `pitfalls` blocks for the ten
+lessons where subtle linguistic error is most likely. When authoring these lessons
+in `content/lessons/l5.js`, paste these blocks VERBATIM (JSON-escaped as needed)
+and author only `vocab`/`sentences`/`bridge` around them (all normal rules apply).
+Web-verify anyway; if a source genuinely contradicts a statement here, flag it in
+the review file rather than silently editing.
+
+### 5.16 — Narrative present -(ㄴ/는)다
+
+- summary: "The plain (narrative) form used in writing, diaries, headlines, and
+  quoted speech — the dictionary's own register."
+- formation: "Action verbs, present: vowel stem + ㄴ다 (가다 → 간다), consonant
+  stem + 는다 (먹다 → 먹는다); ㄹ-stems drop ㄹ before ㄴ (살다 → 산다).
+  Descriptive verbs (adjectives), 있다/없다, and noun+이다 stay plain 다 in the
+  present (좋다, 있다, 학생이다). Past for everything: -았/었다 (갔다, 먹었다,
+  좋았다, 학생이었다). Future: -(으)ㄹ 것이다/거다."
+- explanation: Korean has a neutral written register that isn't about politeness:
+  novels, news, diaries, exam questions, and inner monologue all use it. Only
+  present-tense ACTION verbs change shape (간다/먹는다); adjectives and 이다 use
+  the bare dictionary form. This form is the base all reported speech is built on
+  — the foundation for 5.17 and 5.29. Spoken to someone's face, the same forms are
+  반말: fine with close friends, rude to strangers.
+- notes: exclamations to self (맛있다! 눈 온다!); diary standard 나 + plain form
+  (오늘은 일찍 일어났다); ㄹ-drop set 살다→산다, 알다→안다, 놀다→논다.
+- pitfalls: (1) Adjectives never take -는다/-ㄴ다: 좋는다/예쁜다 are wrong —
+  present adjectives stay 좋다/예쁘다. (2) 있다/없다 side with adjectives here
+  (있다, never 있는다) even though they take 는 in patterns like 있는지. (3) The
+  narrative form in writing is not rude — only face-to-face speech makes it 반말.
+
+### 5.17 — Reported statements -(ㄴ/는)다고 (말하다)
+
+- summary: "Report what someone says or said: plain form + 고 (+ 하다/말하다/듣다)."
+- formation: "5.16's plain form + 고: verbs 간다고/먹는다고, adjectives 좋다고,
+  있다고/없다고, past -았/었다고; NOUNS use -(이)라고 (학생이라고 — from Lesson 10,
+  never 학생이다고). Then 해요/했어요/말했어요/들었어요."
+- explanation: 마크 씨가 내일 온다고 했어요 = "Mark said he's coming tomorrow."
+  The tense INSIDE the quote is the original statement's tense: 온다고 했어요 (said
+  he comes/will) vs 왔다고 했어요 (said he came). Speakerless -다고 해요 = "they
+  say / I hear": 이 식당이 맛있다고 해요. Casual speech contracts to -대요
+  (온대요 = 온다고 해요) — recognize; producing it optional.
+- notes: echo -다고요? = "you said ...?"; 고 싶다 quotes as adjective (가고 싶다고
+  했어요); quoted person takes normal 이/가/은/는.
+- pitfalls: (1) Nouns never take -다고: 학생이다고 ✗ → 학생이라고 했어요 ✓ — the
+  most common mix-up. (2) Never quote the 요-form: 가요라고 했어요 ✗ — strip to
+  plain form first. (3) Tense goes inside the quote, not only on 하다: 갔다고 했어요
+  vs 간다고 했어요 are different claims — choose deliberately.
+
+### 5.19 — Reported commands -(으)라고 하다
+
+- summary: "Report an order or request: verb stem + -(으)라고 하다 ('told me to')."
+- formation: "Consonant stem + 으라고 (먹으라고), vowel stem + 라고 (가라고),
+  ㄹ-stems attach directly (살라고). Negative command: -지 말라고 (가지 말라고 =
+  told me not to go). GIVE is special: 주라고 하다 = told (someone) to give TO A
+  THIRD PARTY; 달라고 하다 = asked that it be given TO THE ORIGINAL ASKER."
+- explanation: 선생님이 숙제를 하라고 했어요 = "the teacher told us to do the
+  homework." The quoted imperative always reduces to -(으)라 no matter how polite
+  the original was (하세요 → 하라고). The 주다/달다 split: 동생이 물을 달라고
+  했어요 = sibling asked me to give HIM water; 엄마가 동생한테 물을 주라고 했어요 =
+  mom told me to give water TO the sibling. 달라고 whenever asker = receiver.
+- notes: echo -라고요? = "you're telling me to...?"; suggestions report with
+  -자고 하다 and questions with -냐고 하다 — recognize both, full treatment later.
+- pitfalls: (1) 달라고 vs 주라고 — swapping changes who receives. (2) Don't keep
+  polite endings inside the quote: 하세요라고 ✗ → 하라고 ✓. (3) Negative is
+  -지 말라고, never 안 -(으)라고 (안 가라고 했어요 reads as "said he isn't going").
+
+### 5.29 — Reported past & future -았/었다고, -(으)ㄹ 거라고
+
+- summary: "Report statements about the past ('said they DID') and future ('said
+  they WOULD') — completing the reported-speech system."
+- formation: "Past: -았/었 + 다고 (갔다고, 먹었다고, 좋았다고; nouns 이었/였다고).
+  Future/intention: -(으)ㄹ 거 + 라고 → -(으)ㄹ 거라고 (갈 거라고 했어요). 거 is
+  the noun 것, so it takes the NOUN quote marker -(이)라고 — that's why 거라고,
+  never 거다고."
+- explanation: 어제 아팠다고 했어요 = "she said she was sick yesterday"; 내일 올
+  거라고 했어요 = "he said he'd come tomorrow." -(으)ㄹ 거예요 is literally
+  [future modifier + 것 + 이다], so quoting it triggers the 이다 rule (-이라고)
+  automatically — recognize that and the form is impossible to forget.
+- notes: speech contractions -았대요 / -(으)ㄹ 거래요 (recognize); corrections use
+  아니라고 했어요; keep app sentences to one level of quoting.
+- pitfalls: (1) -(으)ㄹ 거다고 ✗ — 거 is a noun, so -(으)ㄹ 거라고. (2) Keep the
+  original tense inside the quote: 왔다고/올 거라고/온다고 했어요 are three
+  different claims. (3) Past nouns: 학생이었다고 했어요, never 학생이다고/학생였다고.
+
+### 5.04 — Inference from evidence (verbs): -나 보다
+
+- summary: "'I guess / it seems (from what I observe)' — inference for ACTION
+  verbs and 있다/없다."
+- formation: "Verb stem + 나 보다: 오나 봐요, 없나 봐요. Past: -았/었나 보다
+  (벌써 갔나 봐요). 보다 conjugates normally but usually stays present."
+- explanation: Use -나 보다 when INFERRING from evidence, not stating an opinion:
+  wet umbrellas → 비가 오나 봐요. The guessed subject is normally not yourself.
+  Contrast with known 것 같다: 것 같다 covers opinions and guesses about anything;
+  -나 보다 specifically signals "the evidence points this way" and sounds detached.
+- notes: 있다/없다 pattern as verbs (집에 없나 봐요); the natural two-sentence
+  frame is evidence + guess (불이 꺼져 있어요. 자나 봐요) — mirror in examples;
+  first-person only as outside observation (piggybacks 5.05's 피곤한가 봐요).
+- pitfalls: (1) Present adjectives don't take -나 보다: 바쁘나 봐요 ✗ — that's
+  5.05's 바쁜가 봐요. (2) Not for firsthand knowledge: saying 비가 오나 봐요 while
+  standing in the rain is absurd — state it plainly. (3) Past marker goes before
+  나: 갔나 봐요, never 가나 봤어요 (that means "tried looking").
+
+### 5.05 — Inference from evidence (adjectives/nouns): -(으)ㄴ가 보다
+
+- summary: "The adjective/noun partner of -나 보다: 'I guess it's (state)'."
+- formation: "Adjective stem + 은가 보다 (작은가 봐요) / ㄴ가 보다 (바쁜가 봐요,
+  예쁜가 봐요). Noun + 인가 보다 (학생인가 봐요). Past of ANYTHING rejoins the
+  verb side: -았/었나 보다 (바빴나 봐요, 학생이었나 봐요)."
+- explanation: Same evidence-based feel as 5.04 but for states. Present states use
+  -(으)ㄴ가 보다; any past tense funnels back to -았/었나 보다. 이다 follows the
+  adjective pattern (인가 보다), giving the very common 그런가 봐요 ("I guess so").
+- notes: 있다/없다 stay verb-side (있나 보다, never 있은가 보다); 그런가 봐요 /
+  아닌가 봐요 as set phrases; future guesses point forward to 5.23.
+- pitfalls: (1) Past states: 바빴은가 봐요 / 바쁜가 봤어요 ✗ → 바빴나 봐요 ✓.
+  (2) 있은가 봐요 ✗ — 있다/없다 are verb-side exceptions. (3) Nouns need 인:
+  학생가 봐요 ✗ → 학생인가 봐요.
+
+### 5.23 — Future inference: -(으)려나 보다
+
+- summary: "'I guess it's about to / going to' — inference about the not-yet."
+- formation: "Verb stem + 으려나 보다 / 려나 보다 (비가 오려나 봐요, 곧
+  시작하려나 봐요; ㄹ-stems direct: 팔려나 봐요). Built from -(으)려(고 하)다
+  (Lesson 8) + -나 보다 (Lesson 4) → verbs only."
+- explanation: Evidence pointing at the future — dark clouds, coats going on —
+  takes -(으)려나 봐요: 하늘이 어두워요. 비가 오려나 봐요. It stacks the imminent
+  려 with the evidential 나 보다. Near-synonym heard in speech: -(으)ㄹ 건가 봐요
+  (recognize; produce 려나 봐요 here).
+- notes: pair with an evidence sentence first; subject usually 3rd person/world.
+- pitfalls: (1) Adjectives can't be imminent: 예쁘려나 봐요 ✗ — use 예뻐지려나
+  봐요 (via -아/어지다) or 예쁠 것 같아요. (2) Don't stack hedges: 오려나 봐 +
+  것 같아요 together ✗ — pick one.
+
+### 5.14 — Reason/discovery -(으)니까
+
+- summary: "'Since / because (as we both can see)' — the reason connector that
+  works with commands, plus a 'when I did X, I discovered Y' use."
+- formation: "Stem + 으니까 / 니까 (바쁘니까, 오니까; ㄹ keeps: 사니까); past
+  -았/었으니까; nouns (이)니까. Reason clause first."
+- explanation: You already use -아/어서 for neutral cause. -(으)니까 differs two
+  ways. It is the ONLY reason connector allowed before commands/suggestions:
+  더우니까 창문 좀 여세요, 늦었으니까 택시 탑시다 — with -아/어서 those are
+  ungrammatical. And it frames the reason as evident/shared ("as you know"), so
+  overuse on plain facts sounds self-justifying. Separate discovery sense: VERB +
+  니까 = "upon doing, found": 문을 여니까 고양이가 있었어요.
+- notes: politeness formulas keep -아/어서 (와 주셔서 감사합니다, 늦어서
+  죄송합니다); sentence-final -(으)니까요 as a standalone "because..." answer;
+  discovery sense: second clause usually past + a finding.
+- pitfalls: (1) Commands after -아/어서 ✗: 비가 와서 우산 가져가세요 ✗ → 비가
+  오니까 ✓ — the tested contrast. (2) Thanks/apologies require -아/어서; using
+  니까 there sounds like lecturing. (3) Discovery 니까 takes no past before it:
+  열었으니까 (discovery reading) ✗ → 여니까 고양이가 있었어요 ✓.
+
+### 5.10 — Noun quoting -(이)라고 (하다)
+
+- summary: "Say what something is called, or quote a noun+이다 statement."
+- formation: "Consonant + 이라고 (학생이라고), vowel + 라고 (의사라고). 이거는
+  한국어로 뭐라고 해요? — 나비라고 해요. Quotes 이다-statements: 학생이라고 했어요."
+- explanation: -(이)라고 is the noun world's quote marker — the counterpart of
+  -다고 for verbs/adjectives (5.17 completes that side). Two jobs: naming things
+  (제 이름은 ...(이)라고 해요 — the standard self-intro) and reporting someone's
+  이다-sentence. The 이 is pronunciation glue after consonants.
+- notes: 저는 OOO(이)라고 합니다 as the polite self-intro formula (expression);
+  negation quotes use 아니라고 (아니라고 했어요 = said it isn't).
+- pitfalls: (1) 뭐라고, never 뭐다고 — question words are nouns here. (2) Keep 이
+  after consonants: 지민라고 해요 ✗ → 지민이라고 해요 ✓.
+
+### 5.12 — "The noun called X": -(이)라는
+
+- summary: "Label something the listener may not know: X + -(이)라는 + noun."
+- formation: "-(이)라고 하는 contracted: 한강이라는 강, 부산이라는 도시;
+  consonant + 이라는, vowel + 라는."
+- explanation: Introduces named things: 김치찌개라는 음식을 먹어 봤어요? Literally
+  "the noun that people call X", so it always modifies a following noun. Combines
+  naturally with -아/어 보다 (4.12) for "have you tried the thing called...".
+- notes: with people, OOO이라는 사람 = "someone called OOO" (distancing — you
+  don't know them); the contraction is the default in speech.
+- pitfalls: (1) Must be followed by a noun: 서울이라는 가요 ✗ — it's a modifier,
+  not an ending. (2) Drop it for things the listener obviously knows: 서울이라는
+  도시에 살아요 sounds odd — just 서울에 살아요.
+
+**Coverage note:** cribs (Part A) remain the key for all other lessons; these ten
+had the highest subtle-error risk (systemic forms, polarity, and the two classic
+traps 달라고/주라고 and 니까-vs-아서). If the next session's budget allows nothing
+else, pasting these verbatim guarantees the core of Level 5 is linguistically sound.
