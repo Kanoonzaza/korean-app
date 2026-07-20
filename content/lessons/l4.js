@@ -580,7 +580,7 @@ export const L4 = [
       "summary": "How to say something 'becomes / gets' more (adjective) — a change of state.",
       "formation": "Adjective stem + -아/어지다; the whole thing conjugates as a VERB.\n• ㅏ/ㅗ stem → -아지다  (좋다 → 좋아지다)\n• other vowel → -어지다  (예쁘다 → 예뻐지다)\n• 하다 → -해지다  (따뜻하다 → 따뜻해지다)\nConjugates: 좋아져요 / 좋아졌어요 / 좋아질 거예요.",
       "explanation": "Attach -아/어지다 to an adjective stem to say something 'becomes / gets' that way — marking a change of state. The vowel follows the same ㅏ/ㅗ vs. other rule as -아/어요, and 하다-adjectives become -해지다. Once attached, the result behaves like a verb: 날씨가 추워졌어요 = 'the weather got cold'. Present -아/어져요 describes an ongoing change ('is getting ~'); past -아/어졌어요 states that the change happened.",
-      "notes": ["Vowel rule matches -아/어요: 좋아지다, 많아지다, 예뻐지다, 따뜻해지다.", "Present 좋아져요 = 'is getting better'; past 좋아졌어요 = 'has gotten better'.", "This is for adjectives; to say you 'come to do' a verb, use -게 되다 (next lesson)."]
+      "notes": ["Vowel rule matches -아/어요: 좋아지다, 많아지다, 예뻐지다, 따뜻해지다.", "Present 좋아져요 = 'is getting better'; past 좋아졌어요 = 'has gotten better'.", "This is for adjectives; to say you 'come to do' a verb, use -게 되다 (next lesson).", "Heads-up for later: VERB + -아/어지다 exists too, but it makes a passive ('gets done'), not 'become' — a different pattern taught at higher levels."]
     },
     "pitfalls": ["-아/어지다 attaches to adjectives; for 'coming to do' a verb, use -게 되다 (Lesson 29).", "The vowel follows -아/어요: 좋아지다, 예뻐지다, 따뜻해지다 — not 좋어지다.", "Write 좋아졌어요 for a completed change; 좋아져요 means it's still changing."],
     "bridge": ["예전보다 더 잘 해요.", "이 영화 재미있을 것 같아요."],
