@@ -49,11 +49,18 @@ those three additions per the review file's polish list, revalidate, commit.
 Content batches use the spec review (against the BRAINDUMP cribs) as the deep
 review; a separate quality pass on lesson data files is not required.
 
-**Remaining after 6A:** 6B (l4.js 4.16–4.30, append to same file), 6C+6D
-(`content/lessons/l5.js`, two batches covering 5.01–5.30), then plan Tasks 7–12
-exactly as written in the plan, amended by §2 below. Reviewers of content batches:
-review against BRAINDUMP Part A cribs and commit findings under
-`docs/superpowers/plans/reviews/`.
+**Task 6A is fully closed** — polish commit `a46a44f` landed (all crib pitfalls
+present). **Task 6B was dispatched 2026-07-20 but its agent died on the session
+limit BEFORE writing anything** — no 6B work exists on disk; re-dispatch it fresh
+(12 bodies: 4.16–4.24, 4.28–4.30; no bodies for known 4.25/4.26/4.27; append to
+l4.js matching 6A's schema/voice/romaji exactly).
+
+**Remaining:** 6B (above), 6C+6D (`content/lessons/l5.js`, two batches covering
+5.01–5.30 — **for the ten lessons covered by BRAINDUMP PART D, paste those GOLD
+grammar+pitfalls blocks verbatim and author only vocab/sentences/bridge around
+them**), then plan Tasks 7–12 as written, amended by §2 below. Reviewers of
+content batches: review against BRAINDUMP Part A cribs (and Part D for its ten
+lessons) and commit findings under `docs/superpowers/plans/reviews/`.
 
 ## 2. Binding amendments made during execution (override the plan where they conflict)
 
