@@ -78,7 +78,8 @@ V1_LESSONS = os.path.join(APP, "v1", "content", "lessons.js")
 # - Vocab is matched via the ko key in either style:  ko: "word"  or  "ko": "word"
 # - A listed file that yields ZERO ko-matches aborts the run (SystemExit) so a
 #   renamed key or reformatted lesson file can never silently skip exclusion.
-V2_LESSON_FILES = [os.path.join(APP, "content", "lessons", "l4.js")]
+V2_LESSON_FILES = [os.path.join(APP, "content", "lessons", "l4.js"),
+                   os.path.join(APP, "content", "lessons", "l5.js")]
 
 # Grammar homographs / conjugation-stem artifacts that the MeCab NNG/MAG +
 # kengdic filters let through: they rank high in the corpus as particles,
