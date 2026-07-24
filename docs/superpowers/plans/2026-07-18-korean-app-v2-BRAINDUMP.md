@@ -145,8 +145,10 @@ deck sentences containing THOSE (never the new point itself).
   verbs (있나 보다, not 있은가 ✗); (2) future/guess about intent → 5.23's -(으)려나 보다
   (forward pointer note). Bridge: descriptive adjective sentences from deck.
 - **5.06 Word Builder 文 (문)** — root "writing/text": 문장, 문법(check leakage — likely
-  taught), 문서, 문학, 논문, 문자 (text message sense!), 주문 ✗ (different hanja 注文 —
-  do not include), 신문(known?), 문화(known?). Known ones → explanation.
+  taught), 문서, 문학, 논문, 문자 (text message sense!), 문화(known?). Known ones →
+  explanation. **CORRECTION (verified 2026-07-20): 신문 is 新聞 (聞 "hear"), NOT a 文
+  word — teach it as a false friend, never as a derivation. Same for 주문 (注文),
+  문 "door" (門), 질문 (問).**
 - **5.07 -자마자** — bare stem + 자마자, NO tense before it (먹자마자, not 먹었자마자 ✗
   — pitfall 1); works past/future via the main clause. Pitfall 2: 자마자 vs -고 나서
   (sequence without immediacy). Bridge: -고 나서 / sequential 고 sentences (known).
