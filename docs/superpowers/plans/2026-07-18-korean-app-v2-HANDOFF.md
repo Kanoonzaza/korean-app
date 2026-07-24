@@ -49,18 +49,27 @@ those three additions per the review file's polish list, revalidate, commit.
 Content batches use the spec review (against the BRAINDUMP cribs) as the deep
 review; a separate quality pass on lesson data files is not required.
 
-**Task 6A is fully closed** — polish commit `a46a44f` landed (all crib pitfalls
-present). **Task 6B was dispatched 2026-07-20 but its agent died on the session
-limit BEFORE writing anything** — no 6B work exists on disk; re-dispatch it fresh
-(12 bodies: 4.16–4.24, 4.28–4.30; no bodies for known 4.25/4.26/4.27; append to
-l4.js matching 6A's schema/voice/romaji exactly).
+**Task 6 (ALL lesson content) is COMPLETE.**  (23 bodies)
+and  (29 bodies) cover every non-known TTMIK L4-5 lesson;
+52 bodies, 308 unique vocab, validation clean; deck reconciled to 2,481 words
+with zero leakage vs known.js or any lesson vocab. Reviews committed under
+ for 6A and 6B; **5.01-5.30 has NOT had a spec
+review yet — run one against BRAINDUMP Part A cribs + Part D gold blocks and
+commit findings there.**
 
-**Remaining:** 6B (above), 6C+6D (`content/lessons/l5.js`, two batches covering
-5.01–5.30 — **for the ten lessons covered by BRAINDUMP PART D, paste those GOLD
-grammar+pitfalls blocks verbatim and author only vocab/sentences/bridge around
-them**), then plan Tasks 7–12 as written, amended by §2 below. Reviewers of
-content batches: review against BRAINDUMP Part A cribs (and Part D for its ten
-lessons) and commit findings under `docs/superpowers/plans/reviews/`.
+NOTE for future content work: background subagents repeatedly died mid-stream
+(session limits, stream watchdog) when generating long Korean lesson files.
+Lessons 5.16-5.30 were authored inline by the controller in ~4-lesson chunks
+written to scratchpad JSON, then merged with a script — that pattern works and
+is recommended over one big subagent dispatch.
+
+Also landed: tier-B REFILL is now DISABLED in tools/build_wordsnext.py (corpus
+quality exhausted at rank ~7500 — two waves produced only proper nouns and
+mis-glossed rarities). The deck only shrinks as lessons absorb words. BLOCK list
+extended accordingly.
+
+**Remaining:** plan Tasks 7-12 exactly as written, amended by section 2 below and
+by BRAINDUMP Part B (behavioral rulings) / Part C (per-task review focus).
 
 ## 2. Binding amendments made during execution (override the plan where they conflict)
 
