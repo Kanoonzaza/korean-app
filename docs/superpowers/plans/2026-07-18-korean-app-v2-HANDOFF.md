@@ -40,33 +40,28 @@ c6de12d fix: router teardown + unknown-route fallback + shell cleanups (Task 4 f
 5b97709 docs: engine contracts + diff styles                  (Task 5 fix)
 ```
 
-**Task 6A is COMMITTED and SPEC-REVIEWED** (commit `7d64d9c`; review findings
-committed at `docs/superpowers/plans/reviews/2026-07-20-task6a-spec-review.md` —
-verdict: compliant, zero blocking issues). A polish commit
-(`content: L4 polish - canonical pitfalls` — three missing crib pitfalls for
-4.01/4.09/4.12) was dispatched last; check `git log` for it. If absent, apply
-those three additions per the review file's polish list, revalidate, commit.
-Content batches use the spec review (against the BRAINDUMP cribs) as the deep
-review; a separate quality pass on lesson data files is not required.
+**Task 6 (ALL lesson content) is COMPLETE.** `content/lessons/l4.js` (23 bodies)
+and `content/lessons/l5.js` (29 bodies) cover every non-known TTMIK L4–5 lesson:
+52 bodies, 308 unique vocab, validation clean (vocab leakage, exact bridges,
+blankWord substrings); deck reconciled to 2,481 words with zero leakage vs
+known.js or any lesson vocab.
 
-**Task 6 (ALL lesson content) is COMPLETE.**  (23 bodies)
-and  (29 bodies) cover every non-known TTMIK L4-5 lesson;
-52 bodies, 308 unique vocab, validation clean; deck reconciled to 2,481 words
-with zero leakage vs known.js or any lesson vocab. Reviews committed under
- for 6A and 6B; **5.01-5.30 has NOT had a spec
-review yet — run one against BRAINDUMP Part A cribs + Part D gold blocks and
-commit findings there.**
+Content-batch reviews live in `docs/superpowers/plans/reviews/` — 6A (4.01–4.15)
+and 6B (4.16–4.30) are reviewed and accepted. **Level 5 (5.01–5.30) has NOT had a
+spec review yet** — run one against BRAINDUMP Part A cribs + Part D gold blocks
+and commit findings there. Content batches use the spec review as the deep review;
+a separate code-quality pass on lesson data files is not required.
 
 NOTE for future content work: background subagents repeatedly died mid-stream
-(session limits, stream watchdog) when generating long Korean lesson files.
-Lessons 5.16-5.30 were authored inline by the controller in ~4-lesson chunks
-written to scratchpad JSON, then merged with a script — that pattern works and
-is recommended over one big subagent dispatch.
+(session limits, stream watchdog) when generating long Korean lesson files — four
+attempts on 5.16–5.30 failed. What worked: the controller authored them inline in
+~4-lesson chunks written to scratchpad JSON files, then merged them into the
+lesson file with a short Python script. Prefer that over one big subagent dispatch.
 
-Also landed: tier-B REFILL is now DISABLED in tools/build_wordsnext.py (corpus
-quality exhausted at rank ~7500 — two waves produced only proper nouns and
-mis-glossed rarities). The deck only shrinks as lessons absorb words. BLOCK list
-extended accordingly.
+Also landed: tier-B REFILL is now DISABLED in `tools/build_wordsnext.py` (corpus
+quality exhausted at rank ~7500 — two refill waves produced only proper nouns,
+loanword fragments and mis-glossed rarities). The deck only shrinks as lessons
+absorb words; the BLOCK list was extended accordingly.
 
 **Remaining:** plan Tasks 7-12 exactly as written, amended by section 2 below and
 by BRAINDUMP Part B (behavioral rulings) / Part C (per-task review focus).
