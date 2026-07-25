@@ -41,13 +41,29 @@ function levelOf(s) {
 // under "All".
 const LEVELS = ["1", "2", "3"];
 
+// Not every note in the bank is dictatable. ~197 of the 1,596 are grammar
+// REFERENCE cards rather than sentences — "일 [Sino-Korean #]", "(noun)~은",
+// "~아요 [Conjugation: present tense]", "# 대 [counter]". Read aloud, the English
+// annotation is spoken too and the learner would have to type it back verbatim to
+// pass, so they are unusable here. Require some hangul and reject anything
+// carrying editor notation: brackets, parentheses, latin letters, or the # * / ~
+// markers. That leaves 1,399 real sentences (237 / 575 / 578 for levels 1-3).
+//
+// This filter is deliberately LOCAL to dictation: the bank itself stays a
+// faithful record of the deck, and lesson bridge panels still reference any note
+// by exact text.
+const NOT_DICTABLE = /[[\]{}()A-Za-z#*/~]/;
+function dictable(s) {
+  return !!s && !!s.ko && /[가-힣]/.test(s.ko) && !NOT_DICTABLE.test(s.ko);
+}
+
 let poolCache = null;
 function pools() {
   if (poolCache) return poolCache;
   const all = [], by = {};
   LEVELS.forEach(l => { by[l] = []; });
   TTMIK_SENTENCES.forEach((s, i) => {
-    if (!s || !s.ko) return;
+    if (!dictable(s)) return;
     all.push(i);
     const l = levelOf(s);
     if (by[l]) by[l].push(i);
