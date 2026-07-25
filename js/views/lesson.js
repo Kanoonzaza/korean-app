@@ -125,8 +125,15 @@ function logAnswer(ok, expectedKo, en, kind) {
 // Quiz items come from THIS lesson's own vocab + sentences, never invented and
 // never borrowed: 4 typed words + 2 sentence translations + 2 listen-and-type
 // (typed instead when there is no Korean voice), each capped by what the body
-// actually supplies. A lesson with no vocab (compressed lessons and the
-// sentence-building drills) gets 3 sentence items instead.
+// actually supplies. The round length follows the available CONTENT, not merely
+// whether vocab exists:
+//   compressed:true (4.04, 4.10, 5.27 — 3 sentences, no vocab) → 3 typed
+//     sentence items, no ear-training item; there is nothing else to ask.
+//   0 vocab but not compressed (the sentence-building drills 4.20, 4.30, 5.11,
+//     5.20, 5.30 — 6 sentences each) → the sentences carry the whole round, up
+//     to 6 items, still including up to 2 listen items. These are the
+//     consolidation lessons, so a 3-item round would be far too thin.
+//   everything else → 4 words + 2 sentences + 2 listen/substitute = up to 8.
 function typedItem(prompt, answer, romaji, source) {
   return { kind: "type", prompt: prompt, answer: answer, en: prompt, romaji: romaji || "", source: source };
 }
@@ -138,7 +145,8 @@ function buildQuiz(body) {
   const vocab = (body.vocab || []).filter(v => v && v.ko && v.en);
   const sents = (body.sentences || []).filter(s => s && s.ko && s.en);
 
-  if (!vocab.length) {
+  // Compressed lessons have only their 3 sentences to work with.
+  if (body.compressed) {
     const pick = shuffle(sents).slice(0, Math.min(3, sents.length));
     return pick.map(s => typedItem(s.en, s.ko, s.romaji, "sentence"));
   }
@@ -146,13 +154,21 @@ function buildQuiz(body) {
   const vPool = shuffle(vocab), sPool = shuffle(sents);
   let vi = 0, si = 0;
   const items = [];
-  for (let n = 0; n < 4 && vi < vPool.length; n++) {
-    const v = vPool[vi++];
-    items.push(typedItem(v.en, v.ko, v.romaji, "word"));
-  }
-  for (let n = 0; n < 2 && si < sPool.length; n++) {
-    const s = sPool[si++];
-    items.push(typedItem(s.en, s.ko, s.romaji, "sentence"));
+  if (vocab.length) {
+    for (let n = 0; n < 4 && vi < vPool.length; n++) {
+      const v = vPool[vi++];
+      items.push(typedItem(v.en, v.ko, v.romaji, "word"));
+    }
+    for (let n = 0; n < 2 && si < sPool.length; n++) {
+      const s = sPool[si++];
+      items.push(typedItem(s.en, s.ko, s.romaji, "sentence"));
+    }
+  } else {
+    // Drill lesson: no vocab, so 4 typed sentences here + the 2-item tail below.
+    for (let n = 0; n < 4 && si < sPool.length; n++) {
+      const s = sPool[si++];
+      items.push(typedItem(s.en, s.ko, s.romaji, "sentence"));
+    }
   }
   // Two ear-training items; without a Korean voice they become typed items so
   // the round keeps its length instead of silently shrinking.

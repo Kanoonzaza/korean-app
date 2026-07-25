@@ -153,6 +153,11 @@ the memory instructions if notable durable facts emerged.
   at repo root. python http.server sends no Cache-Control and a placeholder
   `sw.js` controls the page → after JS edits, hard-refresh (Ctrl+Shift+R) or
   unregister the SW in DevTools, or modules stay stale. (Task 12 replaces the SW.)
+- `preview_start` resolves launch configs from the agent's **cwd** (`C:\Users\HP`),
+  NOT the repo — so the repo's own `.claude/launch.json` is invisible and
+  `korean-v2` errors as "not found". A duplicate `korean-v2` entry (port 8734,
+  `--directory` at the repo) now lives in the global `C:\Users\HP\.claude\launch.json`;
+  keep both in sync.
 - Git LF→CRLF warnings on commit are cosmetic — ignore.
 - Session limits kill long subagents mid-task; their edits survive on disk.
   `git status` + the task's own report tell you what landed. Resume via a recap
