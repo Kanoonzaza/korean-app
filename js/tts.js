@@ -29,6 +29,13 @@ export function hasKorean() {
   return !!koVoice;
 }
 
+// Stop anything currently being spoken. Views call this from the cleanup
+// function they hand back to the router, so navigating away kills the audio.
+export function cancel() {
+  if (!supported) return;
+  try { window.speechSynthesis.cancel(); } catch { /* nothing to stop */ }
+}
+
 // Speak `text` at `rate` (default 0.92, matching v1). Cancels any ongoing
 // utterance first (v1 behavior). Falls back silently on any failure.
 export function speak(text, rate) {

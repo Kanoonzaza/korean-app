@@ -98,6 +98,98 @@ nav a:hover { text-decoration: none; }
 nav a .glyph { font-size: 1.35rem; line-height: 1; }
 nav a.active { color: var(--accent); }
 
+/* ---------- shared bits ---------- */
+.grow { flex: 1; min-width: 0; }
+.big { font-size: 1.35rem; line-height: 1.4; }
+.mono { font-variant-ligatures: none; letter-spacing: 0.01em; }
+.tag, .badge {
+  display: inline-block; font-size: 0.7rem; font-weight: 600; padding: 1px 7px;
+  border-radius: 999px; vertical-align: middle;
+}
+.tag { color: var(--muted); border: 1px solid var(--border); }
+.badge { color: var(--accent-ink); background: var(--accent); }
+/* the grammar pattern itself, wherever it appears (syllabus row or lesson header) */
+.lpoint { color: var(--accent); }
+
+/* ---------- syllabus (Learn tab) ---------- */
+.lvl-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  margin: 26px 0 6px;
+}
+.lvl-head h2 { margin: 0; }
+.lvl-count { color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
+
+.lrow {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px 14px; margin: 8px 0;
+  color: var(--text); text-decoration: none;
+}
+a.lrow:hover { text-decoration: none; background: var(--surface-2); }
+.lrow .mark { flex: 0 0 1.3em; text-align: center; font-size: 0.95rem; line-height: 1.55; }
+.lrow-body { flex: 1; min-width: 0; }
+.lrow .lhead { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.lrow .lid { color: var(--muted); font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+.lrow .ltitle { font-weight: 600; }
+.lrow .lmeta { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; margin-top: 2px; }
+.lrow .lpoint { font-size: 0.95rem; }
+.lrow .lbest { color: var(--ok); font-size: 0.78rem; }
+.lrow .lcando { color: var(--muted); font-size: 0.82rem; margin-top: 5px; }
+.lrow.done .mark { color: var(--ok); }
+.lrow.current { border-color: var(--accent); background: var(--surface-2); }
+.lrow.current .mark { color: var(--accent); }
+.lrow.locked { opacity: 0.45; }
+.lrow.known { opacity: 0.4; padding: 8px 14px; }
+.lrow.known .lpoint { color: var(--muted); }
+
+/* ---------- lesson player ---------- */
+.crumb { display: flex; gap: 10px; align-items: baseline; justify-content: space-between; }
+.stephead {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin: 2px 0 4px;
+}
+.stepno {
+  color: var(--muted); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.dots { display: flex; gap: 5px; flex: 0 0 auto; }
+.dots i { display: block; width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+.dots i.on { background: var(--accent); }
+
+/* grammar.formation carries meaningful \n line breaks — keep them */
+.formation { white-space: pre-line; font-family: var(--kfont); margin: 0; }
+.notes { margin: 8px 0 0; padding-left: 20px; }
+.notes li { margin: 4px 0; }
+.bridge-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 0; border-top: 1px solid var(--border);
+}
+.bridge-item:first-of-type { border-top: none; }
+.vrow { display: flex; gap: 10px; align-items: flex-start; }
+.ven { margin-top: 6px; }
+.spk {
+  min-height: 40px; flex: 0 0 auto; padding: 6px 12px; font-size: 1.05rem;
+  background: transparent; color: var(--text); border: 1px solid var(--border);
+}
+.spk:hover { background: var(--surface-2); }
+
+/* ---------- typed-answer runner (quiz + practice) ---------- */
+.qprompt { font-size: 1.15rem; font-weight: 600; }
+.tinput {
+  width: 100%; min-height: 48px; margin-top: 12px;
+  background: var(--surface-2); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px;
+  font-size: 1.1rem; font-family: var(--kfont);
+}
+.tinput:focus { outline: none; border-color: var(--accent); }
+.tinput:disabled { opacity: 0.7; }
+.fb { margin-top: 10px; font-weight: 600; }
+.fb.ok { color: var(--ok); }
+.fb.bad { color: var(--bad); }
+.score { font-size: 2.4rem; font-weight: 700; line-height: 1.2; }
+.navrow { display: flex; gap: 10px; margin-top: 16px; }
+.navrow .btn { flex: 1; }
+
 /* answer diff — classes emitted by js/grader.js grade() diffHtml (ported from v1) */
 .ans, .yours { font-weight: 400; color: var(--text); margin-top: 8px; }
 .yours { color: var(--muted); }
