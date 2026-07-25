@@ -24,7 +24,7 @@ import { L5 } from "../../content/lessons/l5.js";
 import { TTMIK_SENTENCES } from "../../content/ttmik-sentences.js";
 import { store } from "../store.js";
 import { grade } from "../grader.js";
-import { schedule } from "../srs.js";
+import { schedule, fmtIvl } from "../srs.js";
 import { speak, hasKorean, cancel as cancelSpeech } from "../tts.js";
 import { go } from "../router.js";
 
@@ -439,5 +439,84 @@ export function renderLesson(mount, id) {
 
   show();
   // Router teardown: stop any utterance still playing when the user navigates.
+  return () => cancelSpeech();
+}
+
+// ---------- spaced review ----------
+// A lesson's srs state is seeded on first completion and then advanced HERE, and
+// only here. Without this the state would never move: Today would surface the
+// same "due" lesson every day forever, because re-running the 5-step player
+// deliberately leaves srs alone (saveCompletion only seeds when absent).
+//
+// One session = a short quiz drawn from the lesson's own content, graded as a
+// WHOLE (not per question), because srs.js schedules one item — the lesson:
+//   100%  → 3 (Easy)   ≥70% → 2 (Good)   below → 0 (Again)
+// Answers still feed today's retention counters and the weak pile, exactly as in
+// the main quiz.
+export function reviewGrade(pct) {
+  if (pct >= 100) return 3;
+  if (pct >= 70) return 2;
+  return 0;
+}
+
+function buildReview(body) {
+  const items = shuffle(buildQuiz(body));
+  return items.slice(0, Math.min(body.compressed ? 2 : 4, items.length));
+}
+
+export function renderReview(mount, id) {
+  const meta = META.get(id) || null;
+  const body = BODIES.get(id) || null;
+  if (!meta || !body) {
+    mount.innerHTML = `
+      <h1>Review</h1>
+      <div class="card">
+        <h4>Nothing to review</h4>
+        <p class="muted">There is no lesson <code>${esc(id)}</code> to review.</p>
+        <p><a href="#/learn">Back to the syllabus</a></p>
+      </div>`;
+    return () => cancelSpeech();
+  }
+
+  const r = rec(id);
+  if (!r.done) {                       // never reviewed before it was studied
+    go("/learn/" + id);
+    return () => cancelSpeech();
+  }
+
+  const items = buildReview(body);
+  mount.innerHTML = `
+    <div class="crumb"><a href="#/learn">← Syllabus</a> <span class="muted small">${esc(meta.ttmik || "")}</span></div>
+    <h1>Review · ${esc(body.title || meta.title || "")}</h1>
+    <p class="muted small">${esc(body.point || meta.point || "")} — ${items.length} question${items.length === 1 ? "" : "s"}
+      to see if this one has stuck. Your score sets when it comes back.</p>
+    <div id="reviewbody"></div>
+    <div class="navrow"><a class="btn secondary" href="#/learn/${esc(id)}">Open the full lesson</a></div>`;
+
+  const host = mount.querySelector("#reviewbody");
+  wireSpeakers(host);
+  runner(host, {
+    label: "Review", kind: "quiz", items: items,
+    retryLabel: "Review again",
+    onFinish: pct => {
+      const cur = rec(id);
+      const g = reviewGrade(pct);
+      cur.srs = schedule(cur.srs || null, g, Date.now());
+      cur.best = Math.max(typeof cur.best === "number" ? cur.best : 0, pct);
+      store.setLesson(id, cur);
+      // onFinish runs BEFORE the runner writes the score screen, so defer the
+      // note by a tick or it would be appended to DOM that is about to be replaced.
+      const when = cur.srs.st === "rev" ? fmtIvl(cur.srs.ivl || 1) : "a few minutes";
+      setTimeout(() => {
+        const score = host.querySelector(".score");
+        if (!score) return;
+        const note = document.createElement("p");
+        note.className = "muted small";
+        note.textContent = `Back in ${when}.`;
+        score.parentNode.appendChild(note);
+      }, 0);
+    }
+  });
+  window.scrollTo(0, 0);
   return () => cancelSpeech();
 }

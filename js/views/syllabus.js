@@ -11,12 +11,17 @@
 import { register as route } from "../router.js";
 import { CURRICULUM } from "../../content/curriculum.js";
 import { store } from "../store.js";
-import { renderLesson, hasBody } from "./lesson.js";
+import { renderLesson, renderReview, hasBody } from "./lesson.js";
 
 export function register() {
   route("/learn", (mount, params) => {
-    if (params) return renderLesson(mount, params);
-    renderSyllabus(mount);
+    if (!params) return renderSyllabus(mount);
+    // "4.01" → the 5-step player; "4.01/review" → the spaced-review session.
+    const slash = params.indexOf("/");
+    if (slash < 0) return renderLesson(mount, params);
+    const id = params.slice(0, slash);
+    if (params.slice(slash + 1) === "review") return renderReview(mount, id);
+    return renderLesson(mount, id);
   });
 }
 

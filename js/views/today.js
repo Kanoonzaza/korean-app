@@ -132,7 +132,9 @@ function lessonLeg(recorded) {
   if (due.length) {
     const d = due[0], m = META.get(d.id);
     leg.title = "Lesson review";
-    leg.href = `#/learn/${d.id}`;
+    // The review session (a short quiz that regrades the lesson's srs state),
+    // not the 5-step player — the player deliberately never advances srs.
+    leg.href = `#/learn/${d.id}/review`;
     leg.state = `${d.id} · ${m ? m.title : ""}${due.length > 1 ? ` (+${due.length - 1} more due)` : ""}`;
     leg.badge = `<span class="badge">${due.length} due</span>`;
   } else if (next) {
