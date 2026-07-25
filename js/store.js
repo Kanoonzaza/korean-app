@@ -18,6 +18,8 @@ export const store = {
   setCardsMeta: v => set("cardsMeta", v),
   weak: () => get("weak", {}),                       // {ko: {en, kind}}
   setWeak: v => set("weak", v),
+  reading: () => get("reading", {}),                  // {"r4-1": {best}}
+  setReading(id, v) { const m = get("reading", {}); m[id] = v; set("reading", m); },
   days: () => get("days", {}),                       // {"2026-07-18": {right, wrong, done:[...]}}
   setDays: v => set("days", v),
   setDay(dateKey, v) { const m = get("days", {}); m[dateKey] = v; set("days", m); },

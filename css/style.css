@@ -294,3 +294,69 @@ a.lrow:hover { text-decoration: none; background: var(--surface-2); }
 }
 .gradebtn.again { border-color: var(--bad); color: var(--bad); }
 .gradebtn.easy { border-color: var(--ok); color: var(--ok); }
+
+/* ---------- practice hub ---------- */
+.hubgrid { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+.hubcard {
+  display: flex; gap: 12px; align-items: center;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 14px 16px; min-height: 68px;
+  color: var(--text); text-decoration: none;
+}
+.hubcard:hover { text-decoration: none; background: var(--surface-2); border-color: var(--accent); }
+.hubglyph { flex: 0 0 auto; font-size: 1.6rem; line-height: 1; }
+.hubhead { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.hubtitle { font-weight: 600; font-size: 1.05rem; }
+.hubdesc { display: block; margin-top: 2px; }
+.hubchev { flex: 0 0 auto; color: var(--muted); font-size: 1.4rem; line-height: 1; }
+
+/* ---------- reading ---------- */
+.rrow {
+  display: flex; gap: 10px; align-items: center; width: 100%;
+  min-height: 56px; padding: 10px 0; border-top: 1px solid var(--border);
+  background: transparent; border-left: none; border-right: none; border-bottom: none;
+  color: var(--text); font-family: inherit; font-size: 1rem; text-align: left; cursor: pointer;
+}
+.rrow:first-of-type { border-top: none; }
+.rrow:hover { color: var(--accent); }
+.rtitle { display: block; font-weight: 600; }
+.rblurb { display: block; margin-top: 2px; }
+.rbest { flex: 0 0 auto; font-size: 0.8rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.rbest.pass { color: var(--ok); }
+
+.passage { font-size: 1.05rem; line-height: 2.1; }
+.passage p { margin: 0 0 14px; }
+.passage p:last-child { margin-bottom: 0; }
+/* The tappable glossary word. Vertical padding inflates the hit box to a real
+   thumb target without moving the text: an inline span's padding paints outside
+   the line box, so the generous line-height above absorbs it. */
+.gw {
+  border-bottom: 2px dotted var(--accent); color: var(--accent);
+  cursor: pointer; padding: 10px 3px; margin: 0 -1px;
+}
+.glossbox {
+  margin-top: 12px; padding: 10px 12px;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px;
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap; min-height: 44px;
+}
+.glossbox .ko { font-size: 1.2rem; }
+
+/* multiple-choice options */
+.optlist { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.opt {
+  display: block; width: 100%; min-height: 48px; padding: 12px 14px;
+  background: transparent; color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px;
+  font-family: var(--kfont); font-size: 1rem; text-align: left; cursor: pointer;
+}
+.opt:hover:not(:disabled) { background: var(--surface-2); border-color: var(--accent); }
+.opt:disabled { cursor: default; }
+.opt.correct { border-color: var(--ok); color: var(--ok); }
+.opt.wrong { border-color: var(--bad); color: var(--bad); text-decoration: line-through; }
+.opt.dim { opacity: 0.5; }
+
+/* ---------- podcasts ---------- */
+.embedwrap { margin: 12px 0 4px; border-radius: 10px; overflow: hidden; }
+.embedwrap iframe { display: block; width: 100%; border: 0; }
+.plinks { margin-top: 10px; }
+.plinks .btn { flex: 1; font-size: 0.9rem; }
