@@ -355,6 +355,75 @@ a.lrow:hover { text-decoration: none; background: var(--surface-2); }
 .opt.wrong { border-color: var(--bad); color: var(--bad); text-decoration: line-through; }
 .opt.dim { opacity: 0.5; }
 
+/* ---------- today (daily plan) ---------- */
+.todayhead { display: flex; gap: 16px; align-items: center; }
+
+/* progress ring: dash length = completed fraction of the circumference */
+.ring { flex: 0 0 auto; }
+.ring circle { fill: none; stroke-width: 7; }
+.ringtrack { stroke: var(--border); }
+.ringarc { stroke: var(--accent); stroke-linecap: round; }
+.ring.full .ringarc { stroke: var(--ok); }
+.ringtext {
+  fill: var(--text); font-size: 1.05rem; font-weight: 700;
+  font-family: system-ui, sans-serif; font-variant-numeric: tabular-nums;
+}
+
+.streakline { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.streaknum { font-size: 2rem; font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.streaklab { color: var(--muted); font-size: 0.85rem; }
+
+/* the three plan legs reuse .hubcard from the practice hub */
+.legcard .legmark { min-width: 1.4em; text-align: center; }
+.legcard.done { border-color: rgba(91, 191, 138, 0.45); }
+.legcard.done .legmark { color: var(--ok); font-size: 1.5rem; }
+.legcard.done .hubtitle { color: var(--muted); }
+div.legcard { cursor: default; }
+.alsorow { margin: 2px 2px 0; }
+/* inline link, but still a thumb-sized target (padding inflates the hit box) */
+.alsorow a { display: inline-block; padding: 13px 0; }
+
+/* ---------- me (history, settings, backup) ---------- */
+/* one dot per day, filled by how much of the plan was done */
+.dotcal {
+  display: grid; grid-template-columns: repeat(10, 1fr);
+  gap: 7px; margin: 14px 0 4px; justify-items: center;
+}
+.dot {
+  display: block; width: 100%; max-width: 18px; aspect-ratio: 1 / 1;
+  border-radius: 50%; background: transparent; border: 1px solid var(--border);
+}
+.dot.some { background: var(--border); border-color: var(--border); }
+.dot.l1 { background: var(--accent); border-color: var(--accent); opacity: 0.35; }
+.dot.l2 { background: var(--accent); border-color: var(--accent); opacity: 0.7; }
+.dot.l3 { background: var(--ok); border-color: var(--ok); }
+
+/* 30-day accuracy strip — no-data days are gaps with a baseline tick */
+.retstrip {
+  display: flex; align-items: flex-end; gap: 2px;
+  height: 64px; margin: 14px 0 0;
+}
+.rcol { flex: 1; display: flex; align-items: flex-end; height: 100%; min-width: 0; }
+.rbar { display: block; width: 100%; background: var(--accent); border-radius: 2px 2px 0 0; }
+.nodata { display: block; width: 100%; height: 2px; background: var(--border); }
+.retfoot { display: flex; justify-content: space-between; gap: 8px; margin-top: 6px; }
+
+/* settings */
+.slider {
+  display: block; width: 100%; height: 44px; margin: 2px 0 10px;
+  accent-color: var(--accent); background: transparent;
+}
+.optrow.spacedrow { margin-top: 18px; }
+
+/* backup: the file input is hidden behind its .btn label but stays focusable */
+.filein { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.filein:focus-visible + .btn, .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.confirmbox {
+  margin-top: 14px; padding: 12px 14px;
+  background: var(--surface-2); border: 1px solid var(--accent); border-radius: 10px;
+}
+.confirmbox p { margin: 6px 0 0; }
+
 /* ---------- podcasts ---------- */
 .embedwrap { margin: 12px 0 4px; border-radius: 10px; overflow: hidden; }
 .embedwrap iframe { display: block; width: 100%; border: 0; }
