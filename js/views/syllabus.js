@@ -46,7 +46,9 @@ function states() {
   return out;
 }
 
-const MARK = { done: "✓", current: "▶", locked: "🔒", known: "" };
+// Row glyph per state. "known" rows use a plain "·" hardcoded in the template
+// (they are dimmed and unclickable), so they need no entry here.
+const MARK = { done: "✓", current: "▶", locked: "🔒" };
 
 function row(c, st) {
   const id = esc(c.id), title = esc(c.title), point = esc(c.point);
