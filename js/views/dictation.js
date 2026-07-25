@@ -60,9 +60,12 @@ const LEVELS = ["1", "2", "3"];
 //
 // That leaves 1,374 real sentences (237 / 563 / 565 for levels 1-3).
 //
-// Cost of being this blunt: exactly 2 genuine sentences are lost to the latin
-// rule — "리모콘을 찾으면, TV를 볼 수 있어요." and "문맥에 따라(서) 달라요." — where the
-// latin is real content, not an annotation. Not worth an exception list.
+// Cost of being this blunt (audited): 4 genuine sentences are lost to the latin
+// rule, where the latin is real content rather than an annotation —
+// "리모콘을 찾으면, TV를 볼 수 있어요.", "TTMIK으로 공부하면, 재미있어요.",
+// "더 공부하고 싶으면, TTMIK에 오세요.", "어제 Taliana가 한국에 왔을까요?".
+// The other latin-carrying drops are genuinely pattern templates ("A보다 더",
+// "못 (verb)", "C랑 같아요."). 4 losses out of 1,596 is not worth an exception list.
 //
 // This filter is deliberately LOCAL to dictation: the bank itself stays a
 // faithful record of the deck, and lesson bridge panels still reference any note
