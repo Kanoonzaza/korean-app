@@ -196,3 +196,73 @@ a.lrow:hover { text-decoration: none; background: var(--surface-2); }
 .ans .ko { font-size: 1.25rem; }
 .d-bad { color: var(--bad); text-decoration: line-through; }
 .d-miss { color: var(--ok); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- cards (flashcards + words browser) ---------- */
+.btn.wide { width: 100%; }
+
+/* deck screen: the three daily counts */
+.deckcounts { display: flex; gap: 10px; margin: 14px 0; }
+.dc {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 6px;
+}
+.dc b { font-size: 1.5rem; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.dc span { color: var(--muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.dc.new b { color: var(--accent); }
+.dc.learn b { color: var(--bad); }
+.dc.due b { color: var(--ok); }
+
+/* new-cards-per-day stepper */
+.optrow { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.stepbtn { min-width: 44px; min-height: 44px; padding: 6px 10px; font-size: 1.1rem; }
+.npdval { min-width: 2.2em; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* words browser */
+.wrow {
+  border-bottom: 1px solid var(--border); padding: 10px 2px; cursor: pointer;
+}
+.wrow:last-child { border-bottom: none; }
+.whead { display: flex; align-items: center; gap: 8px; min-height: 44px; }
+.wmean { display: none; color: var(--muted); font-size: 0.9rem; padding-top: 2px; }
+.wrow.on .wmean { display: block; }
+
+/* study screen */
+.cbar {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 10px; font-size: 0.85rem;
+}
+.cc { font-weight: 700; font-variant-numeric: tabular-nums; }
+.cc.new { color: var(--accent); }
+.cc.learn { color: var(--bad); }
+.cc.due { color: var(--ok); }
+.csep { color: var(--border); }
+
+.anki { text-align: center; }
+.anki.tappable { cursor: pointer; }
+.ankifront { padding: 22px 0 18px; }
+.ankifront.small { padding: 6px 0; opacity: 0.75; font-size: 0.95rem; }
+.ankiko { display: flex; align-items: center; justify-content: center; gap: 10px; }
+.ankiko .ko { font-size: 2.1rem; line-height: 1.35; }
+.ankifront.small .ankiko .ko { font-size: 1.2rem; }
+.ankien { font-size: 1.2rem; line-height: 1.45; }
+.ankihr { border: none; border-top: 1px solid var(--border); margin: 4px 0 14px; }
+.ankiback { padding-bottom: 16px; }
+.ankiextra { margin-top: 8px; }
+
+/* grade buttons, each labelled with its predicted interval */
+.graderow { display: flex; gap: 6px; }
+.gradebtn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  min-height: 56px; padding: 8px 4px;
+  background: transparent; color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px;
+  font-size: 0.8rem; font-weight: 600; font-family: inherit; cursor: pointer;
+}
+.gradebtn:hover { background: var(--surface-2); }
+.gradebtn .ivl {
+  font-size: 0.68rem; font-weight: 500; color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.gradebtn.again { border-color: var(--bad); color: var(--bad); }
+.gradebtn.easy { border-color: var(--ok); color: var(--ok); }
