@@ -41,18 +41,33 @@ function levelOf(s) {
 // under "All".
 const LEVELS = ["1", "2", "3"];
 
-// Not every note in the bank is dictatable. ~197 of the 1,596 are grammar
-// REFERENCE cards rather than sentences — "일 [Sino-Korean #]", "(noun)~은",
-// "~아요 [Conjugation: present tense]", "# 대 [counter]". Read aloud, the English
-// annotation is spoken too and the learner would have to type it back verbatim to
-// pass, so they are unusable here. Require some hangul and reject anything
-// carrying editor notation: brackets, parentheses, latin letters, or the # * / ~
-// markers. That leaves 1,399 real sentences (237 / 575 / 578 for levels 1-3).
+// Not every note in the bank is dictatable. 222 of the 1,596 are unusable here,
+// for two separate reasons.
+//
+// 1. Grammar REFERENCE cards rather than sentences — "일 [Sino-Korean #]",
+//    "(noun)~은", "~아요 [Conjugation: present tense]", "# 대 [counter]". Read
+//    aloud, the English annotation is spoken too and the learner would have to
+//    type it back verbatim to pass. Rejected via brackets, parentheses, latin
+//    letters, and the # * / ~ markers.
+//
+// 2. Anything containing an Arabic NUMERAL. TTS reads "1번" as "일번", so the
+//    learner types 일번 and grade() fails them against a key that literally holds
+//    "1" — normalize() does not touch digits. 25 notes are affected: 18 real
+//    sentences ("1번 출구로 나오세요.") plus 7 that print both forms in one field
+//    ("1초 일초", "아직 9 시예요. 아직 아홉시예요."), which TTS reads end to end.
+//    Digits and ":" are therefore rejected too. Spelled-out numbers (아홉 시) are
+//    unaffected and stay in the pool.
+//
+// That leaves 1,374 real sentences (237 / 563 / 565 for levels 1-3).
+//
+// Cost of being this blunt: exactly 2 genuine sentences are lost to the latin
+// rule — "리모콘을 찾으면, TV를 볼 수 있어요." and "문맥에 따라(서) 달라요." — where the
+// latin is real content, not an annotation. Not worth an exception list.
 //
 // This filter is deliberately LOCAL to dictation: the bank itself stays a
 // faithful record of the deck, and lesson bridge panels still reference any note
-// by exact text.
-const NOT_DICTABLE = /[[\]{}()A-Za-z#*/~]/;
+// by exact text (101 bridges, 3 of them pointing at latin-carrying `ko`).
+const NOT_DICTABLE = /[[\]{}()A-Za-z#*/~0-9:]/;
 function dictable(s) {
   return !!s && !!s.ko && /[가-힣]/.test(s.ko) && !NOT_DICTABLE.test(s.ko);
 }
