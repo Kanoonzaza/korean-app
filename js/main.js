@@ -16,7 +16,8 @@ import { register as me } from "./views/me.js";
 
 start();
 
-// Offline support (Task 12 fills in the real caching worker).
+// Offline support. sw.js precaches the whole app; file:// has no SW at all,
+// which is one more reason to serve the app over http (see README).
 if (location.protocol.startsWith("http") && "serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js").catch(() => {});
 }
