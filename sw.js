@@ -1,79 +1,114 @@
-/* sw.js — offline support for the Korean app.
- * Strategy: NETWORK-FIRST for same-origin files (so editing lessons.js and
- * refreshing always shows fresh content when online), with a cache fallback
- * when offline. Cross-origin requests (fonts, podcast embeds) are left to the
- * network and simply fail gracefully offline.
+/* sw.js — offline service worker for 한국어 Study (v2).
+ *
+ * Strategy: precache everything, then serve cache-first.
+ * The app is a fixed set of static files (no API, no user-generated remote
+ * data — progress lives in localStorage), so the whole thing fits in one
+ * versioned cache and there is no runtime-cache tier to reason about.
+ *
+ * PRECACHE is the complete module graph, derived from the `import` statements
+ * in js/ plus the shell assets:
+ *   shell    index.html, manifest.webmanifest, css/style.css, 4 icons
+ *   engines  js/main.js router store srs grader tts
+ *   views    js/views/*.js  (10 — every one is imported by js/main.js)
+ *   content  the 7 content modules the views import
+ * content/known.js is deliberately NOT here: it is a build-tool input for
+ * tools/build_wordsnext.py, never imported by the app.
+ *
+ * UPDATING: bump CACHE below whenever any precached file changes. Old caches
+ * are deleted on activate, so the next load after the new worker takes over
+ * serves the new files. (Browsers always revalidate sw.js itself, so a changed
+ * CACHE string is enough to trigger the whole refresh.)
  */
-var CACHE = "korean-app-v24";
-var ASSETS = [
+const CACHE = "kov2-v1";
+
+const PRECACHE = [
   "./",
   "./index.html",
-  "./css/style.css",
-  "./icon.svg",
-  "./apple-touch-icon.png",
-  "./icon-192.png",
-  "./icon-512.png",
   "./manifest.webmanifest",
-  "./content/lessons.js",
+  "./css/style.css",
+
+  "./js/main.js",
+  "./js/router.js",
+  "./js/store.js",
+  "./js/srs.js",
+  "./js/grader.js",
+  "./js/tts.js",
+
+  "./js/views/today.js",
+  "./js/views/syllabus.js",
+  "./js/views/lesson.js",
+  "./js/views/practice.js",
+  "./js/views/cards.js",
+  "./js/views/dictation.js",
+  "./js/views/reading.js",
+  "./js/views/listening.js",
+  "./js/views/weak.js",
+  "./js/views/me.js",
+
   "./content/curriculum.js",
-  "./content/words5k.js",
   "./content/wordsnext.js",
-  "./content/vocab-usage.js",
-  "./content/vocab-usage-next.js",
+  "./content/ttmik-sentences.js",
   "./content/readings.js",
   "./content/podcasts.js",
-  "./content/firebase-config.js",
-  "./js/storage.js",
-  "./js/romanize.js",
-  "./js/sync.js",
-  "./js/level.js",
-  "./js/tts.js",
-  "./js/quiz.js",
-  "./js/practice.js",
-  "./js/review.js",
-  "./js/srs.js",
-  "./js/cards.js",
-  "./js/conj.js",
-  "./js/exam.js",
-  "./js/glossary.js",
-  "./js/reading.js",
-  "./js/listening.js",
-  "./js/app.js"
+  "./content/lessons/l4.js",
+  "./content/lessons/l5.js",
+
+  "./icon.svg",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./apple-touch-icon.png",
 ];
 
-self.addEventListener("install", function (e) {
-  // Do NOT auto-skipWaiting: a new version waits until the user taps "Update".
-  e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(ASSETS); }));
+self.addEventListener("install", event => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    // {cache: "reload"} so install never precaches a stale HTTP-cached copy.
+    await cache.addAll(PRECACHE.map(u => new Request(u, { cache: "reload" })));
+    await self.skipWaiting();
+  })());
 });
 
-// The page tells the waiting worker to take over when the user accepts the update.
-self.addEventListener("message", function (e) {
-  if (e.data && e.data.type === "SKIP_WAITING") self.skipWaiting();
+self.addEventListener("activate", event => {
+  event.waitUntil((async () => {
+    const names = await caches.keys();
+    await Promise.all(names.filter(n => n !== CACHE).map(n => caches.delete(n)));
+    await self.clients.claim();
+  })());
 });
 
-self.addEventListener("activate", function (e) {
-  e.waitUntil(
-    caches.keys().then(function (keys) {
-      return Promise.all(keys.filter(function (k) { return k !== CACHE; })
-        .map(function (k) { return caches.delete(k); }));
-    }).then(function () { return self.clients.claim(); })
-  );
-});
+self.addEventListener("fetch", event => {
+  const req = event.request;
+  if (req.method !== "GET") return;
 
-self.addEventListener("fetch", function (e) {
-  if (e.request.method !== "GET") return;
-  var sameOrigin = new URL(e.request.url).origin === self.location.origin;
-  if (!sameOrigin) return; // let cross-origin (fonts, Spotify) hit the network directly
+  const url = new URL(req.url);
+  // Cross-origin (Spotify/YouTube embeds on the Podcasts page) goes straight to
+  // the network: nothing to cache, and it must fail loudly-but-harmlessly offline.
+  if (url.origin !== self.location.origin) return;
 
-  e.respondWith(
-    fetch(e.request).then(function (res) {
-      var copy = res.clone();
-      caches.open(CACHE).then(function (c) { c.put(e.request, copy); }).catch(function () {});
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE);
+
+    // Any hash route ("#/practice/cards") is still a request for index.html, but
+    // a deep path or a "?" query would miss — fall back to the cached shell so
+    // every route boots offline.
+    if (req.mode === "navigate") {
+      return (await cache.match(req, { ignoreSearch: true })) ||
+             (await cache.match("./index.html")) ||
+             fetch(req);
+    }
+
+    const hit = await cache.match(req, { ignoreSearch: true });
+    if (hit) return hit;
+
+    try {
+      const res = await fetch(req);
+      // Same-origin extras (a newly added lesson file, say) join the cache so a
+      // second visit has them offline. Opaque/error responses are not cached.
+      if (res && res.ok && res.type === "basic") cache.put(req, res.clone());
       return res;
-    }).catch(function () {
-      return caches.match(e.request).then(function (r) {
-        return r || caches.match("./index.html");
-      });
-    })
-  );
+    } catch (err) {
+      // Offline and not precached: let the caller see a real network failure.
+      throw err;
+    }
+  })());
 });

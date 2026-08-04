@@ -2,7 +2,7 @@
  * We only embed official players / link out; no audio is hosted or copied here.
  * Spotify embed URL form: https://open.spotify.com/embed/show/<SHOW_ID>
  */
-window.PODCASTS = [
+export const PODCASTS = [
   {
     name: "Didi의 한국문화 Podcast",
     level: "Intermediate",

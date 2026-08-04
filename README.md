@@ -1,149 +1,175 @@
-# 한국어 Study — Korean Learning App (Level 4)
+# 한국어 Study — v2
 
-A small, clean, dark-themed web app for self-studying Korean. It picks up past
-TTMIK Level 3 with original Level 4 "modal" lessons (must / may / can), plus an
-embedded podcast library for listening practice.
+A small offline-first web app that continues Korean study from where two Anki
+decks stop: **TTMIK Supplement (Levels 1–3)** and **Korean Core 5k**.
 
-No build step, no server, no dependencies — just open the file.
+Everything the app teaches is chosen against those decks. The 60-lesson syllabus
+is TTMIK Levels 4–5, with lessons already covered by the studied deck marked
+*known* and skipped. The flashcard deck starts at word #5001 — every entry is
+absent from Core 5k, from the TTMIK deck, and from the lesson vocab. Dictation
+sentences are drawn only from sentences already studied, so the meaning is known
+and the work is hearing it.
 
-## How to open
+No build step, no dependencies, no framework: plain ES modules, hand-written
+string templates, `localStorage`.
 
-- **On your PC:** double-click `index.html`. It opens in your browser and works
-  fully offline (the only thing needing internet is the Listening tab's podcast
-  players and the web font).
+## How to open it
 
-## Features
+**On the phone / anywhere — the hosted copy:**
+<https://kanoonzaza.github.io/korean-app/> (GitHub Pages, served from `main`).
+Add it to the home screen — Android Chrome: menu → *Install app*; iPhone Safari:
+Share → *Add to Home Screen*. After the first load it works fully offline.
 
-- **Today panel** — the home screen opens with a one-glance daily plan:
-  flashcards available, lesson reviews due, and the next unfinished lesson.
-- **Lessons** — 3 Level 4 lessons, each a 5-step guided flow:
-  Grammar → Vocab → Examples → Quiz → Practice, with a "Common mistakes" callout.
-- **Quizzes** — type-the-Korean (English prompt) and listening (hear it, type it).
-  No multiple choice; graded by forgiving exact match.
-- **Practice** — fill-in-the-blank and full-sentence translation.
-- **Review** — keeps older material from fading:
-  - *Mixed review* — questions pulled from every lesson you've completed.
-  - *Weak items* — anything you answer wrong (in a quiz **or** in review) is saved
-    automatically; answer it correctly once and it retires from the pile.
-- **Cards** — Anki-style flashcards that pick up where the Korean Core 5k
-  deck ends: ~2,500 new words (TOPIK-advanced + frequency-ranked, none in the
-  Anki deck) as two cards each — Korean→English first, English→Korean lagging
-  200 words behind (like the "lag200" reorder). Reveal, then grade yourself
-  Again / Hard / Good / Easy; simplified SM-2 scheduling with a daily new-card
-  limit, separate from the Review tab's schedule. One-step undo for misclicked
-  grades; a word's second direction is buried on any day its partner was studied.
-- **Reading** — graded passages (Levels 4–5) with tap-to-gloss words, passage
-  audio, and TOPIK-style comprehension questions; best scores saved.
-- **Retention stats** — every graded answer (cards, quizzes, review, tests,
-  reading) feeds a 30-day accuracy strip on the Progress tab.
-- **Listening** — embedded free podcasts (Didi, IYAGI, SpongeMind, Choisusu).
-- **Progress** — completion ✓ and best quiz score per lesson, saved in your browser.
-- **Audio** — 🔊 buttons use your browser's Korean voice (Web Speech API). If no
-  Korean voice is installed, the app still works; audio just won't play.
+**Locally — you must serve it over http:**
 
-## Add your own lessons
+```bash
+cd korean-learning-app
+python -m http.server 8734
+# then open http://localhost:8734
+```
 
-Open `content/lessons.js` and copy one lesson object, keeping the same shape:
+> **`file://` will not work.** The app is built from ES modules
+> (`<script type="module">` + `import`), and browsers block module imports from
+> `file://` under the CORS rules. Double-clicking `index.html` gives a blank
+> page and a console full of CORS errors. Service workers are also http-only, so
+> `file://` has no offline caching either. Use the Pages URL or a local server.
+
+## The four tabs
+
+- **Today** — the daily plan: one lesson (or a due review), a batch of cards,
+  one dictation round. Finish all three to keep the streak.
+- **Learn** — the 60-lesson TTMIK L4–L5 syllabus and the lesson player. Each
+  lesson is a 5-step flow: Grammar → Vocab → Examples → Quiz → Practice.
+  Finished lessons come back as spaced review sessions.
+- **Practice** — the hub: Cards (the 2,481-word continuation deck, SM-2
+  scheduled, Korean→English with the reverse direction lagging behind),
+  Dictation (hear a studied sentence, type it), Weak items (anything you typed
+  wrong, until you get it right), Reading (graded passages with tap-to-gloss and
+  comprehension questions), Podcasts.
+- **Me** — streak calendar, retention, totals, speech rate, new-cards-per-day,
+  and backup/restore.
+
+Audio uses the browser's Web Speech API. With no Korean voice installed the app
+still works; the 🔊 controls and dictation are hidden rather than silently
+failing.
+
+## Offline
+
+`sw.js` precaches the whole app (31 files — shell, every JS module, every content
+module, icons) into a versioned cache and serves cache-first. Every screen works
+with no connection; only the Podcasts tab needs one, because its players are
+Spotify/YouTube iframes — that page still renders offline, the players just
+don't load.
+
+**After changing any file, bump `CACHE` in `sw.js`** (`kov2-v1` → `kov2-v2`).
+Old caches are deleted on activate. Without the bump, installed copies keep
+serving the old files.
+
+## Content
+
+```
+content/curriculum.js        60 TTMIK L4-L5 lessons: title, point, TOPIK/CEFR
+                             tag, and status (new / compressed / known)
+content/lessons/l4.js        52 lesson bodies (23 + 29) for the entries that
+content/lessons/l5.js          aren't already known from the studied deck
+content/wordsnext.js         2,481-word continuation flashcard deck  GENERATED
+content/ttmik-sentences.js   1,596 studied L1-3 sentences            GENERATED
+content/known.js             known-word index (tool input only)      GENERATED
+content/readings.js          6 graded reading passages
+content/podcasts.js          4 podcast shows
+```
+
+### Adding lessons
+
+Lesson bodies are hand-written in `content/lessons/l4.js` / `l5.js`; the
+syllabus entry (title, level, status) comes from `content/curriculum.js`. A body
+looks like this:
 
 ```js
 {
-  id: "4.4", level: 4, title: "...", point: "V-...",
-  grammar: { summary, formation, explanation, notes: [] },
-  pitfalls: [ "..." ],
-  vocab: [ { ko, en, romaji, pos, note } ],
-  sentences: [ { ko, en, romaji, blankWord } ]
+  id: "4.01", level: 4, title: "…", point: "-(으)ㄹ수록",
+  grammar: {
+    summary: "one sentence — what it does",
+    formation: "V-stem + …   (rules, incl. irregulars; \n is kept)",
+    explanation: "3-6 sentences of plain English, with register notes",
+    notes: ["short extra facts"]
+  },
+  pitfalls: ["common mistake", "…"],
+  bridge:  ["<ko copied EXACTLY from content/ttmik-sentences.js>", "…"],
+  vocab:   [{ ko, en, romaji, pos, note }],
+  sentences: [{ ko, en, romaji, blankWord }]
 }
 ```
 
-`blankWord` is the chunk hidden in fill-in-the-blank practice. Quizzes and practice
-items are generated automatically from `vocab` + `sentences`.
+Rules that matter:
 
-Add podcasts in `content/podcasts.js` the same way.
+- `bridge` strings must be exact `ko` matches in `ttmik-sentences.js` — the app
+  looks the English up at render time, so a typo shows an empty bridge.
+- `vocab.ko` must be new: not in `content/known.js` and not used by another
+  lesson.
+- `blankWord` is the exact substring hidden in fill-in-the-blank practice.
+- A `"compressed": true` body is the short form used for lessons the deck partly
+  covers: summary + a couple of bridges + a few sentences, no new vocab.
+- Romanization is Revised Romanization, lowercase, hyphenless.
 
-## How to update the app
+Add the matching `curriculum.js` entry (or flip its `status` to `"new"`), reload,
+and the syllabus, Today, quizzes, review and stats pick it up with no JS changes.
+Podcasts and readings work the same way — data only.
 
-There's no auto-update — it's just files on your PC. You change it in one of two ways:
+## Re-running the content tools after a fresh Anki export
 
-**1. Edit the content yourself (no coding needed).**
-Open `content/lessons.js` in any text editor (Notepad, VS Code) and add a lesson
-object using the shape above, or fix a word/translation. Save, then refresh the
-browser tab. That's it — quizzes, practice, and review pick up the change
-automatically. Same for podcasts in `content/podcasts.js`.
+Both tools read the exports at
+`C:\Users\HP\Claude work\Korean\anki-korean-deck\` (`TTMIK Supplement.txt`,
+`Korean Core 5k - English to Korean.txt`). Run them in this order, from the repo
+root:
 
-> Tip: keep a backup copy of `content/lessons.js` before big edits. If you ever break
-> the file, the app shows an empty list — just restore the backup.
-
-**2. Ask me (Claude) to update it.**
-Tell me what you want — "add Level 4 lessons 4.4–4.6", "add a grammar point for ~(으)니까",
-"make the quizzes longer", "add a light/day theme" — and I'll edit the files in
-`C:\Users\HP\Claude work\korean-learning-app\`. After I'm done, just refresh the tab
-(or reopen `index.html`).
-
-**Your progress is safe across updates.** Completion, scores, and the weak-item pile
-live in your browser's localStorage, not in the files — editing lessons or replacing
-files won't erase them. (Clearing your browser data *will* reset progress.)
-
-## Use it on your phone / any device (GitHub Pages)
-
-The app is a Progressive Web App: once it's on an HTTPS URL you can install it on
-your phone's home screen and it runs offline. The free, permanent way to host it is
-**GitHub Pages**. A git repo is already initialized in this folder with a first commit,
-so you only need to create the remote and push.
-
-### One-time setup
-
-1. **Create an empty repo on GitHub** named e.g. `korean-app`
-   (https://github.com/new — no README/.gitignore, keep it empty).
-2. **Connect and push** (run these in this folder; replace `YOUR-USERNAME`):
-   ```bash
-   git remote add origin https://github.com/YOUR-USERNAME/korean-app.git
-   git branch -M main
-   git push -u origin main
-   ```
-   (Or with the GitHub CLI: `gh repo create korean-app --public --source=. --push`.)
-3. **Turn on Pages:** repo → **Settings → Pages** → *Source:* **Deploy from a branch**
-   → branch **main**, folder **/ (root)** → Save.
-4. Wait ~1 minute. Your app is live at:
-   `https://YOUR-USERNAME.github.io/korean-app/`
-
-### Install it on your phone
-
-- Open that URL in the phone browser.
-- **Android (Chrome):** menu → **Add to Home screen / Install app**.
-- **iPhone (Safari):** Share → **Add to Home Screen**.
-- It now opens full-screen like a native app and works offline.
-
-### Pushing future changes
-
-After you (or I) edit lessons/content, publish the update with:
 ```bash
-git add -A
-git commit -m "Update lessons"
-git push
+python -X utf8 tools/build_from_anki.py     # -> content/known.js, content/ttmik-sentences.js
+python -X utf8 tools/build_wordsnext.py     # -> content/wordsnext.js
+python -X utf8 tools/test_build_from_anki.py  # sanity-checks the first tool's output
 ```
-Pages redeploys automatically; reopen the app to get the new version.
 
-> **Progress per device:** your completion/scores/weak-items are stored in each
-> browser separately. Use **Progress → Export** on one device and **Import** on another
-> to carry them over.
+`build_wordsnext.py` runs in **reconcile mode**: the committed
+`content/wordsnext.js` is its base, and it only ever *drops* entries — words you
+now know from the decks, words absorbed into lesson vocab, and grammar
+homographs on its `BLOCK` list. Refill is disabled, so the deck can shrink but
+never grows on its own, and every kept gloss is carried forward verbatim.
+**The hand-curated glosses live only in the committed file** — deleting
+`content/wordsnext.js` forces a from-scratch rebuild and loses them.
 
-## Files
+The tool also needs `wordfreq`, `mecab-python3` and `mecab-ko-dic` installed, and
+downloads `combined.tsv` / `kengdic.tsv` into `tools/` on first run.
+
+## Backup and restore
+
+Progress lives in this browser's `localStorage` under `kov2.*` keys and is never
+uploaded anywhere — so it is per-device, and clearing site data erases it.
+
+**Me → Backup → ⤓ Download backup** writes a single JSON file with every `kov2.`
+key: lesson progress and review schedules, card scheduling, day history, weak
+items, settings. **↥ Import a backup…** reads one back after a confirmation
+step; importing replaces every key the file mentions and leaves the rest alone.
+That is also how you move progress from one device to another.
+
+## Layout
 
 ```
-index.html             app shell + script load order
-manifest.webmanifest   PWA metadata (name, icon, colors)
-sw.js                  service worker (offline support)
-icon.svg               app icon
-css/style.css          dark theme
-content/lessons.js     lesson data (edit to add lessons)
-content/podcasts.js    listening library
-js/storage.js          progress + weak-item pile + export/import
-js/tts.js              Korean text-to-speech
-js/quiz.js             quiz generation + grading
-js/practice.js         sentence practice
-js/review.js           mixed + weak-item review sets
-js/cards.js            Anki-style flashcards (Cards tab)
-js/reading.js          graded reading passages (Reading tab)
-js/listening.js        podcast library view
-js/app.js              nav, router, lesson stepper, review runner
+index.html               shell: nav, #view mount, module entry point
+sw.js                    offline precache worker (bump CACHE on any change)
+manifest.webmanifest     PWA metadata
+css/style.css            dark theme, system font stack, no external requests
+js/main.js               registers every view's routes, starts the router
+js/router.js             hash router with per-view teardown
+js/store.js              localStorage layer (all kov2.* keys)
+js/srs.js                SM-2 scheduler — shared by cards and lesson review
+js/grader.js             forgiving answer match + character diff
+js/tts.js                Korean speech (Web Speech API)
+js/views/*.js            one module per screen (10)
+content/*                data (see above)
+tools/*.py               the Anki -> content pipeline
+docs/                    design docs, plans and reviews
 ```
+
+v1 of this app (a `window.*`-globals build with cloud sync, exams and
+conjugation drills) was replaced by this rebuild and removed in Task 12; it is
+still in the git history if anything needs to be recovered.

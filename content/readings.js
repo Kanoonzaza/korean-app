@@ -3,7 +3,7 @@
  *          glossary: { word: meaning }, questions: [{ q, qe, options[4], answer }] }
  * Keep grammar within what the lessons teach; glossary covers likely-new words.
  */
-window.READINGS = [
+export const READINGS = [
 {
   id: "r4-1", level: 4, title: "첫 출근 — The first day of work",
   blurb: "Minsu's nervous first commute on the subway.",

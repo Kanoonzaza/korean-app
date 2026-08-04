@@ -14,3 +14,7 @@ korean-app-progress*.json
 tools/*.tsv
 tools/*.txt
 tools/*.new
+
+# Python
+__pycache__/
+*.pyc
