@@ -326,6 +326,10 @@ function runner(host, cfg) {
     const fb = host.querySelector("#fb");
     const act = host.querySelector("#act");
     if (it.kind === "listen") speak(it.answer, store.settings().ttsRate);
+    input.addEventListener("focus", () => {
+      // keep the box clear of the phone's on-screen keyboard (same as dictation/weak)
+      try { input.scrollIntoView({ block: "center", behavior: "smooth" }); } catch { input.scrollIntoView(); }
+    });
     input.focus();
 
     function advance() { idx++; draw(); }
@@ -376,7 +380,7 @@ export function renderLesson(mount, id) {
         <p class="muted">${meta
           ? `Lesson ${esc(id)} is marked known from your Anki decks, so it has no player.`
           : `There is no lesson <code>${esc(id)}</code>.`}</p>
-        <p><a href="#/learn">Back to the syllabus</a></p>
+        <div class="navrow"><a class="btn secondary" href="#/learn">Back to the syllabus</a></div>
       </div>`;
     return () => cancelSpeech();
   }
@@ -473,7 +477,7 @@ export function renderReview(mount, id) {
       <div class="card">
         <h4>Nothing to review</h4>
         <p class="muted">There is no lesson <code>${esc(id)}</code> to review.</p>
-        <p><a href="#/learn">Back to the syllabus</a></p>
+        <div class="navrow"><a class="btn secondary" href="#/learn">Back to the syllabus</a></div>
       </div>`;
     return () => cancelSpeech();
   }

@@ -32,7 +32,7 @@ function renderCurrent() {
       <div class="card">
         <h4>Page not found</h4>
         <p class="muted">Nothing lives at <code>${path.replace(/[<>&"']/g, "")}</code>.</p>
-        <p><a href="#/today">Go to Today</a></p>
+        <div class="navrow"><a class="btn secondary" href="#/today">Go to Today</a></div>
       </div>`;
   }
   document.querySelectorAll("nav a").forEach(a => {

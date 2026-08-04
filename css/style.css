@@ -144,6 +144,9 @@ a.lrow:hover { text-decoration: none; background: var(--surface-2); }
 
 /* ---------- lesson player ---------- */
 .crumb { display: flex; gap: 10px; align-items: baseline; justify-content: space-between; }
+/* the lesson player's "← Syllabus" link is a primary back control on a phone:
+   pad it to a 44px tap target. inline-block keeps the crumb's baseline align. */
+.crumb a { display: inline-block; padding: 10px 2px; }   /* 25.6px line + 20 = 45.6 */
 .stephead {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   margin: 2px 0 4px;
@@ -254,7 +257,9 @@ a.lrow:hover { text-decoration: none; background: var(--surface-2); }
 /* segmented pickers: level filter, round length */
 .chiprow { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
 .chip {
-  min-height: 44px; padding: 8px 14px; gap: 6px;
+  /* min-width too: the round-length chips are one digit ("5") and came out
+     38px wide — under the 44px tap target the height already guarantees. */
+  min-height: 44px; min-width: 44px; padding: 8px 14px; gap: 6px;
   font-size: 0.95rem; font-weight: 600;
 }
 .chip.on { border-color: var(--accent); color: var(--accent); background: var(--surface-2); }
