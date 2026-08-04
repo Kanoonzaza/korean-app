@@ -39,9 +39,16 @@ FROM-SCRATCH MODE (fallback only, when no base deck file exists):
 Known-word sources are parsed with the shared helpers exported by
 tools/build_from_anki.py (Task 1): rows_of / strip_html / as_single_word plus
 the CORE_TXT / TTMIK_TXT path constants — the single-word rule is imported,
-never re-derived here. The v1 exclusion inputs (words5k.js, lessons.js) live
-under v1/content/; v2 lesson files land in V2_LESSON_FILES once Task 6
-authors them.
+never re-derived here. The v2 lesson files are listed in V2_LESSON_FILES.
+
+The three v1 inputs (v1/content/wordsnext.js as the fallback base, and
+v1/content/words5k.js + v1/content/lessons.js as known-word sources) are
+OPTIONAL: v1/ was deleted in Task 12, and each read is skipped with a printed
+note when the file is absent. That is safe because the committed
+content/wordsnext.js is now always the reconcile base and it was generated
+with those exclusions already applied — and with REFILL off a run can only
+drop words, never re-add one the v1 lists would have blocked. If v1/ is ever
+restored from git history the files are picked up again automatically.
 
 Requirements (Windows, Python 3.12):
     pip install wordfreq mecab-python3 mecab-ko-dic
@@ -180,8 +187,17 @@ def known_words():
         if len(r) < 5: continue
         w = as_single_word(strip_html(r[4]))
         if w: known.add(w)
-    # (c) v1 lessons + (d) v1 words5k — still valid known-word sources.
+    # (c) v1 lessons + (d) v1 words5k — OPTIONAL since Task 12 deleted v1/.
+    #     Safe to skip: the committed content/wordsnext.js is always the reconcile
+    #     base and it was already built with these exclusions applied, so the words
+    #     they would have dropped are simply not in the base. REFILL is off, so a
+    #     run can only ever drop words, never re-add one these lists would block.
+    #     (If v1/ is ever restored from git history, the files are picked up again.)
     for path, pat in [(V1_LESSONS, r'ko:\s*"([^"]+)"'), (V1_WORDS5K, r'"ko":\s*"([^"]+)"')]:
+        if not os.path.exists(path):
+            print(f"note: {os.path.relpath(path, APP)} not present (v1/ removed in Task 12) - "
+                  f"skipping; its exclusions are already baked into content/wordsnext.js")
+            continue
         src = io.open(path, encoding="utf-8").read()
         known.update(m.group(1) for m in re.finditer(pat, src))
     # (e) v2 lesson files (Task 6). Both key styles accepted; a listed file
