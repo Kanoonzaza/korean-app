@@ -1,5 +1,20 @@
 # Korean App v2 — Execution Handoff (for any fresh session)
 
+> ## ✅ BUILD COMPLETE (2026-08-05)
+> All 12 plan tasks are done, reviewed, and **merged into `main`** (merge commit
+> `71bb99e`). `v1/` has been removed (it lives in git history). **Nothing has been
+> pushed** — `main` is 53 commits ahead of `origin/main`; pushing to publish on
+> GitHub Pages is the user's call.
+>
+> The sections below are kept as the record of how the build ran and which
+> decisions are binding. For working on the app from here, start with `README.md`
+> at the repo root; for future content work, BRAINDUMP Part A/D still apply.
+>
+> **Known gaps, honestly:** Level 5 lesson content (5.01–5.30) never got its own
+> spec review — 6A and 6B did (see `docs/superpowers/plans/reviews/`). The audible
+> TTS path has never been heard: no machine in this build had a Korean voice
+> installed, so audio was only ever verified through gating and mocks.
+
 **Written:** 2026-07-20 by the planning session (Fable), for continuation by a fresh
 session (any model) after a usage-limit cutoff. Read this FIRST, then the plan.
 
