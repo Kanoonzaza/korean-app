@@ -107,14 +107,22 @@ function levelBlock(level, st) {
     ${rows.map(c => row(c, st.get(c.id))).join("")}`;
 }
 
+// Levels present in the curriculum, in order — derived from the ids, so adding
+// a Level 6 curriculum block makes it appear here with no code change.
+function levels() {
+  return [...new Set(CURRICULUM.map(c => c.id.split(".")[0]))]
+    .sort((a, b) => Number(a) - Number(b));
+}
+
 function renderSyllabus(mount) {
   const st = states();
   const gates = CURRICULUM.filter(c => c.status !== "known");
   const done = gates.filter(c => st.get(c.id).kind === "done").length;
   const known = CURRICULUM.length - gates.length;
+  const lv = levels();
+  const span = lv.length === 1 ? `Level ${lv[0]}` : `Levels ${lv[0]}–${lv[lv.length - 1]}`;
   mount.innerHTML = `
     <h1>Learn</h1>
-    <p class="muted small">TTMIK Levels 4–5 · ${done} of ${gates.length} lessons done · ${known} already known from Anki</p>
-    ${levelBlock(4, st)}
-    ${levelBlock(5, st)}`;
+    <p class="muted small">TTMIK ${span} · ${done} of ${gates.length} lessons done · ${known} already known from Anki</p>
+    ${lv.map(l => levelBlock(l, st)).join("")}`;
 }

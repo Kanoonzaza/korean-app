@@ -10,9 +10,14 @@
  *   shell    index.html, manifest.webmanifest, css/style.css, 4 icons
  *   engines  js/main.js router store srs grader tts
  *   views    js/views/*.js  (10 — every one is imported by js/main.js)
- *   content  the 7 content modules the views import
- * content/known.js is deliberately NOT here: it is a build-tool input for
- * tools/build_wordsnext.py, never imported by the app.
+ *   content  the content modules the views import, incl. lessons/index.js
+ * content/known.js is deliberately NOT here: no app module imports it. It is a
+ * generated artifact of tools/build_from_anki.py, read only by
+ * tools/test_build_from_anki.py.
+ *
+ * ADDING A LEVEL: a new content/lessons/lN.js must be added to the list below
+ * AND to LESSON_SETS in content/lessons/index.js, and CACHE bumped. The list is
+ * deliberately static — see docs/EXTENDING.md.
  *
  * UPDATING: bump CACHE below whenever any precached file changes. Old caches
  * are deleted on activate, so the next load after the new worker takes over
@@ -50,6 +55,7 @@ const PRECACHE = [
   "./content/ttmik-sentences.js",
   "./content/readings.js",
   "./content/podcasts.js",
+  "./content/lessons/index.js",
   "./content/lessons/l4.js",
   "./content/lessons/l5.js",
 

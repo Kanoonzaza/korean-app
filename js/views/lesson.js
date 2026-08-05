@@ -19,8 +19,7 @@
 //   days[YYYY-MM-DD].right/.wrong — incremented for every graded answer
 //   weak[expectedKo] = { en, kind } — every wrong answer; nothing is retired here
 import { CURRICULUM } from "../../content/curriculum.js";
-import { L4 } from "../../content/lessons/l4.js";
-import { L5 } from "../../content/lessons/l5.js";
+import { ALL_LESSONS } from "../../content/lessons/index.js";
 import { TTMIK_SENTENCES } from "../../content/ttmik-sentences.js";
 import { store } from "../store.js";
 import { grade } from "../grader.js";
@@ -32,7 +31,7 @@ import { isLocked } from "./syllabus.js";
 // syllabus.js owns "/learn" — nothing to register here.
 export function register() { /* no route: see the header comment */ }
 
-const BODIES = new Map([...L4, ...L5].map(b => [b.id, b]));
+const BODIES = new Map(ALL_LESSONS.map(b => [b.id, b]));
 const META = new Map(CURRICULUM.map(c => [c.id, c]));
 
 // True only for lessons that have a body to play. status:"known" lessons have
@@ -54,13 +53,23 @@ function shuffle(arr) {
 }
 
 // ---------- bridge sentences ----------
-// Bridge strings are exact `ko` matches into TTMIK_SENTENCES (validated at
-// authoring time). Built lazily and once; a miss renders the Korean alone.
+// A bridge is an exact `ko` match against material the learner has already met:
+// the Anki bank (TTMIK L1-3) OR an earlier lesson's example sentences, which
+// matters from Level 6 on — by then most prerequisite grammar was taught HERE,
+// not in Anki, so the bank alone would have nothing to point at.
+//
+// The bank wins on collision (its glosses carry the original deck's context).
+// Built lazily and once; a miss renders the Korean alone rather than crashing.
+// Ordering is not enforced here — validate_lessons.py checks at authoring time
+// that a bridge only quotes material from EARLIER in the curriculum.
 let bridgeEn = null;
 function enForKo(ko) {
   if (!bridgeEn) {
     bridgeEn = new Map();
-    for (const s of TTMIK_SENTENCES) if (!bridgeEn.has(s.ko)) bridgeEn.set(s.ko, s.en);
+    for (const l of ALL_LESSONS) {
+      for (const s of l.sentences || []) if (!bridgeEn.has(s.ko)) bridgeEn.set(s.ko, s.en);
+    }
+    for (const s of TTMIK_SENTENCES) bridgeEn.set(s.ko, s.en);   // bank overrides
   }
   return bridgeEn.get(ko) || "";
 }
