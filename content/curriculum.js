@@ -4,11 +4,17 @@
 //   https://tulcealibrary.ro/wp-content/uploads/2020/11/Talk-To-Me-In-Korean-%E2%80%93-Level-4.pdf
 //   https://tulcealibrary.ro/wp-content/uploads/2020/11/Talk-To-Me-In-Korean-%E2%80%93-Level-5.pdf
 // Both levels = 30 lessons each (60 total). Dedup status computed over content/ttmik-sentences.js
-// (1,596 studied L1-3 sentences; when extending to Level 6+ the dedup corpus must grow to
-// ALL previously-studied levels, not stay frozen at L1-3): status=known if forward-tagged OR pattern in >=5 sentences,
+// (1,596 studied L1-3 sentences): status=known if forward-tagged OR pattern in >=5 sentences,
 // compressed if 3-4, else new. Word Builder / spacing / contraction / drill lessons carry no
 // surface grammar pattern, so they are counted as new by design.
-// Dedup fragments used (point: fragments -> hits):
+//
+// EXTENDING TO LEVEL 6+: the rule gains a second half. Levels 4+ are studied in THIS APP, not in
+// Anki, so the sentence bank can never grow to cover them — a point already taught by an existing
+// non-"known" lesson is therefore "known" on app evidence alone. `tools/dedup_status.py` applies
+// both halves and reproduces the table below on every run; see docs/EXTENDING.md.
+//
+// Dedup fragments used (point: fragments -> hits). Fragments are separated by " · " because a
+// fragment may itself contain a space ("해 봤"); plain spaces made this table unparseable.
 //   4.01 -(으)면 -(으)ㄹ수록: 수록 -> 0
 //   4.02 -(으)ㄹ래요?: ㄹ래요 · 을래요 · 할래 · 갈래 · 볼래 · 줄래 · 살래 · 올래 · 먹을래 · 마실래 · 탈래 · 놀래 -> 1
 //   4.02 audit note: status "known" via the forward-tag branch of the rule — the studied

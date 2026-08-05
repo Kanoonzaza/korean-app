@@ -32,15 +32,22 @@ Nothing here is committed work; it is the honest shortlist of what would come
 next, roughly in order of value.
 
 ### TTMIK Level 6 and beyond
-Extend `content/curriculum.js` past 5.30 and add `content/lessons/l6.js`. The
-syllabus, Today, review, weak items and stats all read from those two files, so
-no JS changes are needed.
+Extend `content/curriculum.js` past 5.30 and add `content/lessons/l6.js`.
+**Full runbook: [docs/EXTENDING.md](docs/EXTENDING.md).**
 
-**One catch, already flagged in `curriculum.js`:** the *known / compressed / new*
-status of each lesson is computed against the studied-sentence corpus, which is
-currently frozen at TTMIK Levels 1–3. Before adding Level 6, the dedup corpus has
-to grow to every level actually studied by then — otherwise L6 lessons covering
-material learned in L4–L5 will be mislabelled `new`.
+The views all derive from the curriculum, so no view code changes — but the new
+file does have to be *registered* in three places (`content/lessons/index.js`,
+`sw.js`'s precache + cache version, and `V2_LESSON_FILES` in
+`tools/build_wordsnext.py`). An earlier draft of this section claimed "no JS
+changes are needed"; that was wrong.
+
+**The one piece of real thinking** is deciding which L6 lessons the learner
+already knows. `tools/dedup_status.py` computes the evidence. It combines *deck
+evidence* (fragment hits over the Anki bank, plus forward tags) with *app
+evidence*: any point already taught by an existing lesson is `known`, because it
+was learned here. That second half replaces an older warning in `curriculum.js`
+that the dedup corpus "must grow to every level actually studied" — it cannot,
+since L4+ is never exported from Anki, and it does not need to.
 
 ### Bundled audio
 Every screen depends on the device having a Korean TTS voice; without one,

@@ -68,8 +68,9 @@ serving the old files.
 ## Content
 
 ```
-content/curriculum.js        60 TTMIK L4-L5 lessons: title, point, TOPIK/CEFR
-                             tag, and status (new / compressed / known)
+content/curriculum.js        60 TTMIK L4-L5 lessons: title, grammar point, a
+                             can-do line, and status (new / compressed / known)
+content/lessons/index.js     the lesson-file registry the app reads
 content/lessons/l4.js        52 lesson bodies (23 + 29) for the entries that
 content/lessons/l5.js          aren't already known from the studied deck
 content/wordsnext.js         2,481-word continuation flashcard deck  GENERATED
@@ -81,40 +82,56 @@ content/podcasts.js          4 podcast shows
 
 ### Adding lessons
 
-Lesson bodies are hand-written in `content/lessons/l4.js` / `l5.js`; the
-syllabus entry (title, level, status) comes from `content/curriculum.js`. A body
-looks like this:
+Lesson bodies are hand-written in `content/lessons/l4.js` / `l5.js`; the syllabus
+entry (title, point, status) comes from `content/curriculum.js`. A body looks
+like this — note the **quoted keys**: these files are parsed with `json.loads` by
+the tooling, so they must be strict JSON inside the array.
 
 ```js
 {
-  id: "4.01", level: 4, title: "…", point: "-(으)ㄹ수록",
-  grammar: {
-    summary: "one sentence — what it does",
-    formation: "V-stem + …   (rules, incl. irregulars; \n is kept)",
-    explanation: "3-6 sentences of plain English, with register notes",
-    notes: ["short extra facts"]
+  "id": "4.01", "level": 4, "title": "…", "point": "-(으)ㄹ수록",
+  "grammar": {
+    "summary": "one sentence — what it does",
+    "formation": "V-stem + …   (rules, incl. irregulars; \n is kept)",
+    "explanation": "3-6 sentences of plain English, with register notes",
+    "notes": ["short extra facts"]
   },
-  pitfalls: ["common mistake", "…"],
-  bridge:  ["<ko copied EXACTLY from content/ttmik-sentences.js>", "…"],
-  vocab:   [{ ko, en, romaji, pos, note }],
-  sentences: [{ ko, en, romaji, blankWord }]
+  "pitfalls": ["common mistake", "…"],
+  "bridge":  ["<ko copied EXACTLY from earlier material>", "…"],
+  "vocab":   [{ "ko": …, "en": …, "romaji": …, "pos": …, "note": … }],
+  "sentences": [{ "ko": …, "en": …, "romaji": …, "blankWord": … }]
 }
 ```
 
 Rules that matter:
 
-- `bridge` strings must be exact `ko` matches in `ttmik-sentences.js` — the app
-  looks the English up at render time, so a typo shows an empty bridge.
+- `level` must match the id prefix.
+- `bridge` strings must be exact `ko` matches in `ttmik-sentences.js` **or in an
+  earlier lesson's sentences** — the app looks the English up at render time, so
+  a typo shows an empty bridge.
 - `vocab.ko` must be new: not in `content/known.js` and not used by another
-  lesson.
-- `blankWord` is the exact substring hidden in fill-in-the-blank practice.
+  lesson (one namespace across all levels).
+- `blankWord` is the exact substring hidden in fill-in-the-blank practice, and it
+  must occur **exactly once** — twice and the answer stays on screen.
 - A `"compressed": true` body is the short form used for lessons the deck partly
   covers: summary + a couple of bridges + a few sentences, no new vocab.
-- Romanization is Revised Romanization, lowercase, hyphenless.
+- Romanization is Revised Romanization, lowercase, **per-syllable hyphenated**
+  (`an-nyeong-ha-se-yo`), with liaison resolved: `논문을` → `non-mu-neul`.
+
+Then run the gate — it checks every rule above and exits non-zero on failure:
+
+```bash
+python -X utf8 tools/validate_lessons.py
+```
 
 Add the matching `curriculum.js` entry (or flip its `status` to `"new"`), reload,
-and the syllabus, Today, quizzes, review and stats pick it up with no JS changes.
-Podcasts and readings work the same way — data only.
+and the syllabus, Today, quizzes, review and stats pick it up. Podcasts and
+readings work the same way — data only.
+
+**Adding a whole new level** (Level 6 and beyond) also means registering the new
+file in `content/lessons/index.js`, `sw.js` and `tools/build_wordsnext.py`, and
+working out which lessons the learner already knows. The full runbook is
+[docs/EXTENDING.md](docs/EXTENDING.md).
 
 ## Re-running the content tools after a fresh Anki export
 
