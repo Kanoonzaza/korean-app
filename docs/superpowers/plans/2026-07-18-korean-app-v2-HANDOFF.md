@@ -10,10 +10,17 @@
 > decisions are binding. For working on the app from here, start with `README.md`
 > at the repo root; for future content work, BRAINDUMP Part A/D still apply.
 >
-> **Known gaps, honestly:** Level 5 lesson content (5.01–5.30) never got its own
-> spec review — 6A and 6B did (see `docs/superpowers/plans/reviews/`). The audible
-> TTS path has never been heard: no machine in this build had a Korean voice
-> installed, so audio was only ever verified through gating and mocks.
+> **Level 5 content HAS now been reviewed** (`reviews/2026-08-05-l5-content-spec-review.md`):
+> 9 blocking findings, all fixed in `93a5739` — two false rule statements (5.12's
+> 부산 "vowel-final", 5.05's 수줍다 "ㅂ-irregular"), a self-contradicting formation
+> (5.26), two ungrammatical/redundant sentences (5.24, 5.10), two forward
+> references to untaught grammar (5.17, 5.11), and two non-食 words in the 5.22
+> Word Builder. 24 polish items remain open in that file — worth a pass if anyone
+> revisits the content.
+>
+> **Remaining known gap:** the audible TTS path has never been heard — no machine
+> in this build had a Korean voice installed, so audio was only ever verified
+> through gating and mocks.
 
 **Written:** 2026-07-20 by the planning session (Fable), for continuation by a fresh
 session (any model) after a usage-limit cutoff. Read this FIRST, then the plan.
