@@ -27,6 +27,15 @@
 > fresh sample instead of reshuffling, and a locked lesson reached by a typed hash
 > shows a soft gate instead of silently starting and recording progress.
 >
+> **Adding a level is now a content task.** `docs/EXTENDING.md` is the runbook;
+> `tools/validate_lessons.py` is the gate and `tools/dedup_status.py` computes the
+> known/compressed/new evidence. Nothing in `js/` names a level — the syllabus
+> derives its groups from the curriculum ids and `content/lessons/index.js` is the
+> one registry. Proved end to end on a throwaway branch with a dummy Level 6: the
+> syllabus grew a "Level 6" group and a "Levels 4–6" header with zero view edits,
+> the validator caught four planted faults, and the deck reconcile absorbed the
+> new vocab. Branch deleted, never merged.
+>
 > **The one thing still unverified anywhere: audible TTS.** No machine in this
 > build had a Korean voice installed, so every 🔊 path was proven through gating
 > logic and injected mock voices only. It should work on a phone; nobody has heard
