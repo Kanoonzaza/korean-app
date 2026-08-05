@@ -21,8 +21,16 @@
 > nouns, copy-pasted bridge panels, and 18 romanization liaison tokens. Every
 > finding in that review file is now closed.
 >
-> One deliberate carry-over: `l4.js` has the same romanization liaison drift as
-> L5 did. Fixing it is a whole-corpus pass and was out of scope here.
+> **Every finding across all four review files is now closed** (`542c69a`): the
+> L4 romanization drift was swept corpus-wide with a hangul-derived detector (15
+> tokens, 0 remaining in either file), quiz/practice/review retries now draw a
+> fresh sample instead of reshuffling, and a locked lesson reached by a typed hash
+> shows a soft gate instead of silently starting and recording progress.
+>
+> **The one thing still unverified anywhere: audible TTS.** No machine in this
+> build had a Korean voice installed, so every 🔊 path was proven through gating
+> logic and injected mock voices only. It should work on a phone; nobody has heard
+> it. That is the single open risk in the project.
 >
 > **Remaining known gap:** the audible TTS path has never been heard — no machine
 > in this build had a Korean voice installed, so audio was only ever verified
