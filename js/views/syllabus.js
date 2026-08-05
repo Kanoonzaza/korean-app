@@ -51,6 +51,14 @@ function states() {
   return out;
 }
 
+// True when a lesson is further down the chain than the learner has reached.
+// The syllabus never links these; a hand-typed hash still can, so lesson.js
+// shows a "not there yet" card first rather than silently starting it.
+export function isLocked(id) {
+  const st = states().get(id);
+  return !!st && st.kind === "locked";
+}
+
 // Row glyph per state. "known" rows use a plain "·" hardcoded in the template
 // (they are dimmed and unclickable), so they need no entry here.
 const MARK = { done: "✓", current: "▶", locked: "🔒" };

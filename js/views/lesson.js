@@ -27,6 +27,7 @@ import { grade } from "../grader.js";
 import { schedule, fmtIvl } from "../srs.js";
 import { speak, hasKorean, cancel as cancelSpeech } from "../tts.js";
 import { go } from "../router.js";
+import { isLocked } from "./syllabus.js";
 
 // syllabus.js owns "/learn" — nothing to register here.
 export function register() { /* no route: see the header comment */ }
@@ -280,8 +281,11 @@ function examplesStep(host, body) {
 
 // Shared one-item-at-a-time runner for the Quiz and Practice steps.
 // cfg: { label, items, kind, onFinish(pct), retryLabel }
+// cfg.rebuild (optional) returns a FRESH item list for a retry. Without it a
+// retry only reshuffles the same questions, so a lesson with 8 vocab words would
+// ask the same 4 forever. With it, a second attempt draws a new sample.
 function runner(host, cfg) {
-  const total = cfg.items.length;
+  let total = cfg.items.length;
   let idx = 0, right = 0, checked = false, finished = false;
 
   function drawScore() {
@@ -295,7 +299,9 @@ function runner(host, cfg) {
         <button class="btn secondary" type="button" id="retry">${esc(cfg.retryLabel || "Try again")}</button>
       </div>`;
     host.querySelector("#retry").addEventListener("click", () => {
-      cfg.items = shuffle(cfg.items);
+      const fresh = cfg.rebuild ? cfg.rebuild() : null;
+      cfg.items = fresh && fresh.length ? fresh : shuffle(cfg.items);
+      total = cfg.items.length;
       idx = 0; right = 0; checked = false; finished = false;
       draw();
     });
@@ -367,7 +373,7 @@ function runner(host, cfg) {
 }
 
 // ---------- the player ----------
-export function renderLesson(mount, id) {
+export function renderLesson(mount, id, skipGate) {
   const meta = META.get(id) || null;
   const body = BODIES.get(id) || null;
 
@@ -385,6 +391,26 @@ export function renderLesson(mount, id) {
     return () => cancelSpeech();
   }
 
+  // Deep link to a lesson the chain hasn't reached yet: warn, but don't hard-block.
+  // The syllabus never links here, so arriving means a typed hash or an old
+  // bookmark — and a solo learner is allowed to skip ahead if they mean to.
+  if (!skipGate && isLocked(id)) {
+    mount.innerHTML = `
+      <div class="crumb"><a href="#/learn">← Syllabus</a></div>
+      <h1>${esc(body.title || meta.title || "")}</h1>
+      <div class="card">
+        <h4>Not there yet</h4>
+        <p class="muted">${esc(meta.ttmik || id)} comes later in the course — earlier lessons
+          are still unfinished, so this one builds on grammar you haven't met here yet.</p>
+        <div class="navrow">
+          <a class="btn secondary" href="#/learn">Back to the syllabus</a>
+          <button class="btn" type="button" id="anyway">Open it anyway</button>
+        </div>
+      </div>`;
+    mount.querySelector("#anyway").addEventListener("click", () => renderLesson(mount, id, true));
+    return () => cancelSpeech();
+  }
+
   const steps = [{ key: "grammar", label: "Grammar", draw: h => grammarStep(h, body) }];
   if ((body.vocab || []).length) steps.push({ key: "vocab", label: "Vocab", draw: h => vocabStep(h, body) });
   if ((body.sentences || []).length) steps.push({ key: "examples", label: "Examples", draw: h => examplesStep(h, body) });
@@ -392,6 +418,7 @@ export function renderLesson(mount, id) {
     key: "quiz", label: "Quiz",
     draw: h => runner(h, {
       label: "Question", kind: "quiz", items: buildQuiz(body),
+      rebuild: () => buildQuiz(body),        // a retry draws a fresh sample
       retryLabel: "Retry the quiz",
       // "done" the moment a quiz run finishes, whatever the score.
       onFinish: pct => saveCompletion(id, pct)
@@ -402,6 +429,7 @@ export function renderLesson(mount, id) {
     key: "practice", label: "Practice",
     draw: h => runner(h, {
       label: "Practice", kind: "practice", items: practiceItems,
+      rebuild: () => buildPractice(body),
       retryLabel: "Practice again"
     })
   });
@@ -501,6 +529,7 @@ export function renderReview(mount, id) {
   wireSpeakers(host);
   runner(host, {
     label: "Review", kind: "quiz", items: items,
+    rebuild: () => buildReview(body),
     retryLabel: "Review again",
     onFinish: pct => {
       const cur = rec(id);
