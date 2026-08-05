@@ -15,8 +15,14 @@
 > 부산 "vowel-final", 5.05's 수줍다 "ㅂ-irregular"), a self-contradicting formation
 > (5.26), two ungrammatical/redundant sentences (5.24, 5.10), two forward
 > references to untaught grammar (5.17, 5.11), and two non-食 words in the 5.22
-> Word Builder. 24 polish items remain open in that file — worth a pass if anyone
-> revisits the content.
+> Word Builder. **The 24 polish items are also fixed** (`101bbdf`) — sentences that
+> didn't exercise their own point, two incomplete irregular rules, a prescriptive
+> usage error (접수하다), three unflagged homographs, bound roots presented as free
+> nouns, copy-pasted bridge panels, and 18 romanization liaison tokens. Every
+> finding in that review file is now closed.
+>
+> One deliberate carry-over: `l4.js` has the same romanization liaison drift as
+> L5 did. Fixing it is a whole-corpus pass and was out of scope here.
 >
 > **Remaining known gap:** the audible TTS path has never been heard — no machine
 > in this build had a Korean voice installed, so audio was only ever verified
