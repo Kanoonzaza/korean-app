@@ -51,6 +51,10 @@ function dayKey(t) {
 // hand out free credit for work not done in this app.
 // A lesson finished before best-score tracking gets 0.6 — the same middling
 // assumption v1 made.
+//
+// Each lesson's contribution is clamped SEPARATELY, not just the total: a single
+// out-of-range `best` (a hand-edited store, a bad backup import) would otherwise
+// pay for every lesson at once and peg the component at 100%.
 function grammar() {
   const saved = store.lessons();
   const gates = CURRICULUM.filter(c => c.status !== "known");
@@ -60,7 +64,7 @@ function grammar() {
     const r = saved[c.id];
     if (!r || !r.done) return;
     done++;
-    sum += (typeof r.best === "number" ? r.best / 100 : 0.6);
+    sum += clamp01(typeof r.best === "number" ? r.best / 100 : 0.6);
   });
   return { v: clamp01(sum / gates.length), done, total: gates.length };
 }

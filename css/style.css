@@ -194,6 +194,9 @@ a.lrow:hover { text-decoration: none; background: var(--surface-2); }
 .lrow.oneline .lpoint { flex: 0 1 auto; min-width: 0; font-size: 0.88rem; }
 .lrow.oneline .lid { flex: 0 0 auto; }
 .lrow.oneline .lbest { flex: 0 0 auto; }
+/* the point yields before this does — the tag is what makes a dimmed row
+   readable as "already known" rather than "locked" */
+.lrow.oneline .ankitag { flex: 0 0 auto; }
 
 /* ---------- lesson player ---------- */
 .crumb { display: flex; gap: 10px; align-items: baseline; justify-content: space-between; }

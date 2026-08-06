@@ -306,9 +306,9 @@ function renderToday(mount) {
         </div>
       </div>
       <div class="hubgrid">${p.legs.map(legRow).join("")}</div>
-      ${stripHTML()}
       ${also ? `<p class="muted small alsorow">Next new lesson:
         <a href="#/learn/${esc(also.id)}">${esc(also.id)} · ${esc(also.title)}</a></p>` : ""}
+      ${stripHTML()}
       <p class="muted small">Each part ticks itself off from the work you actually did —
         a lesson or a due review, ${CARDS_FOR_LEG} cards (or an empty queue), and one dictation round.</p>`;
   }

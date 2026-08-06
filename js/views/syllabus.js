@@ -77,12 +77,16 @@ function row(c, st) {
   // list grow longer the more progress you make.
   const oneLine = st.kind === "known" || st.kind === "done";
 
+  // The "Anki" tag is not decoration: a known row is dimmed and unclickable, and
+  // without it there is nothing on the row to distinguish "you already know this"
+  // from "this is locked" — which is the whole premise of the app.
   if (st.kind === "known") {
     return `<div class="lrow known oneline">
       <span class="mark" aria-hidden="true">·</span>
       <div class="lrow-body">
         <div class="lhead"><span class="lid">${id}</span> <span class="ltitle">${title}</span>
-          <span class="lpoint ko">${point}</span></div>
+          <span class="lpoint ko">${point}</span>
+          <span class="tag ankitag" title="Already covered by your Anki decks">Anki</span></div>
       </div>
     </div>`;
   }
@@ -94,7 +98,7 @@ function row(c, st) {
     <div class="lrow-body">
       <div class="lhead"><span class="lid">${id}</span> <span class="ltitle">${title}</span>${
         st.kind === "current" ? ` <span class="badge">up next</span>` : ""
-      }${best !== null ? ` <span class="lbest">${best}%</span>` : ""}</div>
+      }${best !== null ? ` <span class="lbest" title="Best quiz score">best ${best}%</span>` : ""}</div>
       ${oneLine ? "" : `<div class="lmeta"><span class="lpoint ko">${point}</span></div>`}
       ${st.kind === "current" && tappable && c.canDo ? `<div class="lcando">${esc(c.canDo)}</div>` : ""}
     </div>`;
