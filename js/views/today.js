@@ -26,6 +26,7 @@ import { store } from "../store.js";
 import { counts } from "./cards.js";
 import { hasBody } from "./lesson.js";
 import { hasKorean } from "../tts.js";
+import { stripHTML } from "../level.js";
 
 // The three leg keys, in plan order. Also the completeness test for a day.
 export const LEGS = ["lesson", "cards", "dict"];
@@ -124,7 +125,7 @@ function lessonLeg(recorded) {
   const next = pending.find(c => hasBody(c.id)) || null;
 
   const leg = {
-    key: "lesson", glyph: "📚", title: "Lesson",
+    key: "lesson", glyph: "📚", title: "Lesson", tone: "lesson",
     done: recorded.has("lesson") || workedToday || (pending.length === 0 && due.length === 0),
     href: null, state: "", badge: ""
   };
@@ -155,7 +156,7 @@ function cardsLeg(recorded) {
   const avail = c.nw + c.learn + c.due;
   const graded = cardsGradedToday();
   const leg = {
-    key: "cards", glyph: "🃏", title: "Cards",
+    key: "cards", glyph: "🃏", title: "Cards", tone: "cards",
     href: "#/practice/cards",
     done: recorded.has("cards") || avail === 0 || graded >= CARDS_FOR_LEG,
     state: `${c.due} due · ${c.nw} new${c.learn ? ` · ${c.learn} learning` : ""}`,
@@ -170,7 +171,7 @@ function dictLeg(day, recorded) {
   const voice = hasKorean();
   const n = Array.isArray(day.dict) ? day.dict.length : 0;
   const leg = {
-    key: "dict", glyph: "🎧", title: "Dictation",
+    key: "dict", glyph: "🎧", title: "Dictation", tone: "dict",
     href: "#/practice/dictation",
     // A missing Korean voice makes dictation impossible, so it must not hold the
     // streak hostage: the leg counts as done and says why.
@@ -239,14 +240,24 @@ export function streak() {
 
 // Progress ring: an SVG arc whose dash length is the completed fraction of the
 // circumference. Rotated -90° so it starts at 12 o'clock.
+// The arc is stroked with a gradient across the three leg colours, so the ring
+// filling up reads as the three parts being collected rather than as one bar.
 function ring(done, total) {
   const R = 34, C = 2 * Math.PI * R;
   const arc = total ? (C * done) / total : 0;
   return `
     <svg class="ring${done >= total ? " full" : ""}" viewBox="0 0 80 80" width="80" height="80"
          role="img" aria-label="${done} of ${total} parts of today's plan done">
+      <defs>
+        <linearGradient id="ringgrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="var(--c-lesson)"/>
+          <stop offset="0.5" stop-color="var(--c-cards)"/>
+          <stop offset="1" stop-color="var(--c-dict)"/>
+        </linearGradient>
+      </defs>
       <circle class="ringtrack" cx="40" cy="40" r="${R}" />
       <circle class="ringarc" cx="40" cy="40" r="${R}" transform="rotate(-90 40 40)"
+              stroke="url(#ringgrad)"
               stroke-dasharray="${arc.toFixed(1)} ${C.toFixed(1)}" />
       <text class="ringtext" x="40" y="41" text-anchor="middle" dominant-baseline="central">${done}/${total}</text>
     </svg>`;
@@ -254,13 +265,13 @@ function ring(done, total) {
 
 function legRow(l) {
   const inner = `
-    <span class="hubglyph legmark" aria-hidden="true">${l.done ? "✓" : l.glyph}</span>
+    <span class="hubglyph legmark tone-${esc(l.tone)}" aria-hidden="true">${l.done ? "✓" : l.glyph}</span>
     <span class="grow">
       <span class="hubhead"><span class="hubtitle">${esc(l.title)}</span>${l.badge}</span>
       <span class="muted small hubdesc">${esc(l.state)}</span>
     </span>
     <span class="hubchev" aria-hidden="true">${l.href ? "›" : ""}</span>`;
-  const cls = `hubcard legcard${l.done ? " done" : ""}`;
+  const cls = `hubcard legcard tone-${esc(l.tone)}${l.done ? " done" : ""}`;
   return l.href
     ? `<a class="${cls}" href="${esc(l.href)}">${inner}</a>`
     : `<div class="${cls}">${inner}</div>`;
@@ -281,13 +292,13 @@ function renderToday(mount) {
 
     mount.innerHTML = `
       <h1>Today</h1>
-      <div class="card todayhead">
+      <div class="card todayhead${n === LEGS.length ? " complete" : ""}">
         ${ring(n, LEGS.length)}
         <div class="grow">
           <div class="muted small">${esc(date)}</div>
           <div class="streakline">
-            <span class="streaknum">${s}</span>
-            <span class="streaklab">day${s === 1 ? "" : "s"} in a row</span>
+            <span class="streaknum${s ? " hot" : ""}">${s}</span>
+            <span class="streaklab">${s ? "🔥 " : ""}day${s === 1 ? "" : "s"} in a row</span>
           </div>
           <div class="muted small">${n === LEGS.length
             ? "Day complete. Anything more is a bonus."
@@ -295,6 +306,7 @@ function renderToday(mount) {
         </div>
       </div>
       <div class="hubgrid">${p.legs.map(legRow).join("")}</div>
+      ${stripHTML()}
       ${also ? `<p class="muted small alsorow">Next new lesson:
         <a href="#/learn/${esc(also.id)}">${esc(also.id)} · ${esc(also.title)}</a></p>` : ""}
       <p class="muted small">Each part ticks itself off from the work you actually did —

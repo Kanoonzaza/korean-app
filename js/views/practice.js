@@ -34,31 +34,33 @@ export function register() {
     const weak = weakCount();
     const done = readDone();
 
-    // [href, glyph, title, one-line description, badge html]
+    // [href, glyph, title, one-line description, badge html, tone]
+    // `tone` is the per-activity colour class defined in css/style.css — the same
+    // one Today's legs use, so Cards is the same violet in both places.
     const rows = [
       ["#/practice/cards", "🃏", "Cards",
         "Anki-style flashcards beyond your Core 5k deck.",
-        due ? `<span class="badge">${due} due</span>` : `<span class="tag">all done</span>`],
+        due ? `<span class="badge">${due} due</span>` : `<span class="tag">all done</span>`, "cards"],
       ["#/practice/dictation", "🎧", "Dictation",
         "Hear a sentence you already know, type what you heard.",
-        `<span class="tag">${poolFor("all").length} sentences</span>`],
+        `<span class="tag">${poolFor("all").length} sentences</span>`, "dict"],
       ["#/practice/weak", "🩹", "Weak items",
         "Everything you have missed, until you get it right.",
-        weak ? `<span class="badge">${weak}</span>` : `<span class="tag">empty</span>`],
+        weak ? `<span class="badge">${weak}</span>` : `<span class="tag">empty</span>`, "weak"],
       ["#/practice/reading", "📖", "Reading",
         "Graded passages with tap-to-gloss words and questions.",
-        `<span class="tag">${done} / ${READINGS.length}</span>`],
+        `<span class="tag">${done} / ${READINGS.length}</span>`, "read"],
       ["#/practice/podcasts", "📡", "Podcasts",
         "Free Korean shows for immersion (needs a connection).",
-        `<span class="tag">${PODCASTS.length} shows</span>`],
+        `<span class="tag">${PODCASTS.length} shows</span>`, "pod"],
     ];
 
     mount.innerHTML = `
       <h1>Practice</h1>
       <p class="muted small">Everything that isn't a lesson. Pick whatever the day has room for.</p>
       <div class="hubgrid">
-        ${rows.map(([href, glyph, title, desc, badge]) => `
-          <a class="hubcard" href="${esc(href)}">
+        ${rows.map(([href, glyph, title, desc, badge, tone]) => `
+          <a class="hubcard tone-${esc(tone)}" href="${esc(href)}">
             <span class="hubglyph" aria-hidden="true">${glyph}</span>
             <span class="grow">
               <span class="hubhead"><span class="hubtitle">${esc(title)}</span>${badge}</span>

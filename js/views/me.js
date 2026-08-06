@@ -5,6 +5,7 @@
 // owns it, so nothing is computed twice:
 //   streak()/syncToday()/dayKey()/LEGS  → js/views/today.js  (the day math)
 //   counts()/newPerDay()/setNewPerDay() → js/views/cards.js  (deck + new-card cap)
+//   gaugeHTML()                         → js/level.js        (proficiency estimate)
 //   store.exportAll()/importAll()       → js/store.js        (backup)
 // syncToday() is called before rendering for the same reason Today calls it: the
 // legs finished elsewhere must be recorded before the streak is read, whichever
@@ -15,6 +16,7 @@ import { store } from "../store.js";
 import { streak, syncToday, dayKey, LEGS } from "./today.js";
 import { counts, newPerDay, setNewPerDay } from "./cards.js";
 import { speak, hasKorean, cancel as cancelSpeech } from "../tts.js";
+import { gaugeHTML } from "../level.js";
 
 const WINDOW = 30;             // days in the calendar + retention strip
 const RATE_MIN = 0.5, RATE_MAX = 1.2, RATE_STEP = 0.05;
@@ -117,6 +119,8 @@ function renderMe(mount) {
 
     mount.innerHTML = `
       <h1>Me</h1>
+
+      ${gaugeHTML("me-gauge")}
 
       <div class="card">
         <h4>Streak</h4>

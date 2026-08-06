@@ -10,6 +10,17 @@
   --accent-ink: #0F1115;
   --ok: #5BBF8A;
   --bad: #E08A8A;
+
+  /* Per-activity hues. The palette stays dark and low-saturation — these are
+     identity colours for scanning (which leg? which drill?), not decoration, so
+     each one is a desaturated pastel that sits on --surface without glowing. */
+  --c-lesson: #7AA2E3;   /* 📚 lessons      — the base accent */
+  --c-cards:  #C58AF0;   /* 🃏 flashcards   */
+  --c-dict:   #5BD6C0;   /* 🎧 dictation    */
+  --c-weak:   #E0A17A;   /* 🩹 weak items   */
+  --c-read:   #8FD08A;   /* 📖 reading      */
+  --c-pod:    #E08AB4;   /* 📡 podcasts     */
+  --warm:     #F0B355;   /* streaks, and the top of the level gauge */
   --radius: 14px;
   --maxw: 640px;
   --nav-h: 60px;
@@ -112,17 +123,38 @@ nav a.active { color: var(--accent); }
 .lpoint { color: var(--accent); }
 
 /* ---------- syllabus (Learn tab) ---------- */
+/* Levels are collapsible: only the one holding the current lesson opens, so the
+   list arrives at roughly one screen instead of seven. */
+.lvl-group { margin: 18px 0 0; }
 .lvl-head {
-  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
-  margin: 26px 0 6px;
+  display: flex; align-items: center; gap: 10px;
+  margin: 8px 0 6px; padding: 8px 2px; min-height: 44px;
+  cursor: pointer; list-style: none;
 }
-.lvl-head h2 { margin: 0; }
-.lvl-count { color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
+.lvl-head::-webkit-details-marker { display: none; }
+.lvl-head h2 { margin: 0; flex: 0 0 auto; }
+.lvl-count {
+  color: var(--muted); font-size: 0.8rem; white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.lvl-chev {
+  flex: 0 0 auto; color: var(--muted); font-size: 1.3rem; line-height: 1;
+  transition: transform 0.15s ease;
+}
+.lvl-group[open] > .lvl-head .lvl-chev { transform: rotate(90deg); }
+.lvl-bar {
+  flex: 1 1 auto; min-width: 40px; height: 6px; border-radius: 999px;
+  background: var(--surface-2); overflow: hidden;
+}
+.lvl-bar i {
+  display: block; height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg, var(--c-lesson), var(--c-cards));
+}
 
 .lrow {
   display: flex; gap: 10px; align-items: flex-start;
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 12px 14px; margin: 8px 0;
+  border-radius: var(--radius); padding: 9px 12px; margin: 6px 0;
   color: var(--text); text-decoration: none;
 }
 a.lrow:hover { text-decoration: none; background: var(--surface-2); }
@@ -136,11 +168,26 @@ a.lrow:hover { text-decoration: none; background: var(--surface-2); }
 .lrow .lbest { color: var(--ok); font-size: 0.78rem; }
 .lrow .lcando { color: var(--muted); font-size: 0.82rem; margin-top: 5px; }
 .lrow.done .mark { color: var(--ok); }
-.lrow.current { border-color: var(--accent); background: var(--surface-2); }
-.lrow.current .mark { color: var(--accent); }
+.lrow.current {
+  border-color: var(--c-lesson); background: var(--surface-2);
+  box-shadow: inset 3px 0 0 var(--c-lesson);
+}
+.lrow.current .mark { color: var(--c-lesson); }
 .lrow.locked { opacity: 0.45; }
-.lrow.known { opacity: 0.4; padding: 8px 14px; }
+.lrow.known { opacity: 0.4; }
 .lrow.known .lpoint { color: var(--muted); }
+/* settled rows (known / done) are a single line — the point rides on the title
+   line and truncates rather than wrapping the row to double height */
+.lrow.oneline { padding: 6px 12px; margin: 4px 0; }
+.lrow.oneline .lhead { flex-wrap: nowrap; }
+.lrow.oneline .ltitle,
+.lrow.oneline .lpoint {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.lrow.oneline .ltitle { flex: 1 1 auto; min-width: 0; font-weight: 500; }
+.lrow.oneline .lpoint { flex: 0 1 auto; min-width: 0; font-size: 0.88rem; }
+.lrow.oneline .lid { flex: 0 0 auto; }
+.lrow.oneline .lbest { flex: 0 0 auto; }
 
 /* ---------- lesson player ---------- */
 .crumb { display: flex; gap: 10px; align-items: baseline; justify-content: space-between; }
@@ -221,7 +268,23 @@ a.lrow:hover { text-decoration: none; background: var(--surface-2); }
 .stepbtn { min-width: 44px; min-height: 44px; padding: 6px 10px; font-size: 1.1rem; }
 .npdval { min-width: 2.2em; text-align: center; font-weight: 600; font-variant-numeric: tabular-nums; }
 
-/* words browser */
+/* words browser — banded (100 words per collapsible band) so all 2,480 are
+   reachable without rendering a 25-screen list */
+.wband { border-bottom: 1px solid var(--border); }
+.wband:last-child { border-bottom: none; }
+.wband > summary {
+  display: flex; align-items: center; gap: 8px; min-height: 44px;
+  cursor: pointer; list-style: none; font-weight: 600;
+}
+.wband > summary::-webkit-details-marker { display: none; }
+.wband-chev {
+  flex: 0 0 auto; color: var(--muted); font-size: 1.2rem; line-height: 1;
+  transition: transform 0.15s ease;
+}
+.wband[open] > summary .wband-chev { transform: rotate(90deg); }
+.wband[open] > summary { color: var(--c-cards); }
+.band-body { padding-bottom: 6px; }
+
 .wrow {
   border-bottom: 1px solid var(--border); padding: 10px 2px; cursor: pointer;
 }
@@ -361,13 +424,34 @@ a.lrow:hover { text-decoration: none; background: var(--surface-2); }
 .opt.dim { opacity: 0.5; }
 
 /* ---------- today (daily plan) ---------- */
-.todayhead { display: flex; gap: 16px; align-items: center; }
+/* A dark card with a faint three-hue wash — the same lesson/cards/dictation
+   colours the ring and the leg rows use, so the header reads as "the day" rather
+   than as another grey panel. It turns green once all three legs are in. */
+.todayhead {
+  display: flex; gap: 16px; align-items: center;
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(122, 162, 227, 0.16), transparent 60%),
+    radial-gradient(120% 140% at 100% 0%, rgba(197, 138, 240, 0.13), transparent 60%),
+    radial-gradient(140% 160% at 50% 130%, rgba(91, 214, 192, 0.10), transparent 60%),
+    var(--surface);
+}
+.todayhead.complete {
+  background:
+    radial-gradient(130% 150% at 0% 0%, rgba(91, 191, 138, 0.20), transparent 62%),
+    radial-gradient(130% 150% at 100% 100%, rgba(240, 179, 85, 0.12), transparent 62%),
+    var(--surface);
+  border-color: rgba(91, 191, 138, 0.45);
+}
 
-/* progress ring: dash length = completed fraction of the circumference */
+/* progress ring: dash length = completed fraction of the circumference.
+   The arc's colour is the `stroke="url(#ringgrad)"` ATTRIBUTE set in today.js, so
+   .ringarc must not declare `stroke` — a presentation attribute loses to any CSS
+   rule, and declaring it here would silently flatten the gradient to one colour.
+   The `.full` override below is deliberate: a finished day goes solid green. */
 .ring { flex: 0 0 auto; }
 .ring circle { fill: none; stroke-width: 7; }
 .ringtrack { stroke: var(--border); }
-.ringarc { stroke: var(--accent); stroke-linecap: round; }
+.ringarc { stroke-linecap: round; }
 .ring.full .ringarc { stroke: var(--ok); }
 .ringtext {
   fill: var(--text); font-size: 1.05rem; font-weight: 700;
@@ -376,6 +460,7 @@ a.lrow:hover { text-decoration: none; background: var(--surface-2); }
 
 .streakline { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .streaknum { font-size: 2rem; font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.streaknum.hot { color: var(--warm); }
 .streaklab { color: var(--muted); font-size: 0.85rem; }
 
 /* the three plan legs reuse .hubcard from the practice hub */
@@ -384,6 +469,98 @@ a.lrow:hover { text-decoration: none; background: var(--surface-2); }
 .legcard.done .legmark { color: var(--ok); font-size: 1.5rem; }
 .legcard.done .hubtitle { color: var(--muted); }
 div.legcard { cursor: default; }
+
+/* ---------- per-activity colour ----------
+   `tone-*` tints a hub/leg card by what it is for. The glyph sits in a filled
+   chip and the card carries a matching left edge, so the three legs are told
+   apart by colour and position before any text is read. Done legs drop their
+   tone and go green — see .legcard.done above, which follows this block. */
+.tone-lesson { --tone: var(--c-lesson); }
+.tone-cards  { --tone: var(--c-cards); }
+.tone-dict   { --tone: var(--c-dict); }
+.tone-weak   { --tone: var(--c-weak); }
+.tone-read   { --tone: var(--c-read); }
+.tone-pod    { --tone: var(--c-pod); }
+
+.hubcard.tone-lesson, .hubcard.tone-cards, .hubcard.tone-dict,
+.hubcard.tone-weak, .hubcard.tone-read, .hubcard.tone-pod {
+  box-shadow: inset 3px 0 0 var(--tone);
+}
+.hubcard:hover { border-color: var(--tone, var(--accent)); }
+
+span.hubglyph.legmark, .hubcard .hubglyph {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 12px;
+  background: color-mix(in srgb, var(--tone, var(--accent)) 16%, transparent);
+  font-size: 1.35rem;
+}
+/* Safari < 16.2 / older Android have no color-mix: fall back to a flat tint. */
+@supports not (background: color-mix(in srgb, red 10%, transparent)) {
+  span.hubglyph.legmark, .hubcard .hubglyph { background: var(--surface-2); }
+}
+.legcard.done { --tone: var(--ok); }
+.legcard.done .legmark { color: var(--ok); }
+/* ---------- level gauge (js/level.js) ----------
+   Full semicircular dial on Me; a compact linear strip on Today. Both render
+   from the same estimate() — see js/level.js. */
+.gauge-card { text-align: center; }
+.gauge { width: 100%; max-width: 300px; height: auto; display: block; margin: 4px auto 0; }
+.g-track { stroke: var(--surface-2); stroke-width: 14; fill: none; stroke-linecap: round; }
+.g-val   { stroke-width: 14; fill: none; stroke-linecap: round; }
+/* the slice of the dial this app's content can actually reach */
+.g-reach { stroke: var(--border); stroke-width: 3; fill: none; stroke-linecap: round; }
+.g-tick  { stroke: #3a3f4a; stroke-width: 2; }
+.g-tnum  { fill: var(--muted); font-size: 12px; text-anchor: middle; font-family: inherit; }
+.g-needle{ stroke: var(--text); stroke-width: 3; stroke-linecap: round; }
+.g-hub   { fill: var(--text); }
+.g-big   { fill: var(--text); font-size: 34px; font-weight: 700; text-anchor: middle; font-family: inherit; }
+.g-sub   { fill: var(--muted); font-size: 12px; text-anchor: middle; font-family: inherit; }
+.g-band  { font-weight: 600; color: var(--warm); margin-top: 2px; }
+.g-note  { margin-top: 4px; }
+.g-how   { text-align: left; margin-top: 12px; }
+
+/* the three component bars under the dial */
+.lvbars { text-align: left; margin-top: 14px; display: flex; flex-direction: column; gap: 12px; }
+.lvbar-head { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+.lvbar-dot { flex: 0 0 auto; width: 9px; height: 9px; border-radius: 50%; }
+.lvbar-track {
+  height: 6px; border-radius: 999px; background: var(--surface-2);
+  overflow: hidden; margin: 4px 0 2px;
+}
+.lvbar-track i { display: block; height: 100%; border-radius: 999px; }
+.lvbar-dot.c-lesson, .lvbar-track i.c-lesson { background: var(--c-lesson); }
+.lvbar-dot.c-cards,  .lvbar-track i.c-cards  { background: var(--c-cards); }
+.lvbar-dot.c-dict,   .lvbar-track i.c-dict   { background: var(--c-dict); }
+
+/* compact strip on Today */
+.lvstrip { display: block; color: var(--text); text-decoration: none; }
+.lvstrip:hover { text-decoration: none; border-color: var(--warm); }
+.lvstrip-head { display: flex; align-items: center; gap: 12px; }
+.lvnum {
+  flex: 0 0 auto; font-size: 1.9rem; font-weight: 700; line-height: 1;
+  color: var(--warm); font-variant-numeric: tabular-nums;
+}
+.lvband { display: block; font-weight: 600; font-size: 0.95rem; }
+.lvtrack {
+  position: relative; height: 8px; border-radius: 999px;
+  background: var(--surface-2); margin: 12px 0 4px;
+}
+.lvtrack i { position: absolute; top: 0; bottom: 0; }
+/* the band this app's content covers, behind the fill */
+.lvreach { background: var(--border); border-radius: 999px; }
+.lvfill {
+  left: 0; border-radius: 999px;
+  background: linear-gradient(90deg, var(--c-lesson), var(--c-cards) 55%, var(--warm));
+}
+.lvmark {
+  width: 3px; margin-left: -1.5px; top: -4px; bottom: -4px;
+  background: var(--text); border-radius: 2px;
+}
+.lvscale {
+  display: flex; justify-content: space-between;
+  color: var(--muted); font-size: 0.7rem; font-variant-numeric: tabular-nums;
+}
+
 .alsorow { margin: 2px 2px 0; }
 /* inline link, but still a thumb-sized target (padding inflates the hit box) */
 .alsorow a { display: inline-block; padding: 13px 0; }

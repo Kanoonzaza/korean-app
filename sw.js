@@ -8,7 +8,7 @@
  * PRECACHE is the complete module graph, derived from the `import` statements
  * in js/ plus the shell assets:
  *   shell    index.html, manifest.webmanifest, css/style.css, 4 icons
- *   engines  js/main.js router store srs grader tts
+ *   engines  js/main.js router store srs grader tts level
  *   views    js/views/*.js  (10 — every one is imported by js/main.js)
  *   content  the content modules the views import, incl. lessons/index.js
  * content/known.js is deliberately NOT here: no app module imports it. It is a
@@ -24,7 +24,7 @@
  * serves the new files. (Browsers always revalidate sw.js itself, so a changed
  * CACHE string is enough to trigger the whole refresh.)
  */
-const CACHE = "kov2-v1";
+const CACHE = "kov2-v2";
 
 const PRECACHE = [
   "./",
@@ -38,6 +38,7 @@ const PRECACHE = [
   "./js/srs.js",
   "./js/grader.js",
   "./js/tts.js",
+  "./js/level.js",
 
   "./js/views/today.js",
   "./js/views/syllabus.js",

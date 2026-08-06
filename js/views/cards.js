@@ -29,7 +29,8 @@ import { speak, hasKorean, cancel as cancelSpeech } from "../tts.js";
 const LAG = 200;          // EK card of word i unlocks LAG words after its KE card
 const DEFAULT_NEW = 20;   // fallback when settings has no newPerDay
 const MAX_NEW = 100;      // stepper ceiling (v1 parity)
-const LIST_CAP = 100;     // words browser: rows rendered per search
+const LIST_CAP = 100;     // words browser: rows rendered per SEARCH (browsing is banded)
+const BAND = 100;         // words browser: words per collapsible band
 
 // ---------------------------------------------------------------- deck engine
 
@@ -282,6 +283,13 @@ function renderCards(mount) {
     // Redraw only the list so the search box keeps its value and focus.
     box.addEventListener("input", () => { term = box.value; drawList(list); });
     list.addEventListener("click", e => {
+      // A band opening: fill it the first time, then let <details> do the rest.
+      const sum = e.target.closest("summary[data-band]");
+      if (sum && list.contains(sum)) {
+        const body = sum.parentElement.querySelector(".band-body");
+        if (body && !body.childElementCount) body.innerHTML = bandHTML(+sum.getAttribute("data-band"));
+        return;
+      }
       const row = e.target.closest(".wrow");
       if (!row || !list.contains(row)) return;
       const audio = e.target.closest("[data-ko]");
@@ -290,27 +298,70 @@ function renderCards(mount) {
     });
   }
 
+  function wordRow(w) {
+    return `
+      <div class="wrow">
+        <div class="whead">
+          <span class="ko big grow">${esc(w.ko)}</span>
+          <span class="muted small">#${esc(w.r)}</span>
+          ${spk(w.ko)}
+        </div>
+        <div class="wmean">${esc(w.en)}${w.pos ? ` <span class="tag">${esc(w.pos)}</span>` : ""}${w.hj ? ` <span class="muted small">${esc(w.hj)}</span>` : ""}</div>
+      </div>`;
+  }
+
+  // One band's rows, built on demand — see drawList.
+  function bandHTML(i) {
+    return WORDSNEXT.slice(i * BAND, (i + 1) * BAND).map(wordRow).join("");
+  }
+
+  // Two modes, because browsing and searching want opposite things.
+  //
+  // BROWSING (no search term) is banded: the whole deck rendered flat is ~25
+  // phone screens, and the old LIST_CAP fix made it worse than long — it
+  // silently truncated at 100, so the other ~2,380 words could not be reached at
+  // all unless you already knew the word well enough to type it. Bands make
+  // every word reachable and cost one collapsed summary row each; a band's rows
+  // are built the first time it is opened, so a cold list builds 0 rows.
+  //
+  // SEARCHING is flat and still capped: a search that matches half the deck is a
+  // search that needs narrowing, not 1,200 rendered rows. The count says so.
   function drawList(host) {
     const t = term.trim(), tl = t.toLowerCase();
-    const hits = t
-      ? WORDSNEXT.filter(w => w.ko.indexOf(t) > -1 || (w.en || "").toLowerCase().indexOf(tl) > -1)
-      : WORDSNEXT;
+
+    if (!t) {
+      const n = Math.ceil(WORDSNEXT.length / BAND);
+      let bands = "";
+      for (let i = 0; i < n; i++) {
+        const from = i * BAND, to = Math.min(from + BAND, WORDSNEXT.length);
+        bands += `
+          <details class="wband">
+            <summary data-band="${i}">
+              <span class="wband-chev" aria-hidden="true">›</span>
+              <span class="grow">Words ${from + 1}–${to}</span>
+              <span class="muted small">#${esc(WORDSNEXT[from].r)}–${esc(WORDSNEXT[to - 1].r)}</span>
+            </summary>
+            <div class="band-body"></div>
+          </details>`;
+      }
+      host.innerHTML =
+        `<p class="muted small">All ${WORDSNEXT.length} words, most frequent first. Open a band, then tap a word to reveal its meaning.</p>` +
+        bands;
+      return;
+    }
+
+    const hits = WORDSNEXT.filter(w =>
+      w.ko.indexOf(t) > -1 || (w.en || "").toLowerCase().indexOf(tl) > -1);
     if (!hits.length) {
       host.innerHTML = `<p class="muted small">No words match your search.</p>`;
       return;
     }
     const shown = hits.slice(0, LIST_CAP);
     host.innerHTML =
-      `<p class="muted small">Showing ${shown.length} of ${hits.length} — tap a word to reveal its meaning.</p>` +
-      shown.map(w => `
-        <div class="wrow">
-          <div class="whead">
-            <span class="ko big grow">${esc(w.ko)}</span>
-            <span class="muted small">#${esc(w.r)}</span>
-            ${spk(w.ko)}
-          </div>
-          <div class="wmean">${esc(w.en)}${w.pos ? ` <span class="tag">${esc(w.pos)}</span>` : ""}${w.hj ? ` <span class="muted small">${esc(w.hj)}</span>` : ""}</div>
-        </div>`).join("");
+      `<p class="muted small">${hits.length > shown.length
+        ? `Showing the first ${shown.length} of ${hits.length} matches — narrow the search to see the rest.`
+        : `${hits.length} match${hits.length === 1 ? "" : "es"} — tap a word to reveal its meaning.`}</p>` +
+      shown.map(wordRow).join("");
   }
 
   // ---- study screen
