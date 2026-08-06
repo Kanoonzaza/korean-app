@@ -195,14 +195,27 @@ the memory instructions if notable durable facts emerged.
 - Anki exports live at `C:\Users\HP\Claude work\Korean\anki-korean-deck\`
   (READ-ONLY inputs: `TTMIK Supplement.txt`, `Korean Core 5k - English to Korean.txt`).
 - Preview server: `.claude/launch.json` name `korean-v2` → `python -m http.server 8734`
-  at repo root. python http.server sends no Cache-Control and a placeholder
-  `sw.js` controls the page → after JS edits, hard-refresh (Ctrl+Shift+R) or
-  unregister the SW in DevTools, or modules stay stale. (Task 12 replaces the SW.)
+  at repo root. python http.server sends no Cache-Control and `sw.js` controls
+  the page, so after JS/CSS edits the browser keeps serving the old modules.
+  **What actually clears it, in order of reliability:**
+  1. Start the app on a **fresh port** (`korean-v2-fresh`, 8752, is in the global
+     launch.json for exactly this) — a new origin has no SW and no HTTP cache.
+     This is the only one that has never failed.
+  2. Otherwise: unregister the SW **and** `caches.delete()` every key, **then**
+     `window.location.reload()` — and expect to repeat it once, because the page
+     re-registers the worker on load and the first reload can still be served by
+     the outgoing one.
+  - `navigate` to a URL differing only in the `#hash` does **not** reload the
+    document, so it will never pick up edited modules. Use `location.reload()`.
+  - Bumping `CACHE` in `sw.js` is not enough on its own during a session: the new
+    worker precaches at install, which may be before your next edit.
 - `preview_start` resolves launch configs from the agent's **cwd** (`C:\Users\HP`),
   NOT the repo — so the repo's own `.claude/launch.json` is invisible and
   `korean-v2` errors as "not found". A duplicate `korean-v2` entry (port 8734,
-  `--directory` at the repo) now lives in the global `C:\Users\HP\.claude\launch.json`;
-  keep both in sync.
+  `--directory` at the repo) now lives in the global `C:\Users\HP\.claude\launch.json`,
+  alongside `korean-v2-fresh` (port 8752, same directory) for cache-busting;
+  keep both in sync. Editing the **repo's** copy has no effect — that mistake
+  costs a few round trips before the port stays stubbornly at 8734.
 - Git LF→CRLF warnings on commit are cosmetic — ignore.
 - Session limits kill long subagents mid-task; their edits survive on disk.
   `git status` + the task's own report tell you what landed. Resume via a recap

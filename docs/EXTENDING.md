@@ -123,15 +123,24 @@ pitfalls each point must carry, bridge guidance) are in
 `docs/superpowers/plans/2026-07-18-korean-app-v2-BRAINDUMP.md` — Part A. Write
 the equivalent for L6 before authoring; it is what the review reads against.
 
-## 5. Register the file — four places
+## 5. Register the file — five places
 
 1. `content/lessons/index.js` — import `L6`, add it to `LESSON_SETS`.
 2. `sw.js` — add `"./content/lessons/l6.js"` to `PRECACHE` **and bump `CACHE`**
-   (e.g. `kov2-v2`). The precache list is deliberately static; without this the
-   lesson only reaches an offline device on a second visit.
+   (the string, e.g. `kov2-v2` → `kov2-v3`). The precache list is deliberately
+   static; without this the lesson only reaches an offline device on a second
+   visit.
 3. `tools/build_wordsnext.py` — add the path to `V2_LESSON_FILES` so the new
    vocab is excluded from the flashcard deck.
-4. `README.md` — bump the lesson counts.
+4. `js/level.js` — **raise `SPAN`.** This is the one registration nothing will
+   catch for you: the gauge maps mastery 0..1 onto `BASE .. BASE + SPAN`, and
+   `SPAN = 2.0` encodes the claim "TTMIK 4–5 reaches about TOPIK 4". Genuinely
+   more advanced content makes that claim stale, and the app would keep telling
+   the learner they top out at 4.0 while teaching past it. Nothing else in the
+   file is level-aware — the components all derive from `CURRICULUM` and the
+   deck. Raise it only for real added difficulty, never merely for more lessons
+   at the same level, and re-check the `band()` thresholds still read sensibly.
+5. `README.md` — bump the lesson counts.
 
 ## 6. Validate
 
@@ -165,6 +174,12 @@ the findings under `docs/superpowers/plans/reviews/`.
 
 - `js/views/today.js`, `me.js`, `weak.js`, `cards.js` — all derive from the
   curriculum or from stored progress.
+- `js/views/syllabus.js` — levels are derived from the id prefixes and rendered
+  as collapsible groups; a Level 6 block appears, collapsed, on its own. The
+  group that opens is whichever holds the current lesson.
+- `js/level.js`'s **components** — grammar counts every non-`known` curriculum
+  entry and vocab reads the whole deck, so both absorb a new level untouched.
+  Only `SPAN` is a hand-set claim (step 5.4).
 - **Dictation.** Its pool is the static Anki sentence bank by design; lesson
   sentences never feed it, so a new level changes nothing. Its `LEVELS` filter
   (1/2/3) describes the *deck*, not the course.
