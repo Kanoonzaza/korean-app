@@ -237,7 +237,7 @@ export function gaugeHTML(uid = "g1") {
         : "Finish a lesson or study some cards to start the estimate.")}</div>
       <div class="lvbars">${bars}</div>
       ${e.weak ? `<div class="muted small g-note">−${e.penalty.toFixed(2)} for ${e.weak} unresolved weak item${e.weak === 1 ? "" : "s"} — clear them in Practice to lift it back.</div>` : ""}
-      <details class="callout g-how">
+      <details class="g-how">
         <summary>How is this estimated?</summary>
         <p class="small">A rough self-study estimate from your own in-app performance —
         <strong>not an official TOPIK result</strong>. It weighs lessons finished and how well you

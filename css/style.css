@@ -177,8 +177,14 @@ a.lrow:hover { text-decoration: none; background: var(--surface-2); }
 .lrow.known { opacity: 0.4; }
 .lrow.known .lpoint { color: var(--muted); }
 /* settled rows (known / done) are a single line — the point rides on the title
-   line and truncates rather than wrapping the row to double height */
-.lrow.oneline { padding: 6px 12px; margin: 4px 0; }
+   line and truncates rather than wrapping the row to double height.
+   min-height holds the 44px tap target the rest of the app uses: at one line of
+   text the padding alone gives 40px, and a done row is still a link you tap to
+   reopen the lesson. */
+.lrow.oneline {
+  padding: 6px 12px; margin: 4px 0;
+  min-height: 44px; align-items: center;
+}
 .lrow.oneline .lhead { flex-wrap: nowrap; }
 .lrow.oneline .ltitle,
 .lrow.oneline .lpoint {
@@ -518,6 +524,13 @@ span.hubglyph.legmark, .hubcard .hubglyph {
 .g-band  { font-weight: 600; color: var(--warm); margin-top: 2px; }
 .g-note  { margin-top: 4px; }
 .g-how   { text-align: left; margin-top: 12px; }
+/* the disclosure is a real control — give it the app's 44px tap target */
+.g-how > summary {
+  display: flex; align-items: center; min-height: 44px;
+  color: var(--muted); font-size: 0.85rem; cursor: pointer;
+}
+.g-how > summary:hover { color: var(--text); }
+.g-how p { margin: 0 0 8px; color: var(--muted); }
 
 /* the three component bars under the dial */
 .lvbars { text-align: left; margin-top: 14px; display: flex; flex-direction: column; gap: 12px; }
