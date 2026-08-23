@@ -27,6 +27,12 @@
     <a href="#/me"><span class="glyph" aria-hidden="true">👤</span><span class="label">Me</span></a>
   </nav>
 
+  <!-- Shown by js/update.js only when a NEW service worker is waiting. -->
+  <div id="updatebar" class="updatebar" role="status" hidden>
+    <span>A new version is ready.</span>
+    <button class="btn" type="button">Reload</button>
+  </div>
+
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

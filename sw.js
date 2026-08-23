@@ -8,7 +8,7 @@
  * PRECACHE is the complete module graph, derived from the `import` statements
  * in js/ plus the shell assets:
  *   shell    index.html, manifest.webmanifest, css/style.css, 4 icons
- *   engines  js/main.js router store srs grader tts level
+ *   engines  js/main.js router store srs grader tts level update
  *   views    js/views/*.js  (10 — every one is imported by js/main.js)
  *   content  the content modules the views import, incl. lessons/index.js
  * content/known.js is deliberately NOT here: no app module imports it. It is a
@@ -23,8 +23,14 @@
  * are deleted on activate, so the next load after the new worker takes over
  * serves the new files. (Browsers always revalidate sw.js itself, so a changed
  * CACHE string is enough to trigger the whole refresh.)
+ *
+ * A new worker does NOT take over on its own: install deliberately does not call
+ * skipWaiting(). With cache-first serving, activating mid-session would leave the
+ * running page holding old modules while the cache hands out new ones — the
+ * "reload twice and it's fine" bug. The worker waits until the page asks, via the
+ * message handler at the bottom; js/update.js owns that ask.
  */
-const CACHE = "kov2-v2";
+const CACHE = "kov2-v3";
 
 const PRECACHE = [
   "./",
@@ -39,6 +45,7 @@ const PRECACHE = [
   "./js/grader.js",
   "./js/tts.js",
   "./js/level.js",
+  "./js/update.js",
 
   "./js/views/today.js",
   "./js/views/syllabus.js",
@@ -71,8 +78,15 @@ self.addEventListener("install", event => {
     const cache = await caches.open(CACHE);
     // {cache: "reload"} so install never precaches a stale HTTP-cached copy.
     await cache.addAll(PRECACHE.map(u => new Request(u, { cache: "reload" })));
-    await self.skipWaiting();
+    // No skipWaiting() here on purpose — see the header. The worker waits.
   })());
+});
+
+// The page asking the waiting worker to take over. Only ever sent from the
+// "Reload" button in js/update.js, so a session is never swapped underneath the
+// user; controllerchange then reloads the page onto the new cache in one go.
+self.addEventListener("message", event => {
+  if (event.data === "skipWaiting") self.skipWaiting();
 });
 
 self.addEventListener("activate", event => {

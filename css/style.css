@@ -109,6 +109,29 @@ nav a:hover { text-decoration: none; }
 nav a .glyph { font-size: 1.35rem; line-height: 1; }
 nav a.active { color: var(--accent); }
 
+/* "A new version is ready" — floats just above the tab bar, never over it.
+   The [hidden] rule has to be explicit: display:flex would otherwise beat the
+   browser's default [hidden] { display: none }. */
+.updatebar {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(var(--nav-h) + 12px + env(safe-area-inset-bottom, 0px));
+  z-index: 21;
+  width: min(calc(100% - 24px), var(--maxw));
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+}
+.updatebar[hidden] { display: none; }
+.updatebar span { flex: 1; min-width: 0; font-weight: 600; }
+.updatebar button { width: auto; flex: 0 0 auto; }
+
 /* ---------- shared bits ---------- */
 .grow { flex: 1; min-width: 0; }
 .big { font-size: 1.35rem; line-height: 1.4; }
@@ -245,6 +268,7 @@ a.lrow:hover { text-decoration: none; background: var(--surface-2); }
 .fb { margin-top: 10px; font-weight: 600; }
 .fb.ok { color: var(--ok); }
 .fb.bad { color: var(--bad); }
+.fb.warn { color: var(--warm); }   /* backup reminder — attention, not an error */
 .score { font-size: 2.4rem; font-weight: 700; line-height: 1.2; }
 .navrow { display: flex; gap: 10px; margin-top: 16px; }
 .navrow .btn { flex: 1; }

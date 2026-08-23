@@ -21,10 +21,66 @@ import { gaugeHTML } from "../level.js";
 const WINDOW = 30;             // days in the calendar + retention strip
 const RATE_MIN = 0.5, RATE_MAX = 1.2, RATE_STEP = 0.05;
 const SAMPLE = "안녕하세요, 오늘도 공부해요.";   // TTS-rate audition line
+const NAG_DAYS = 30;           // backup reminder appears once a backup is this stale
 
 function esc(s) {
   return String(s == null ? "" : s).replace(/[&<>"]/g, c =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+
+// Whole days from the last export to today, or null if there has never been one.
+// Compared midnight-to-midnight so "yesterday" is 1 regardless of the clock time
+// either event happened at — the same local-date basis dayKey() uses.
+function daysSinceBackup() {
+  const d = store.lastBackup();
+  if (typeof d !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return null;
+  const [y, m, day] = d.split("-").map(Number);
+  const then = new Date(y, m - 1, day);
+  if (isNaN(then)) return null;
+  const now = new Date();
+  const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return Math.max(0, Math.round((midnight - then) / 86400000));
+}
+
+// The reminder line above the Backup button, or "" when there is nothing to say.
+// Silent for a browser with no progress: nagging before the first lesson is noise.
+function backupNag() {
+  if (!store.hasProgress()) return "";
+  const since = daysSinceBackup();
+  if (since === null) {
+    return `<p class="fb warn">No backup yet — this browser is the only copy of your progress.</p>`;
+  }
+  if (since >= NAG_DAYS) {
+    return `<p class="fb warn">Last backup was ${since} days ago.</p>`;
+  }
+  return "";
+}
+
+// Storage-protection state, cached across mounts because the query is async and
+// the answer does not change without the user acting.
+//   null  not asked yet      true  persisted      false  best-effort (evictable)
+//   "n/a" browser has no Storage API to ask
+let persistState = null;
+let persistDenied = false;     // set when a request was made and turned down
+
+// The storage block inside the Backup card. Silent while the answer is unknown
+// or unavailable — a line that says nothing useful is worse than no line.
+function storageBlock() {
+  if (persistState === null || persistState === "n/a") return "";
+  if (persistState === true) {
+    return `<p class="fb ok">Storage is protected — the browser will not evict your progress.</p>`;
+  }
+  return `
+    <div class="confirmbox">
+      <b>Storage is not protected</b>
+      <p class="muted small">The browser is allowed to clear your progress when the device
+        runs low on space. On iPhone, Safari also clears it after 7 days without opening
+        the app — unless the app is on your home screen.</p>
+      <button class="btn secondary wide" type="button" id="prot">Protect my storage</button>
+      ${persistDenied ? `<p class="fb warn">The browser turned that down. It usually says yes
+        once the app is installed — Android Chrome: menu → <i>Install app</i>; iPhone Safari:
+        Share → <i>Add to Home Screen</i>. Install it, then tap this again.</p>` : ""}
+    </div>`;
 }
 
 function ttsRate() {
@@ -175,6 +231,8 @@ function renderMe(mount) {
         <p class="muted small">Everything lives in this browser only. A backup is a single
           JSON file of every <code>kov2.</code> key — lessons, cards, days, weak items,
           settings.</p>
+        ${backupNag()}
+        ${storageBlock()}
         <button class="btn wide" type="button" id="dl">⤓ Download backup</button>
         <div class="navrow">
           <input class="filein" id="imp" type="file" accept="application/json,.json"
@@ -219,6 +277,19 @@ function renderMe(mount) {
       if (f) read(f);
     });
 
+    const prot = mount.querySelector("#prot");
+    if (prot) prot.addEventListener("click", async () => {
+      prot.disabled = true;
+      try {
+        const ok = await navigator.storage.persist();
+        persistState = ok;
+        persistDenied = !ok;
+      } catch {
+        persistState = "n/a";
+      }
+      draw();
+    });
+
     const go = mount.querySelector("#impgo");
     if (go) go.addEventListener("click", doImport);
     const no = mount.querySelector("#impno");
@@ -239,6 +310,11 @@ function renderMe(mount) {
     // returns. Cleared by the router teardown if the user navigates first.
     if (revoke) clearTimeout(revoke);
     revoke = setTimeout(() => { revoke = null; URL.revokeObjectURL(url); }, 2000);
+    // Recorded after exportAll() has already snapshotted storage, so the file
+    // carries the PREVIOUS backup date — correct, since that is the state it holds.
+    // draw() last: it rebuilds the card, clearing the reminder line immediately.
+    store.setLastBackup(dayKey());
+    draw();
   }
 
   // Read + validate the chosen file. Nothing is written until the confirm card
@@ -275,7 +351,18 @@ function renderMe(mount) {
     window.scrollTo(0, 0);
   }
 
+  // Ask the browser whether storage is protected, then redraw if the answer
+  // differs from what was rendered. Guarded on a real change, so this can never
+  // loop: the second mount already has the cached value and redraws nothing.
+  function refreshPersist() {
+    if (!navigator.storage || !navigator.storage.persisted) { persistState = "n/a"; return; }
+    navigator.storage.persisted()
+      .then(v => { if (persistState !== v) { persistState = v; draw(); } })
+      .catch(() => { persistState = "n/a"; });
+  }
+
   draw();
+  refreshPersist();
   // Router teardown: stop the audition utterance and drop the pending revoke.
   return () => {
     cancelSpeech();
